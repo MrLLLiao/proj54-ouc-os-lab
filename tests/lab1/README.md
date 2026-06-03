@@ -1,26 +1,46 @@
-# lab1 测试计划
+# lab1 测试记录
 
-## 当前测试目标
+## 测试目标
 
-lab1 未来用于验证“新增系统调用”是否完成从用户态声明、系统调用号、分发表、内核实现到用户测试程序的完整链路。
+lab1 测试用于验证最小 `hello()` system call patch 是否能完成以下闭环：
 
-当前状态：测试设计阶段，xv6-riscv baseline 尚未引入，没有真实测试结果。
+1. patch 可应用到指定 xv6-riscv baseline。
+2. 修改后的 xv6 可以完成 `make`。
+3. QEMU 启动过程中可以捕获 boot evidence。
+4. 用户态程序 `hello` 可以输出预期结果。
 
-## 未来测试方式
+预期输出：
 
-- TODO：编译 xv6-riscv，确认新增 syscall 不破坏构建。
-- TODO：启动 xv6-riscv。
-- TODO：运行用户态测试程序。
-- TODO：记录输出、返回值和异常情况。
-- TODO：覆盖 syscall number 冲突、用户态声明遗漏、Makefile 配置遗漏等错误路径。
+```text
+hello syscall returned 2026
+```
 
-## 记录要求
+## 已真实执行命令
 
-- 不伪造测试结果。
-- 不写虚假的 PASS。
-- 实际命令和输出应记录在 docs/04_test_report.md 或后续测试日志中。
-- 失败结果同样需要记录，包括错误现象、定位过程和修复方式。
+| 目的 | 命令 | 结果 |
+| --- | --- | --- |
+| 构建 patched xv6 | `bash scripts/xv6/check-xv6-baseline.sh --make` | PASS |
+| 捕获 boot evidence | `bash scripts/xv6/boot-xv6.sh` | PASS |
+| 自动运行 hello | `bash scripts/xv6/run-xv6-command.sh hello "hello syscall returned 2026"` | PASS |
 
-## 与测试报告模板的关系
+## 证据摘要
 
-正式测试记录使用 [../../docs/04_test_report.md](../../docs/04_test_report.md) 中的模板。本文档只说明 lab1 的测试目标和未来测试范围。
+| 证据 | 状态 | 日志 |
+| --- | --- | --- |
+| baseline make | PASS | `logs/xv6-make-20260603-235003.log` |
+| boot evidence | PASS | `logs/xv6-boot-20260604-001736.log` |
+| lab1 patched make | PASS | `logs/xv6-make-20260604-001927.log` |
+| hello 输出 | PASS | `logs/xv6-command-hello-20260604-002147.log` |
+
+原始日志被 Git 忽略，不应提交。
+
+## 尚未覆盖
+
+- TODO: 长期 QEMU 稳定性测试。
+- TODO: 人工交互 shell 测试。
+- TODO: syscall number 冲突、用户态 stub 缺失等负向测试。
+- TODO: 由第二名队员进行代码和文档复核。
+
+## 与测试报告的关系
+
+正式摘要记录在 `docs/04_test_report.md`。本文件保留 lab1 专项测试说明，不复制完整日志。

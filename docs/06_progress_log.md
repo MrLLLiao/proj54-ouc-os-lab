@@ -79,3 +79,31 @@
 - Next:
   - Ask the team lead before running QEMU boot verification.
   - If boot is run later, record the exact command, output summary, and risks in `docs/04_test_report.md`.
+
+## 2026-06-04: stage2a boot evidence and lab1 hello syscall
+
+- Commit hash: TODO after commit
+- Completed:
+  - Added `scripts/xv6/boot-xv6.sh` to capture xv6 boot evidence without claiming full manual interaction.
+  - Ran `bash scripts/xv6/boot-xv6.sh`.
+  - Captured baseline boot evidence in `logs/xv6-boot-20260604-001736.log`.
+  - Detected `xv6 kernel is booting`.
+  - Detected `init: starting sh`.
+  - Implemented a minimal `hello()` syscall in the ignored local xv6 tree under `external/xv6-riscv/`.
+  - Generated `patches/lab1-system-call/0001-add-hello-syscall.patch` as the tracked lab1 deliverable.
+  - Added `patches/lab1-system-call/README.md`.
+  - Ran patched xv6 `make` through `bash scripts/xv6/check-xv6-baseline.sh --make`.
+  - Captured patched build success in `logs/xv6-make-20260604-001927.log`.
+  - Added `scripts/xv6/run-xv6-command.sh` to capture command output evidence from xv6 under timeout.
+  - Ran `bash scripts/xv6/run-xv6-command.sh hello "hello syscall returned 2026"`.
+  - Captured hello output evidence in `logs/xv6-command-hello-20260604-002147.log`.
+- Real result:
+  - baseline boot evidence: found
+  - lab1 patched make: success
+  - hello output: `hello syscall returned 2026`
+- Boundaries:
+  - `external/xv6-riscv/` remains ignored and must not be committed.
+  - Raw `logs/*.log` files remain ignored and must not be committed.
+  - The boot check is evidence capture under timeout, not a long-running stability test.
+  - Manual interactive shell testing is TODO.
+  - Second-person code review is TODO.

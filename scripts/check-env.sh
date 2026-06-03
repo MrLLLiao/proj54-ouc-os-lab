@@ -70,9 +70,11 @@ echo "2. For baseline structure checks:"
 echo "     bash scripts/xv6/check-xv6-baseline.sh"
 echo "3. For build verification, use only after team-lead confirmation:"
 echo "     bash scripts/xv6/check-xv6-baseline.sh --make"
-echo "4. For boot verification, run and record make qemu only after explicit confirmation."
+echo "4. For boot evidence checks:"
+echo "     bash scripts/xv6/boot-xv6.sh"
 echo
 echo "Note: this precheck only detects tools; it does not install, build, or boot xv6."
-echo "Current project records show baseline make succeeded once; QEMU boot is still TODO."
+echo "Current project records show baseline make succeeded and boot evidence was captured."
+echo "Long-running stability and manual shell interaction remain TODO."
 
 exit 0

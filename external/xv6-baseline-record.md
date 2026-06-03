@@ -14,10 +14,11 @@ It is safe to commit this metadata file. Do not commit the third-party source tr
 | Record generated at | 2026-06-03T23:27:49+08:00 |
 | Built | yes, `make` completed successfully at 2026-06-03 23:50:03 +08:00 |
 | Build log | `logs/xv6-make-20260603-235003.log` (ignored by Git) |
-| Booted | no, `make qemu` not run |
+| Boot evidence | yes, detected `xv6 kernel is booting` and `init: starting sh` at `logs/xv6-boot-20260604-001736.log` |
+| Manual interaction | no, not tested |
 
 ## Notes
 
 - `external/xv6-riscv/` is ignored by `.gitignore` and should not be committed as third-party source code.
-- This record claims only that `make` completed successfully. It does not claim that xv6-riscv has booted.
+- This record claims that `make` completed successfully and boot evidence was captured by script. It does not claim long-running stability or manual shell interaction.
 - Future build logs should be generated only from real commands and recorded under `logs/` or summarized in project docs.
