@@ -1,0 +1,37 @@
+name: lightweight-ci
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  docs-and-scripts:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Check required Markdown files
+        shell: bash
+        run: |
+          set -euo pipefail
+          test -f README.md
+          test -f docs/00_project_plan.md
+          test -f docs/01_requirement_analysis.md
+          test -f docs/02_lab_design.md
+          test -f docs/05_ai_usage_record.md
+          test -f docs/06_progress_log.md
+          test -f docs/08_reference_and_license.md
+          test -f docs/09_github_workflow.md
+          test -f labs/lab0-env-setup/README.md
+          test -f labs/lab1-system-call/README.md
+
+      - name: Run lightweight project scripts
+        shell: bash
+        run: |
+          set -euo pipefail
+          bash scripts/check-env.sh
+          bash scripts/run-lab.sh lab0
+          bash scripts/run-lab.sh lab1
+          bash scripts/collect-report.sh
+          git diff --check

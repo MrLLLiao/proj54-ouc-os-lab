@@ -173,3 +173,33 @@ cython_debug/
 #  option (not recommended) you can uncomment the following to ignore the entire idea folder.
 #.idea/
 
+# Project local editor files
+.vscode/
+.idea/
+
+# Temporary files and local logs
+*.log
+*.tmp
+*.bak
+*.swp
+*.swo
+
+# Archives and large binary deliverables
+*.zip
+*.7z
+*.rar
+*.tar
+*.tar.gz
+*.tgz
+*.mp4
+*.mov
+*.avi
+*.mkv
+*.pdf
+
+# Sensitive or non-repository materials
+报名材料/
+提交备份/
+评审与提示词/
+参考资料/
+
