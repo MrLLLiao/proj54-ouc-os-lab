@@ -22,8 +22,9 @@
 | 参考资料与许可证 | `docs/08_reference_and_license.md` | 存在 | 已完成初版 |
 | GitHub 协作工作流 | `docs/09_github_workflow.md` | 存在 | 已完成初版 |
 | 内部红队审查报告 | `docs/10_red_team_review.md` | 存在 | 已完成初版 |
-| lab0 环境教程 | `labs/lab0-env-setup/README.md` | 存在 | 已完成初版，真实跑通待验证 |
-| lab1 系统调用实验设计 | `labs/lab1-system-call/README.md` | 存在 | 设计初版，实现待验证 |
+| xv6 baseline 引入方案 | `docs/11_xv6_baseline_plan.md` | 存在 | 已完成初版（含真实环境检测） |
+| lab0 环境教程 | `labs/lab0-env-setup/README.md` | 存在 | 环境文档初版，真实工具链待验证 |
+| lab1 系统调用实验设计 | `labs/lab1-system-call/README.md` | 存在 | 实验设计初版，待 baseline 引入后实现 |
 | lab2 进程与调度 | `labs/lab2-process-and-scheduling/README.md` | 存在 | 计划中占位 |
 | lab3 页表与内存 | `labs/lab3-memory-and-pagetable/README.md` | 存在 | 计划中占位 |
 | lab4 文件系统 | `labs/lab4-file-system/README.md` | 存在 | 计划中占位 |
@@ -32,6 +33,7 @@
 | lab2 测试计划 | `tests/lab2/README.md` | 存在 | 计划初版 |
 | lab3 测试计划 | `tests/lab3/README.md` | 存在 | 计划初版 |
 | lab4 测试计划 | `tests/lab4/README.md` | 存在 | 计划初版 |
+| 第三方源码管理说明 | `external/README.md` | 存在 | 已完成初版，baseline 待引入 |
 | 参考资料目录说明 | `references/README.md` | 存在 | 占位，引用待补 |
 | PPT 说明 | `slides/README.md` | 存在 | TODO 占位 |
 | Demo 视频说明 | `videos/README.md` | 存在 | TODO 占位 |

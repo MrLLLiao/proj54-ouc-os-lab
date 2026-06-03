@@ -203,3 +203,11 @@ cython_debug/
 评审与提示词/
 参考资料/
 
+# Third-party baselines under external/ are NOT committed as plain source.
+# Keep external/ docs (README and notes), but ignore any cloned/downloaded
+# source trees (e.g. external/xv6-riscv/). If a git submodule is used instead,
+# its gitlink is tracked regardless of this rule. See external/README.md.
+external/*/
+!external/README.md
+!external/*.md
+
