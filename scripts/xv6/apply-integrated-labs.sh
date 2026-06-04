@@ -5,7 +5,9 @@
 # - Default mode is PREVIEW only: inspect state and print planned operations.
 # - --run resets and cleans only the ignored third-party tree, then applies patches.
 # - --make implies --run, then runs make and stores the real output in logs/.
-# - If the ignored xv6 tree has local changes, --run/--make require --yes.
+# - --run/--make ALWAYS require --yes, because they run 'git reset --hard' and
+#   'git clean -fdx' on the ignored xv6 tree, discarding its local changes and
+#   build artifacts. Preview never needs --yes and never changes anything.
 set -u
 
 TARGET_DIR="${XV6_TARGET_DIR:-external/xv6-riscv}"
@@ -129,25 +131,26 @@ if [ "$DO_RUN" -eq 0 ]; then
       echo "[OK] current tree accepts: ${patch}"
     else
       echo "[INFO] current tree does not accept now: ${patch}"
-      echo "       This is normal if patches are already applied or the tree is not clean baseline."
+      echo "       Normal if patches are already applied, the tree is not clean baseline, or this"
+      echo "       patch needs predecessors (0002 needs 0001; 0003 needs 0001+0002, applied in --run)."
     fi
   done
   exit 0
 fi
 
-if [ -n "$tree_status" ] && [ "$YES" -ne 1 ]; then
-  echo "[ERROR] refusing to reset/clean ${TARGET_DIR} because it has local changes."
-  echo "        Re-run with --yes only after confirming those ignored-tree changes can be discarded."
-  echo "        Example: bash scripts/xv6/apply-integrated-labs.sh --make --yes"
+if [ "$YES" -ne 1 ]; then
+  echo "[ERROR] refusing to reset/clean ${TARGET_DIR} without --yes."
+  echo "        --run/--make run 'git reset --hard ${BASELINE_COMMIT}' and 'git clean -fdx'"
+  echo "        on the ignored third-party tree, discarding its local changes and build artifacts."
+  echo "        Re-run with --yes to confirm. Example:"
+  echo "          bash scripts/xv6/apply-integrated-labs.sh --make --yes"
+  if [ -n "$tree_status" ]; then
+    echo "        Note: the target tree currently has local changes/build artifacts (shown above)."
+  fi
   exit 1
 fi
 
-echo "MODE: run. The ignored target tree will be reset and cleaned."
-if [ "$YES" -eq 1 ]; then
-  echo "[OK] --yes supplied; proceeding with reset/clean in ${TARGET_DIR}."
-else
-  echo "[OK] target tree was clean; proceeding without --yes."
-fi
+echo "MODE: run. The ignored target tree will be reset and cleaned (--yes supplied)."
 
 echo "[STEP] git reset --hard ${BASELINE_COMMIT}"
 if ! git -C "$TARGET_DIR" reset --hard "$BASELINE_COMMIT" >/dev/null 2>&1; then

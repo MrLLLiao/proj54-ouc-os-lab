@@ -151,7 +151,7 @@ stage4e 真实 helper 验证：
 ## 11. 后续建议
 
 1. 把综合演示统一收口到 integrated-labs：Demo 脚本与复现包的"最终演示"段明确指向路径 C，避免再用独立 patch 拼凑。
-2. stage4e 已提供并验证 `scripts/xv6/apply-integrated-labs.sh`（预览/`--run --yes`/`--make --yes`）降低评委复现门槛；后续继续保持该脚本克制，不自动声明 boot 或用户程序成功。
+2. stage4e 已提供并验证 `scripts/xv6/apply-integrated-labs.sh`（预览/`--run --yes`/`--make --yes`）降低评委复现门槛；stage4f 红队对该脚本做了安全审查并加固（`--run`/`--make` 现在**始终要求 `--yes`** 才执行 reset/clean），详见 [18_integrated_helper_review.md](18_integrated_helper_review.md)；后续继续保持该脚本克制，不自动声明 boot 或用户程序成功。
 3. 第二名队员按第 10 节在另一台机器独立复现，并录一段真实人工交互演示（手敲 hello/add2test/pstatetest）。
 4. 后续若新增 lab（如 lab3/lab4），同步更新 integrated 序列与号段规划（`0004` 起、号 25+），并复跑本报告第 4-6 节。
 5. 统一处理 `user/usys.pl` 的 file mode warning（patch 记录 100755，Windows/WSL 检出 100644），避免集成时反复出现告警。

@@ -94,7 +94,7 @@ bash scripts/xv6/run-xv6-command.sh pstatetest "pstate(self) ="
 bash scripts/xv6/run-xv6-command.sh pstatetest "RUNNING"
 ```
 
-`apply-integrated-labs.sh` 默认预览，不修改 `external/xv6-riscv/`。`--make --yes` 会 reset/clean ignored 的 `external/xv6-riscv/` 并应用 integrated patch sequence，然后运行 `make`。当前真实验证状态：helper 预览安全；`--make --yes` 成功；boot evidence、hello、add2test、pstatetest 均已通过。原始日志不提交。
+`apply-integrated-labs.sh` 默认预览，不修改 `external/xv6-riscv/`。`--make --yes` 会 reset/clean ignored 的 `external/xv6-riscv/` 并应用 integrated patch sequence，然后运行 `make`。安全提示（stage4f 加固）：`--run`/`--make` **始终要求 `--yes`** 才执行 reset/clean，否则拒绝并退出；安全审查见 [../docs/18_integrated_helper_review.md](../docs/18_integrated_helper_review.md)。当前真实验证状态：helper 预览安全；`--make --yes` 成功；boot evidence、hello、add2test、pstatetest 均已通过。原始日志不提交。
 
 ## 人工复现方式
 

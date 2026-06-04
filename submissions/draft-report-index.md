@@ -27,6 +27,7 @@ It is not the final technical report, does not generate PDF, and does not includ
 | lab2 process observation review | `docs/15_lab2_process_observation_review.md` | exists | stage4b red-team: clean-baseline apply/make/pstatetest verified; teaching limits + lab1/lab2 conflict measured |
 | patch strategy and integration plan | `docs/16_patch_strategy_and_integration_plan.md` | exists | stage4b conflict measured; stage4c integrated-labs sequence built and verified |
 | integrated-labs review | `docs/17_integrated_labs_review.md` | exists | stage4d red-team: 0001+0002+0003 reproduced; hello/add2test/pstatetest in one build; SYS pstate=24 |
+| integrated apply helper safety review | `docs/18_integrated_helper_review.md` | exists | stage4f red-team: preview safe; --run/--make always require --yes; --make --yes reproduced |
 | Technical report v0.1 | `docs/13_technical_report_v0.1.md` | exists | stage2c draft; not final report |
 | Reproducibility package | `reproducibility/README.md` | exists | lab0/lab1/lab2/integrated-labs reproduction checklist and template |
 | lab0 environment guide | `labs/lab0-env-setup/README.md` | exists | xv6 baseline make succeeded; boot evidence found; manual interaction TODO |
@@ -44,7 +45,7 @@ It is not the final technical report, does not generate PDF, and does not includ
 | xv6 boot evidence script | `scripts/xv6/boot-xv6.sh` | exists | captures boot keywords under timeout |
 | xv6 command evidence script | `scripts/xv6/run-xv6-command.sh` | exists | captures user program output under timeout |
 | lab1 patch apply helper | `scripts/xv6/apply-lab1-patch.sh` | exists | preview by default; --run resets clean baseline and applies; --make optional |
-| integrated labs apply helper | `scripts/xv6/apply-integrated-labs.sh` | exists | preview by default; --run/--make require --yes when target tree has local changes; make logs ignored |
+| integrated labs apply helper | `scripts/xv6/apply-integrated-labs.sh` | exists | preview by default; --run/--make always require --yes (reset/clean ignored tree); make logs ignored |
 | lab1 hello syscall patch | `patches/lab1-system-call/0001-add-hello-syscall.patch` | exists | tracked patch; third-party source not submitted |
 | lab1 add2 argint syscall patch | `patches/lab1-system-call/0002-add-argint-add2-syscall.patch` | exists | commit-ready incremental patch after 0001 |
 | lab1 patch guide | `patches/lab1-system-call/README.md` | exists | apply/build/run instructions |

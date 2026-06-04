@@ -362,3 +362,28 @@
   - The helper only operates on ignored `external/xv6-riscv/` and ignored `logs/*.log`.
   - No remote changes.
   - No manual recording or teammate reproduction is claimed.
+
+## 2026-06-04: stage4f red-team integrated apply helper safety
+
+- Commit hash: TODO after commit
+- Role: strict reviewer + engineering red team + OS lab TA (Claude Code).
+- Goal: verify `scripts/xv6/apply-integrated-labs.sh` is safe and reproducible enough for teammates/judges.
+- Finding and fix:
+  - The `--yes` confirmation gate was CONDITIONAL: it only required `--yes` when the ignored xv6 tree had local changes. On a porcelain-clean tree, `--run`/`--make` would run `git reset --hard` + `git clean -fdx` WITHOUT `--yes` (still deletes ignored build artifacts), contradicting the documented `--run --yes`/`--make --yes` contract.
+  - Fixed: `--run`/`--make` now ALWAYS require `--yes`; otherwise they print `[ERROR]` and exit 1. Updated the safety-model comment and the preview `[INFO]` note (0002 needs 0001; 0003 needs 0001+0002).
+- Audit result (12 checks): preview is read-only; baseline commit pinned; 3 patches existence-checked; ordered apply with per-step `git apply --check`; make log to `logs/integrated-make-*.log` (ignored); no main-repo tracked files touched; non-zero exit on failure; space-containing repo path handled via quoted `git rev-parse --show-toplevel`; clear `[OK]`/`[WARN]`/`[ERROR]` output.
+- Real verification (Git Bash gate + WSL2 build/run):
+  - `bash -n` syntax OK.
+  - preview: exit 0; external HEAD and `git status --porcelain` unchanged before/after.
+  - `--run` without `--yes`: exit 1 (`[ERROR] refusing to reset/clean ... without --yes`).
+  - `--make` without `--yes`: exit 1 (same gate).
+  - `--make --yes`: exit 0; reset clean baseline, applied integrated `0001`+`0002`+`0003`, `make` succeeded; log `logs/integrated-make-20260604-204228.log` (ignored).
+  - boot: `BOOT_EVIDENCE_FOUND`; hello `hello syscall returned 2026`; add2test `add2(20, 6) returned 26`; pstatetest `pstate(self) = 4 (RUNNING)`.
+- Added `docs/18_integrated_helper_review.md`; linked from docs/17 and README quick-path; updated reproducibility note and collect-report helper status to the `--yes`-always behavior.
+- Boundaries:
+  - `external/xv6-riscv/` and `logs/*.log` remain ignored and were not committed (verified `git ls-files` empty for both).
+  - Evidence is timeout-based capture, not long-running stability or manual interaction.
+  - Manual interaction video and second-person reproduction remain TODO; lab3/lab4 not done.
+- Next:
+  - Optional `--baseline <commit>` flag for judges to confirm baseline explicitly.
+  - Second teammate reproduces via the helper on another machine; record a real manual demo.
