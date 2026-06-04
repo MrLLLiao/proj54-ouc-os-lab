@@ -113,7 +113,7 @@ bash scripts/xv6/run-xv6-command.sh pstatetest "RUNNING"
 - **lab1 序列（`0001`+`0002`）独立可复现**：stage2b/stage3b 已实测（`git apply --check` exit 0、make、hello/add2 输出捕获）。
 - **lab2 独立 patch 可复现**：stage4b 实测（clean baseline → lab2 patch → make → `pstate(self) = 4 (RUNNING)`）。
 - **lab1 与 lab2 independent patch 当前不能直接叠加**：已实测 `git apply --check` exit 1，且 `SYS_hello`/`SYS_pstate` 撞号 22。
-- **integrated-labs 统一序列已实现并验证**：用于综合演示，采用 `SYS_hello 22`、`SYS_add2 23`、`SYS_pstate 24`。
+- **integrated-labs 统一序列已实现并验证**：用于综合演示，采用 `SYS_hello 22`、`SYS_add2 23`、`SYS_pstate 24`。stage4d 红队已独立复现并审查，见 [17_integrated_labs_review.md](17_integrated_labs_review.md)。
 - 文档中必须继续区分“单 lab 教学 patch”和“综合演示 patch”，**不得**暗示原有 independent patch 可任意组合。
 
 > 诚实边界：本文件的冲突结论和 integrated-labs 验证结果都来自真实命令输出；人工录屏、长期稳定性测试和第二名队员复现仍为 TODO。

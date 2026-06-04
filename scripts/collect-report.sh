@@ -54,6 +54,7 @@ mkdir -p submissions
   status_line "docs/14_lab1_argint_extension_review.md" "lab1 argint extension review" "stage3b red-team: 0001+0002 reproduced (make/hello/add2); add2 call chain, argint mechanism, teaching-value assessment"
   status_line "docs/15_lab2_process_observation_review.md" "lab2 process observation review" "stage4b red-team: clean-baseline apply/make/pstatetest verified; teaching limits + lab1/lab2 conflict measured"
   status_line "docs/16_patch_strategy_and_integration_plan.md" "patch strategy and integration plan" "stage4b conflict measured; stage4c integrated-labs sequence built and verified"
+  status_line "docs/17_integrated_labs_review.md" "integrated-labs review" "stage4d red-team: 0001+0002+0003 reproduced; hello/add2test/pstatetest in one build; SYS pstate=24"
   status_line "docs/13_technical_report_v0.1.md" "Technical report v0.1" "stage2c draft; not final report"
   status_line "reproducibility/README.md" "Reproducibility package" "lab0/lab1/lab2/integrated-labs reproduction checklist and template"
   status_line "labs/lab0-env-setup/README.md" "lab0 environment guide" "xv6 baseline make succeeded; boot evidence found; manual interaction TODO"

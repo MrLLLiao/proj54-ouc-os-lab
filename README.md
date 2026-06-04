@@ -47,10 +47,11 @@
 13. lab2 复现审查：`docs/15_lab2_process_observation_review.md`
 14. patch 策略与集成计划：`docs/16_patch_strategy_and_integration_plan.md`
 15. integrated-labs 综合 patch 说明：`patches/integrated-labs/README.md`
-16. 测试报告：`docs/04_test_report.md`
-17. AI 使用记录：`docs/05_ai_usage_record.md`
-18. 引用与许可证说明：`docs/08_reference_and_license.md`
-19. 初赛材料索引：`submissions/draft-report-index.md`
+16. integrated-labs 复现审查：`docs/17_integrated_labs_review.md`
+17. 测试报告：`docs/04_test_report.md`
+18. AI 使用记录：`docs/05_ai_usage_record.md`
+19. 引用与许可证说明：`docs/08_reference_and_license.md`
+20. 初赛材料索引：`submissions/draft-report-index.md`
 
 ## 当前状态
 

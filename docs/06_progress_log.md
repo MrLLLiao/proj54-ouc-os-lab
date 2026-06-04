@@ -311,3 +311,30 @@
   - Have a second team member reproduce the integrated sequence on another machine.
   - Record an actual manual demo only after confirming no private information is visible.
   - Consider lab2 child-process observation or negative tests as the next teaching extension.
+
+## 2026-06-04: stage4d red-team integrated-labs patch sequence
+
+- Commit hash: TODO after commit
+- Role: strict reviewer + OS lab TA + engineering red team (Claude Code).
+- Goal: verify integrated-labs really solves the combined demo (all three programs in one xv6 build) and that docs are no longer stale.
+- Completed (real runs in WSL2 Ubuntu, inside the ignored `external/xv6-riscv/`):
+  - Patch audit: integrated `0001`/`0002` are byte-identical to lab1 `0001`/`0002`; `0003` is incremental on `0001`+`0002` (base blobs equal `0002` outputs) and uses `SYS_pstate = 24` (no collision with `SYS_hello = 22`); `0003` pstatetest.c equals lab2's; no build artifacts/logs/personal paths; original independent patches unchanged.
+  - Reset to clean baseline `74f84181a3404d1d6a6ff98d342233979066ebb8`; applied integrated `0001`+`0002`+`0003` (all `git apply --check` exit 0); tree has hello.c + add2test.c + pstatetest.c; syscall.h tail shows hello=22/add2=23/pstate=24.
+  - Clean `make` exit 0 (only known RWX warning).
+  - From the SAME build: boot `BOOT_EVIDENCE_FOUND`; captured `hello syscall returned 2026`, `add2(20, 6) returned 26`, `pstate(self) = 4 (RUNNING)`.
+  - Added `docs/17_integrated_labs_review.md`; linked it from `docs/16` and README quick-path.
+- Real result:
+  - integrated `0001`+`0002`+`0003` clean apply: PASS (all --check exit 0)
+  - clean make: PASS
+  - hello / add2test / pstatetest in one build: PASS
+  - stage4d logs (ignored): `logs/xv6-make-20260604-160800.log` and the corresponding command logs
+- Red-team verdict:
+  - integrated-labs PASSES: it genuinely runs hello/add2test/pstatetest in a single xv6 build with no syscall-number collision, solving the stage4b conflict.
+  - No patch change was needed. Independent and integrated patch sets remain correctly distinct (independent pstate=22, integrated pstate=24); docs keep them separate and do not claim arbitrary composability.
+- Boundaries:
+  - `external/xv6-riscv/` and `logs/*.log` remain ignored and were not committed (verified `git ls-files` empty for both).
+  - Evidence is timeout-based capture, not long-running stability or manual interaction.
+  - lab2 is still process-observation v0.1; lab3/lab4 not done; manual video and second-person reproduction remain TODO.
+- Next:
+  - Consider `scripts/xv6/apply-integrated-labs.sh` (preview/--run/--make) to lower judge reproduction friction.
+  - Second teammate reproduces the integrated sequence; record a real manual demo.
