@@ -85,14 +85,8 @@ bash scripts/xv6/run-xv6-command.sh pstatetest "RUNNING"
 ```bash
 bash scripts/check-env.sh
 bash scripts/xv6/fetch-xv6.sh --run
-cd external/xv6-riscv
-git reset --hard 74f84181a3404d1d6a6ff98d342233979066ebb8
-git clean -fdx
-git apply ../../patches/integrated-labs/0001-add-hello-syscall.patch
-git apply ../../patches/integrated-labs/0002-add-argint-add2-syscall.patch
-git apply ../../patches/integrated-labs/0003-add-pstate-syscall.patch
-make
-cd ../..
+bash scripts/xv6/apply-integrated-labs.sh
+bash scripts/xv6/apply-integrated-labs.sh --make --yes
 bash scripts/xv6/boot-xv6.sh
 bash scripts/xv6/run-xv6-command.sh hello "hello syscall returned 2026"
 bash scripts/xv6/run-xv6-command.sh add2test "add2(20, 6) returned 26"
@@ -100,7 +94,7 @@ bash scripts/xv6/run-xv6-command.sh pstatetest "pstate(self) ="
 bash scripts/xv6/run-xv6-command.sh pstatetest "RUNNING"
 ```
 
-当前真实验证状态：clean apply、`make`、boot evidence、hello、add2test、pstatetest 均已通过。原始日志不提交。
+`apply-integrated-labs.sh` 默认预览，不修改 `external/xv6-riscv/`。`--make --yes` 会 reset/clean ignored 的 `external/xv6-riscv/` 并应用 integrated patch sequence，然后运行 `make`。当前真实验证状态：helper 预览安全；`--make --yes` 成功；boot evidence、hello、add2test、pstatetest 均已通过。原始日志不提交。
 
 ## 人工复现方式
 

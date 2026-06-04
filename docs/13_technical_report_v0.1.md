@@ -300,14 +300,8 @@ bash scripts/xv6/run-xv6-command.sh pstatetest "RUNNING"
 ### 7.9 integrated-labs 综合验证
 
 ```bash
-cd external/xv6-riscv
-git reset --hard 74f84181a3404d1d6a6ff98d342233979066ebb8
-git clean -fdx
-git apply ../../patches/integrated-labs/0001-add-hello-syscall.patch
-git apply ../../patches/integrated-labs/0002-add-argint-add2-syscall.patch
-git apply ../../patches/integrated-labs/0003-add-pstate-syscall.patch
-make
-cd ../..
+bash scripts/xv6/apply-integrated-labs.sh
+bash scripts/xv6/apply-integrated-labs.sh --make --yes
 bash scripts/xv6/boot-xv6.sh
 bash scripts/xv6/run-xv6-command.sh hello "hello syscall returned 2026"
 bash scripts/xv6/run-xv6-command.sh add2test "add2(20, 6) returned 26"
@@ -315,7 +309,7 @@ bash scripts/xv6/run-xv6-command.sh pstatetest "pstate(self) ="
 bash scripts/xv6/run-xv6-command.sh pstatetest "RUNNING"
 ```
 
-当前记录：clean apply、`make`、boot evidence、hello、add2test、pstatetest 均已通过真实命令验证。该结果只代表 timeout 自动捕获到关键输出，不代表长期稳定性或人工录屏。
+当前记录：`scripts/xv6/apply-integrated-labs.sh` 已新增；预览模式不修改 external tree；`--make --yes` 可 reset/clean ignored 的 `external/xv6-riscv/`、应用 integrated patch sequence 并完成 `make`。boot evidence、hello、add2test、pstatetest 均已通过真实命令验证。该结果只代表 timeout 自动捕获到关键输出，不代表长期稳定性或人工录屏。
 
 ## 8. 风险与边界
 

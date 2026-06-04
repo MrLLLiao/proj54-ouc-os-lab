@@ -36,7 +36,23 @@
 | `add2` | 23 | `add2test` | 使用 `argint()` 获取两个整数参数并返回和 |
 | `pstate` | 24 | `pstatetest` | 根据 pid 查找 `proc[]` 并返回进程状态 |
 
-## 应用顺序
+## 推荐助手脚本
+
+最终综合 Demo 和评委/队友复现建议优先使用助手脚本：
+
+```bash
+bash scripts/xv6/apply-integrated-labs.sh
+bash scripts/xv6/apply-integrated-labs.sh --make --yes
+```
+
+说明：
+
+- 不带参数时是预览模式，不 reset、不 apply、不 make。
+- `--make --yes` 会在 ignored 的 `external/xv6-riscv/` 中执行 `git reset --hard` 和 `git clean -fdx`，再应用 integrated `0001`、`0002`、`0003` 并运行 `make`。
+- `make` 输出保存到 `logs/integrated-make-YYYYMMDD-HHMMSS.log`，原始日志被 Git 忽略，不提交。
+- 该脚本不会修改主仓库 tracked 文件，不会提交第三方源码。
+
+## 手动应用顺序
 
 从 clean baseline 开始：
 
@@ -60,6 +76,7 @@ make
 从仓库根目录运行：
 
 ```bash
+bash scripts/xv6/apply-integrated-labs.sh --make --yes
 bash scripts/xv6/boot-xv6.sh
 bash scripts/xv6/run-xv6-command.sh hello "hello syscall returned 2026"
 bash scripts/xv6/run-xv6-command.sh add2test "add2(20, 6) returned 26"

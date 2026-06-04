@@ -338,3 +338,27 @@
 - Next:
   - Consider `scripts/xv6/apply-integrated-labs.sh` (preview/--run/--make) to lower judge reproduction friction.
   - Second teammate reproduces the integrated sequence; record a real manual demo.
+
+## 2026-06-04: stage4e integrated labs apply helper
+
+- Commit hash: TODO after commit
+- Completed:
+  - Added `scripts/xv6/apply-integrated-labs.sh`.
+  - Default mode is preview only; it checks target directory, baseline commit, patch files, and prints planned operations without reset/apply/make.
+  - `--run --yes` resets and cleans ignored `external/xv6-riscv/`, then applies integrated `0001` + `0002` + `0003`.
+  - `--make --yes` implies `--run`, then runs `make` and saves `logs/integrated-make-YYYYMMDD-HHMMSS.log`.
+  - Updated integrated patch README, reproducibility package, Demo script, README, technical report, integrated review, AI usage record, and report index script.
+- Real validation:
+  - `bash scripts/xv6/apply-integrated-labs.sh`: PASS; preview mode only printed status and planned operations, with no reset/apply/make.
+  - External tree status before and after preview was unchanged.
+  - `bash scripts/xv6/apply-integrated-labs.sh --make --yes`: PASS; reset/cleaned ignored `external/xv6-riscv/`, applied integrated `0001` + `0002` + `0003`, and completed `make`.
+  - Make log: `logs/integrated-make-20260604-163022.log` (ignored, not committed).
+  - `bash scripts/xv6/boot-xv6.sh`: PASS; boot evidence found.
+  - `bash scripts/xv6/run-xv6-command.sh hello "hello syscall returned 2026"`: PASS.
+  - `bash scripts/xv6/run-xv6-command.sh add2test "add2(20, 6) returned 26"`: PASS.
+  - `bash scripts/xv6/run-xv6-command.sh pstatetest "pstate(self) ="`: PASS.
+  - `bash scripts/xv6/run-xv6-command.sh pstatetest "RUNNING"`: PASS.
+- Boundaries:
+  - The helper only operates on ignored `external/xv6-riscv/` and ignored `logs/*.log`.
+  - No remote changes.
+  - No manual recording or teammate reproduction is claimed.

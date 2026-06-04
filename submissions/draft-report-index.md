@@ -44,6 +44,7 @@ It is not the final technical report, does not generate PDF, and does not includ
 | xv6 boot evidence script | `scripts/xv6/boot-xv6.sh` | exists | captures boot keywords under timeout |
 | xv6 command evidence script | `scripts/xv6/run-xv6-command.sh` | exists | captures user program output under timeout |
 | lab1 patch apply helper | `scripts/xv6/apply-lab1-patch.sh` | exists | preview by default; --run resets clean baseline and applies; --make optional |
+| integrated labs apply helper | `scripts/xv6/apply-integrated-labs.sh` | exists | preview by default; --run/--make require --yes when target tree has local changes; make logs ignored |
 | lab1 hello syscall patch | `patches/lab1-system-call/0001-add-hello-syscall.patch` | exists | tracked patch; third-party source not submitted |
 | lab1 add2 argint syscall patch | `patches/lab1-system-call/0002-add-argint-add2-syscall.patch` | exists | commit-ready incremental patch after 0001 |
 | lab1 patch guide | `patches/lab1-system-call/README.md` | exists | apply/build/run instructions |
@@ -70,6 +71,7 @@ It is not the final technical report, does not generate PDF, and does not includ
 - lab1 now has two patch levels: 0001 hello minimal syscall and 0002 add2 argint extension.
 - lab2 has an independent pstate process observation patch from clean baseline.
 - integrated-labs provides the verified comprehensive demo sequence with hello=22, add2=23, pstate=24.
+- scripts/xv6/apply-integrated-labs.sh is the recommended helper for final integrated demo reproduction.
 - Technical report v0.1 and reproducibility package are drafts for review, not final submission files.
 - Raw logs remain ignored by Git; do not submit logs/*.log.
 - QEMU long-running stability and manual interactive shell testing remain TODO.

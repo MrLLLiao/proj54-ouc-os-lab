@@ -178,8 +178,12 @@ hello syscall returned 2026
 | patch 序列 | `patches/integrated-labs/0001-add-hello-syscall.patch` → `0002-add-argint-add2-syscall.patch` → `0003-add-pstate-syscall.patch` |
 | patch 目标 | 在同一个 xv6 构建中同时演示 `hello`、`add2test` 和 `pstatetest` |
 | syscall 号 | `SYS_hello 22`，`SYS_add2 23`，`SYS_pstate 24` |
+| helper 预览命令 | `bash scripts/xv6/apply-integrated-labs.sh` |
+| helper 预览结果 | 成功；只输出状态和计划，不 reset、不 apply、不 make |
+| helper 构建命令 | `bash scripts/xv6/apply-integrated-labs.sh --make --yes` |
+| helper 构建日志 | `logs/integrated-make-20260604-163022.log` |
 | clean apply | 成功 |
-| `make` 命令 | `cd external/xv6-riscv && make` |
+| `make` 命令 | 由 `apply-integrated-labs.sh --make --yes` 执行 |
 | `make` 结果 | 成功 |
 | boot 验证命令 | `bash scripts/xv6/boot-xv6.sh` |
 | boot 验证结果 | 成功检测到 `xv6 kernel is booting` 和 `init: starting sh` |
@@ -198,6 +202,7 @@ hello syscall returned 2026
 - integrated `0001` 与 lab1 `0001` 一致，新增 `hello()`。
 - integrated `0002` 与 lab1 `0002` 一致，新增 `add2(int, int)`。
 - integrated `0003` 在 integrated `0001`+`0002` 之上新增 `pstate(int)`，并使用 `SYS_pstate 24` 避免与 `SYS_hello 22` 冲突。
+- `scripts/xv6/apply-integrated-labs.sh` 默认预览；`--make --yes` 会 reset/clean ignored 的 `external/xv6-riscv/`，顺序应用 integrated patch sequence，并运行 `make`。
 
 边界说明：
 
@@ -205,6 +210,7 @@ hello syscall returned 2026
 - timeout 自动捕获不等同于长期稳定性测试。
 - 人工交互录屏和第二名队员独立复现仍为 TODO。
 - `make` 仍出现已知 `LOAD segment with RWX permissions` linker warning，但本次 `make` 退出成功。
+- helper 只操作 ignored 的 `external/xv6-riscv/` 和 ignored 的 `logs/*.log`，不修改主仓库 tracked 文件。
 
 ## 当前风险与后续动作
 

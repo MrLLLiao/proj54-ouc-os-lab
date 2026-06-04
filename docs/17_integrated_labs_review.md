@@ -126,14 +126,8 @@ bash scripts/xv6/run-xv6-command.sh pstatetest "RUNNING"
 # WSL2 Ubuntu，已装 qemu-system-misc 与 gcc-riscv64-linux-gnu
 bash scripts/check-env.sh
 bash scripts/xv6/fetch-xv6.sh --run            # 或手动 clone 到 external/xv6-riscv
-cd external/xv6-riscv
-git reset --hard 74f84181a3404d1d6a6ff98d342233979066ebb8
-git clean -fdx
-git apply ../../patches/integrated-labs/0001-add-hello-syscall.patch
-git apply ../../patches/integrated-labs/0002-add-argint-add2-syscall.patch
-git apply ../../patches/integrated-labs/0003-add-pstate-syscall.patch
-make
-cd ../..
+bash scripts/xv6/apply-integrated-labs.sh      # preview only
+bash scripts/xv6/apply-integrated-labs.sh --make --yes
 bash scripts/xv6/boot-xv6.sh
 bash scripts/xv6/run-xv6-command.sh hello "hello syscall returned 2026"
 bash scripts/xv6/run-xv6-command.sh add2test "add2(20, 6) returned 26"
@@ -141,12 +135,23 @@ bash scripts/xv6/run-xv6-command.sh pstatetest "pstate(self) ="
 bash scripts/xv6/run-xv6-command.sh pstatetest "RUNNING"
 ```
 
-预期：三个 patch 顺序应用成功；`make` 成功；输出中分别出现 `hello syscall returned 2026`、`add2(20, 6) returned 26`、`pstate(self) = 4 (RUNNING)`。
+预期：helper 预览模式不修改 external tree；`--make --yes` reset/clean ignored 的 `external/xv6-riscv/`、顺序应用三个 patch 并完成 `make`；输出中分别出现 `hello syscall returned 2026`、`add2(20, 6) returned 26`、`pstate(self) = 4 (RUNNING)`。
+
+stage4e 真实 helper 验证：
+
+| 检查项 | 结果 |
+| --- | --- |
+| `bash scripts/xv6/apply-integrated-labs.sh` | exit 0；预览模式只打印状态和将执行操作；未 reset、未 apply、未 make |
+| 预览前后 external 状态 | 一致，仍为 integrated 已应用的工作树 |
+| `bash scripts/xv6/apply-integrated-labs.sh --make --yes` | exit 0；reset/clean ignored tree，顺序 apply 三个 patch，`make` 成功 |
+| make log | `logs/integrated-make-20260604-163022.log`（ignored，不提交） |
+| 后续 boot evidence | PASS |
+| 后续 hello/add2test/pstatetest | PASS |
 
 ## 11. 后续建议
 
 1. 把综合演示统一收口到 integrated-labs：Demo 脚本与复现包的"最终演示"段明确指向路径 C，避免再用独立 patch 拼凑。
-2. 提供一个可选脚本（如 `scripts/xv6/apply-integrated-labs.sh`，预览/`--run`/`--make`）降低评委复现门槛——当前需手动三次 `git apply`。
+2. stage4e 已提供并验证 `scripts/xv6/apply-integrated-labs.sh`（预览/`--run --yes`/`--make --yes`）降低评委复现门槛；后续继续保持该脚本克制，不自动声明 boot 或用户程序成功。
 3. 第二名队员按第 10 节在另一台机器独立复现，并录一段真实人工交互演示（手敲 hello/add2test/pstatetest）。
 4. 后续若新增 lab（如 lab3/lab4），同步更新 integrated 序列与号段规划（`0004` 起、号 25+），并复跑本报告第 4-6 节。
 5. 统一处理 `user/usys.pl` 的 file mode warning（patch 记录 100755，Windows/WSL 检出 100644），避免集成时反复出现告警。

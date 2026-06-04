@@ -39,18 +39,14 @@
    bash scripts/check-env.sh
    ```
 
-5. 展示 integrated-labs 应用顺序：
+5. 展示 integrated-labs 助手脚本：
 
    ```bash
-   cd external/xv6-riscv
-   git reset --hard 74f84181a3404d1d6a6ff98d342233979066ebb8
-   git clean -fdx
-   git apply ../../patches/integrated-labs/0001-add-hello-syscall.patch
-   git apply ../../patches/integrated-labs/0002-add-argint-add2-syscall.patch
-   git apply ../../patches/integrated-labs/0003-add-pstate-syscall.patch
-   make
-   cd ../..
+   bash scripts/xv6/apply-integrated-labs.sh
+   bash scripts/xv6/apply-integrated-labs.sh --make --yes
    ```
+
+   说明：该脚本只会 reset/clean ignored 的 `external/xv6-riscv/`，不会修改主仓库 tracked 文件。
 
 6. 捕获 boot evidence：
 
@@ -85,13 +81,8 @@
 该流程尚未录制，完成后再更新状态。
 
 ```bash
+bash scripts/xv6/apply-integrated-labs.sh --make --yes
 cd external/xv6-riscv
-git reset --hard 74f84181a3404d1d6a6ff98d342233979066ebb8
-git clean -fdx
-git apply ../../patches/integrated-labs/0001-add-hello-syscall.patch
-git apply ../../patches/integrated-labs/0002-add-argint-add2-syscall.patch
-git apply ../../patches/integrated-labs/0003-add-pstate-syscall.patch
-make
 make qemu
 ```
 

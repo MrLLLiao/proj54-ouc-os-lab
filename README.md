@@ -149,18 +149,14 @@ submissions/                  初赛材料索引，不存放报名材料或隐�
 7. 综合演示：从 clean baseline 应用 integrated patch sequence。
 
    ```bash
-   cd external/xv6-riscv
-   git reset --hard 74f84181a3404d1d6a6ff98d342233979066ebb8
-   git clean -fdx
-   git apply ../../patches/integrated-labs/0001-add-hello-syscall.patch
-   git apply ../../patches/integrated-labs/0002-add-argint-add2-syscall.patch
-   git apply ../../patches/integrated-labs/0003-add-pstate-syscall.patch
-   make
-   cd ../..
+   bash scripts/xv6/apply-integrated-labs.sh
+   bash scripts/xv6/apply-integrated-labs.sh --make --yes
    bash scripts/xv6/run-xv6-command.sh hello "hello syscall returned 2026"
    bash scripts/xv6/run-xv6-command.sh add2test "add2(20, 6) returned 26"
    bash scripts/xv6/run-xv6-command.sh pstatetest "pstate(self) ="
    ```
+
+   说明：`apply-integrated-labs.sh` 默认预览，不修改 external tree；`--make --yes` 会 reset/clean ignored 的 `external/xv6-riscv/`，应用 integrated patch sequence 并运行 `make`。
 
 8. 可选：单独复现 lab2 independent patch。
 
