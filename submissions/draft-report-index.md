@@ -24,16 +24,17 @@ It is not the final technical report, does not generate PDF, and does not includ
 | xv6 baseline plan | `docs/11_xv6_baseline_plan.md` | exists | stage1b plan |
 | lab1 patch reproducibility review | `docs/12_lab1_patch_review.md` | exists | stage2b red-team; clean-baseline apply/make/hello verified |
 | lab1 argint extension review | `docs/14_lab1_argint_extension_review.md` | exists | stage3b red-team: 0001+0002 reproduced (make/hello/add2); add2 call chain, argint mechanism, teaching-value assessment |
+| lab2 process observation review | `docs/15_lab2_process_observation_review.md` | exists | stage4a clean-baseline apply/make/pstatetest verified |
 | Technical report v0.1 | `docs/13_technical_report_v0.1.md` | exists | stage2c draft; not final report |
-| Reproducibility package | `reproducibility/README.md` | exists | lab0/lab1 reproduction checklist and template |
+| Reproducibility package | `reproducibility/README.md` | exists | lab0/lab1/lab2 reproduction checklist and template |
 | lab0 environment guide | `labs/lab0-env-setup/README.md` | exists | xv6 baseline make succeeded; boot evidence found; manual interaction TODO |
 | lab1 syscall lab | `labs/lab1-system-call/README.md` | exists | hello minimal and add2 argint patches generated and verified |
-| lab2 process and scheduling | `labs/lab2-process-and-scheduling/README.md` | exists | planned |
+| lab2 process state observation | `labs/lab2-process-and-scheduling/README.md` | exists | pstate syscall patch generated and verified |
 | lab3 memory and pagetable | `labs/lab3-memory-and-pagetable/README.md` | exists | planned |
 | lab4 file system | `labs/lab4-file-system/README.md` | exists | planned |
 | lab5 final integration | `labs/lab5-final-integration/README.md` | exists | planned |
 | lab1 test record | `tests/lab1/README.md` | exists | records patched make and hello output evidence |
-| lab2 test plan | `tests/lab2/README.md` | exists | draft |
+| lab2 test record | `tests/lab2/README.md` | exists | records pstatetest output evidence |
 | lab3 test plan | `tests/lab3/README.md` | exists | draft |
 | lab4 test plan | `tests/lab4/README.md` | exists | draft |
 | xv6 fetch script | `scripts/xv6/fetch-xv6.sh` | exists | stage1b tooling |
@@ -44,21 +45,24 @@ It is not the final technical report, does not generate PDF, and does not includ
 | lab1 hello syscall patch | `patches/lab1-system-call/0001-add-hello-syscall.patch` | exists | tracked patch; third-party source not submitted |
 | lab1 add2 argint syscall patch | `patches/lab1-system-call/0002-add-argint-add2-syscall.patch` | exists | commit-ready incremental patch after 0001 |
 | lab1 patch guide | `patches/lab1-system-call/README.md` | exists | apply/build/run instructions |
+| lab2 pstate syscall patch | `patches/lab2-process-observation/0001-add-pstate-syscall.patch` | exists | commit-ready independent patch from clean baseline |
+| lab2 patch guide | `patches/lab2-process-observation/README.md` | exists | apply/build/run instructions |
 | external directory guide | `external/README.md` | exists | baseline management notes |
 | xv6 baseline metadata | `external/xv6-baseline-record.md` | exists | metadata generated; records make success and boot evidence; manual interaction TODO |
 | logs directory guide | `logs/README.md` | exists | raw logs ignored by default; current make log is not tracked |
 | reference directory guide | `references/README.md` | exists | placeholder |
 | PPT structure plan | `slides/README.md` | exists | stage2c outline; actual PPT TODO |
 | Demo video notes | `videos/README.md` | exists | records video policy and TODO status |
-| Demo script draft | `videos/demo_script.md` | exists | 2-3 minute lab0/lab1 demo flow; recording TODO |
+| Demo script draft | `videos/demo_script.md` | exists | 2-3 minute lab0/lab1/lab2 demo flow; recording TODO |
 | Final submission | `submissions/` | - | TODO: organize against official requirements |
 
 ## Notes
 
 - File existence is checked by this script; content quality still needs human review.
 - `external/xv6-riscv/` is intentionally not listed as a tracked submission artifact.
-- xv6 baseline make, boot evidence, lab1 patched make, hello output, and add2 output are summarized in docs/04_test_report.md.
+- xv6 baseline make, boot evidence, lab1 patched make, hello output, add2 output, and pstatetest output are summarized in docs/04_test_report.md.
 - lab1 now has two patch levels: 0001 hello minimal syscall and 0002 add2 argint extension.
+- lab2 has an independent pstate process observation patch from clean baseline.
 - Technical report v0.1 and reproducibility package are drafts for review, not final submission files.
 - Raw logs remain ignored by Git; do not submit logs/*.log.
 - QEMU long-running stability and manual interactive shell testing remain TODO.

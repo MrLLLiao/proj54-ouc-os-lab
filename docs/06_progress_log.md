@@ -221,3 +221,30 @@
 - Next:
   - Build the lab1 student-exercise version (skeleton + rubric) to move toward a teaching lab.
   - Have a second team member reproduce on another machine.
+
+## 2026-06-04: stage4a lab2 process state observation
+
+- Commit hash: TODO after commit
+- Completed:
+  - Added lab2 experiment design: `pstate(int pid)` process state observation.
+  - Implemented `sys_pstate()` in ignored `external/xv6-riscv/`.
+  - Added `pstatetest` user program.
+  - Generated independent patch `patches/lab2-process-observation/0001-add-pstate-syscall.patch`.
+  - Verified clean baseline + lab2 patch apply.
+  - Ran `make` in WSL/bash successfully.
+  - Verified `pstatetest` output prefix `pstate(self) =`.
+  - Verified actual status text `RUNNING`; observed `pstate(self) = 4 (RUNNING)`.
+  - Added `docs/15_lab2_process_observation_review.md`.
+  - Updated lab2 docs, patch README, test report, technical report, reproducibility package, demo script, slides plan, AI record, and report index.
+- Real result:
+  - clean apply: PASS
+  - make: PASS
+  - pstatetest output: PASS
+- Boundaries:
+  - lab2 patch is independent from lab1 patch.
+  - No full `ps` implementation.
+  - No scheduler modification.
+  - Timeout capture is not long-running stability testing.
+  - Manual interaction video remains TODO.
+  - Second teammate independent reproduction remains TODO.
+  - `external/xv6-riscv/` and `logs/*.log` remain ignored and must not be committed.

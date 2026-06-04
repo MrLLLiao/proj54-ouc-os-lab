@@ -1,25 +1,42 @@
-# lab2 测试计划
+# lab2 测试记录
 
-## 当前测试目标
+## 测试目标
 
-lab2 未来用于验证进程生命周期和调度观察实验，包括进程创建、运行、睡眠、唤醒、退出以及调度输出记录。
+lab2 测试用于验证 `pstate(int pid)` syscall 是否能完成以下闭环：
 
-当前状态：规划中，尚未引入 xv6-riscv baseline，没有真实测试结果。
+1. 从 clean baseline 应用 lab2 patch。
+2. 构建 xv6。
+3. 在 xv6 中运行 `pstatetest`。
+4. 捕获 `pstate(self) =` 输出。
+5. 捕获实际状态文本 `RUNNING`。
 
-## 未来测试方式
+## 已真实执行命令
 
-- TODO：编写或使用用户态进程行为观察程序。
-- TODO：运行调度观察实验，记录输出顺序和进程状态变化。
-- TODO：说明并发输出顺序可能不稳定，不将单次输出误写成唯一正确结果。
-- TODO：记录构建命令、运行命令、输出和结论。
+| 目的 | 命令 | 结果 |
+| --- | --- | --- |
+| clean baseline apply | `git apply ../../patches/lab2-process-observation/0001-add-pstate-syscall.patch` | PASS |
+| 构建 patched xv6 | `cd external/xv6-riscv && make` | PASS |
+| 捕获 pstatetest 前缀 | `bash scripts/xv6/run-xv6-command.sh pstatetest "pstate(self) ="` | PASS |
+| 捕获 RUNNING | `bash scripts/xv6/run-xv6-command.sh pstatetest "RUNNING"` | PASS |
 
-## 记录要求
+## 证据摘要
 
-- 不伪造测试结果。
-- 不写虚假的 PASS。
-- 实际命令和输出应记录在 docs/04_test_report.md 或后续测试日志中。
-- 若输出存在不确定性，需要记录观察条件和可接受范围。
+| 证据 | 状态 | 说明 |
+| --- | --- | --- |
+| patch apply | PASS | lab2 patch 独立应用到 baseline commit |
+| make | PASS | 仍有已知 linker RWX warning |
+| pstatetest output | PASS | 实际观察到 `pstate(self) = 4 (RUNNING)` |
 
-## 与测试报告模板的关系
+原始日志被 Git 忽略，不应提交。
 
-正式测试记录使用 [../../docs/04_test_report.md](../../docs/04_test_report.md) 中的模板。本文档只说明 lab2 的测试目标和未来测试范围。
+## 尚未覆盖
+
+- TODO: 长期 QEMU 稳定性测试。
+- TODO: 人工交互 shell 测试与录屏。
+- TODO: 第二名队员独立复现。
+- TODO: 负向测试，例如错误 pid、锁遗漏、syscall number 冲突。
+- TODO: 与 lab1 patch 合并后的 syscall number 规划。
+
+## 与测试报告的关系
+
+正式摘要记录在 `docs/04_test_report.md`。lab2 复现审查见 `docs/15_lab2_process_observation_review.md`。本文件保留 lab2 专项测试说明，不复制完整日志。

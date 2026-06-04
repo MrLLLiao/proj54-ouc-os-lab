@@ -39,16 +39,24 @@
    - `make`。
    - hello 与 add2 输出捕获。
 
-7. 测试证据
+7. lab2 pstate 进程观察
+   - `pstate(int pid)` syscall。
+   - `struct proc` 和 `enum procstate`。
+   - 遍历 `proc[]`。
+   - 持有 `p->lock` 读取 `p->state`。
+   - `pstate(self) = 4 (RUNNING)` 输出证据。
+
+8. 测试证据
    - `docs/04_test_report.md`。
    - `docs/12_lab1_patch_review.md`。
+   - `docs/15_lab2_process_observation_review.md`。
    - 不提交原始日志。
 
-8. 风险与后续计划
+9. 风险与后续计划
    - timeout 自动捕获不是长期稳定性测试。
    - 第二名队员复现 TODO。
    - 人工交互录屏 TODO。
-   - lab1 argint 扩展、lab2 或 lab4 二选一深化。
+   - lab2 扩展或 lab4 二选一深化。
 
 ## 注意事项
 

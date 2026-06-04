@@ -1,0 +1,147 @@
+diff --git a/Makefile b/Makefile
+index 1e88984..05d7c1a 100644
+--- a/Makefile
++++ b/Makefile
+@@ -128,6 +128,7 @@ mkfs/mkfs: mkfs/mkfs.c $K/fs.h $K/param.h
+ UPROGS=\
+ 	$U/_cat\
+ 	$U/_echo\
++	$U/_pstatetest\
+ 	$U/_forktest\
+ 	$U/_grep\
+ 	$U/_init\
+diff --git a/kernel/syscall.c b/kernel/syscall.c
+index 822720c..17625a6 100644
+--- a/kernel/syscall.c
++++ b/kernel/syscall.c
+@@ -102,6 +102,7 @@ extern uint64 sys_unlink(void);
+ extern uint64 sys_link(void);
+ extern uint64 sys_mkdir(void);
+ extern uint64 sys_close(void);
++extern uint64 sys_pstate(void);
+ 
+ // An array mapping syscall numbers from syscall.h
+ // to the function that handles the system call.
+@@ -128,6 +129,7 @@ static uint64 (*syscalls[])(void) = {
+   [SYS_link]    sys_link,
+   [SYS_mkdir]   sys_mkdir,
+   [SYS_close]   sys_close,
++  [SYS_pstate]  sys_pstate,
+   // clang-format on
+ };
+ 
+diff --git a/kernel/syscall.h b/kernel/syscall.h
+index 454d1b4..ae8119d 100644
+--- a/kernel/syscall.h
++++ b/kernel/syscall.h
+@@ -20,3 +20,4 @@
+ #define SYS_link   19
+ #define SYS_mkdir  20
+ #define SYS_close  21
++#define SYS_pstate 22
+diff --git a/kernel/sysproc.c b/kernel/sysproc.c
+index 73ff1f3..3fed479 100644
+--- a/kernel/sysproc.c
++++ b/kernel/sysproc.c
+@@ -7,6 +7,8 @@
+ #include "proc.h"
+ #include "vm.h"
+ 
++extern struct proc proc[NPROC];
++
+ uint64
+ sys_exit(void)
+ {
+@@ -107,3 +109,27 @@ sys_uptime(void)
+   release(&tickslock);
+   return xticks;
+ }
++
++uint64
++sys_pstate(void)
++{
++  int pid;
++  struct proc *p;
++  int state = -1;
++
++  argint(0, &pid);
++  if (pid < 0)
++    return -1;
++
++  for (p = proc; p < &proc[NPROC]; p++) {
++    acquire(&p->lock);
++    if (p->pid == pid && p->state != UNUSED) {
++      state = p->state;
++      release(&p->lock);
++      return state;
++    }
++    release(&p->lock);
++  }
++
++  return -1;
++}
+diff --git a/user/pstatetest.c b/user/pstatetest.c
+new file mode 100644
+index 0000000..eaf355e
+--- /dev/null
++++ b/user/pstatetest.c
+@@ -0,0 +1,38 @@
++#include "kernel/types.h"
++#include "user/user.h"
++
++static char *
++state_name(int state)
++{
++  switch (state) {
++  case 0:
++    return "UNUSED";
++  case 1:
++    return "USED";
++  case 2:
++    return "SLEEPING";
++  case 3:
++    return "RUNNABLE";
++  case 4:
++    return "RUNNING";
++  case 5:
++    return "ZOMBIE";
++  default:
++    return "UNKNOWN";
++  }
++}
++
++int
++main(void)
++{
++  int pid = getpid();
++  int state = pstate(pid);
++
++  if (state < 0) {
++    printf("pstate(self) failed for pid %d\n", pid);
++    exit(1);
++  }
++
++  printf("pstate(self) = %d (%s)\n", state, state_name(state));
++  exit(0);
++}
+diff --git a/user/user.h b/user/user.h
+index ecd0921..3d62747 100644
+--- a/user/user.h
++++ b/user/user.h
+@@ -24,6 +24,7 @@ int getpid(void);
+ char *sys_sbrk(int, int);
+ int pause(int);
+ int uptime(void);
++int pstate(int);
+ 
+ // ulib.c
+ int stat(const char *, struct stat *);
+diff --git a/user/usys.pl b/user/usys.pl
+index c5d4c3a..2a04de5 100755
+--- a/user/usys.pl
++++ b/user/usys.pl
+@@ -42,3 +42,4 @@ entry("getpid");
+ entry("sbrk");
+ entry("pause");
+ entry("uptime");
++entry("pstate");

@@ -16,6 +16,7 @@
 
 - lab0：环境检查、xv6-riscv baseline 获取、build 与 boot evidence。
 - lab1：`hello()` 最小 system call patch、`add2(int a, int b)` 参数传递进阶 patch、构建验证、QEMU 输出捕获、clean baseline 复现审查。
+- lab2：`pstate(int pid)` 进程状态观察 patch、进程表查找、进程锁使用说明、QEMU 输出捕获。
 - 工程治理：第三方源码隔离、原始日志不提交、patch 作为可提交产物、AI 使用和进度记录透明化。
 
 ## 2. 赛题理解
@@ -27,7 +28,7 @@ proj54 属于教学型赛题，不是普通的“完成一个 OS 作业”或“
 - 是否能让后续同学复现环境、复现 patch、复现测试结果。
 - 是否对引用、改造、第三方源码、AI 使用和测试证据保持诚实记录。
 
-因此，本项目当前选择先打通 lab0/lab1 的最小闭环，再扩展 lab2-lab5。这样比直接堆多个未验证功能更符合教学型赛题的评价方向。
+因此，本项目当前选择先打通 lab0/lab1 的最小闭环，再用 lab2 进入进程状态观察。这样比直接堆多个未验证功能更符合教学型赛题的评价方向。
 
 ## 3. 总体设计
 
@@ -76,12 +77,25 @@ lab1 的目标是展示从用户态到内核态的系统调用路径，并在最
 
 该设计保持小规模，便于讲清楚 syscall number、用户态 stub、trap、dispatcher、`argint()` 参数读取、内核实现和返回值路径。
 
-### 3.4 后续扩展计划
+### 3.4 lab2：进程状态观察
+
+lab2 的目标是从 lab1 syscall 参数传递自然过渡到进程表观察。当前实现选择 `pstate(int pid)`：
+
+- 用户程序通过 `getpid()` 获取自己的 pid。
+- 用户程序调用 `pstate(pid)`。
+- 内核通过 `argint(0, &pid)` 获取 pid。
+- 内核遍历 `proc[]` 查找目标进程。
+- 读取 `p->state` 时持有 `p->lock`。
+- 用户程序 `pstatetest` 输出 `pstate(self) = 4 (RUNNING)`。
+
+该实验只观察单个 pid，不实现完整 `ps`，不修改调度算法。
+
+### 3.5 后续扩展计划
 
 后续计划不在本轮实现，只记录方向（`add2` 带参数 syscall 已在 3.3 完成，不再列为待办）：
 
 - lab1 教学化：补充学生动手任务（给骨架让学生自己实现 syscall）、负向实验（故意漏 `entry`/dispatch 观察现象）、指针/字符串参数（`argaddr`/`argstr`）和评分标准，使其从"参考实现 demo"升级为"可布置的实验"。
-- lab2：进程与调度观察实验，例如进程状态、调度时机、简单 tracing。
+- lab2 扩展：增加 `pcount(state)`、scheduler trace 或 ps-like summary。
 - lab4：文件系统实验，例如 inode/file 相关观察或最小功能修改。
 
 lab2 与 lab4 将根据初赛时间和队伍能力二选一深化，不同时推进过多未验证功能。当前 lab1 仅覆盖 syscall 入门与整数参数传递，**未覆盖指针/字符串参数和全部 syscall 机制**（见 `docs/14_lab1_argint_extension_review.md` 教学价值评估）。
@@ -114,6 +128,8 @@ lab1 的源码改动不直接提交 xv6-riscv 源码，而是导出 patch：
 
 ```text
 patches/lab1-system-call/0001-add-hello-syscall.patch
+patches/lab1-system-call/0002-add-argint-add2-syscall.patch
+patches/lab2-process-observation/0001-add-pstate-syscall.patch
 ```
 
 评委或队友可以从 clean baseline 应用 patch 复现。
@@ -144,10 +160,12 @@ logs/*.log
 | baseline boot evidence | 已捕获 | `logs/xv6-boot-20260604-001736.log` 摘要见 `docs/04_test_report.md` |
 | lab1 hello syscall patch | 已生成 | `patches/lab1-system-call/0001-add-hello-syscall.patch` |
 | lab1 add2 argint patch | 已生成 | `patches/lab1-system-call/0002-add-argint-add2-syscall.patch` |
+| lab2 pstate process observation patch | 已生成 | `patches/lab2-process-observation/0001-add-pstate-syscall.patch` |
 | clean baseline apply 复现 | 已通过 stage2b 审查 | `docs/12_lab1_patch_review.md` |
 | patched make | 已成功 | 摘要见 `docs/04_test_report.md` 与 `docs/12_lab1_patch_review.md` |
 | hello 输出捕获 | 已成功 | 检测到 `hello syscall returned 2026` |
 | add2 输出捕获 | 已成功 | 检测到 `add2(20, 6) returned 26`，见 `docs/14_lab1_argint_extension_review.md` |
+| pstatetest 输出捕获 | 已成功 | 检测到 `pstate(self) = 4 (RUNNING)`，见 `docs/15_lab2_process_observation_review.md` |
 
 以上均为当前阶段的真实记录。尚未完成的内容继续标记为 TODO。
 
@@ -261,18 +279,29 @@ stage2b 已完成 clean baseline patch reproducibility review，记录见：
 ```text
 docs/12_lab1_patch_review.md
 docs/14_lab1_argint_extension_review.md
+docs/15_lab2_process_observation_review.md
 ```
+
+### 7.8 lab2 pstate 输出捕获
+
+```bash
+bash scripts/xv6/run-xv6-command.sh pstatetest "pstate(self) ="
+bash scripts/xv6/run-xv6-command.sh pstatetest "RUNNING"
+```
+
+当前记录：已检测到 `pstate(self) = 4 (RUNNING)`。
 
 ## 8. 风险与边界
 
 | 风险 / 边界 | 当前处理 |
 | --- | --- |
-| timeout 自动捕获不是长期稳定性测试 | 文档中只写 boot evidence、hello evidence 和 add2 evidence，不写长期稳定。 |
+| timeout 自动捕获不是长期稳定性测试 | 文档中只写 boot evidence、hello evidence、add2 evidence 和 pstatetest evidence，不写长期稳定。 |
 | 不是人工交互录屏 | 人工 demo 仍为 TODO，见 `videos/demo_script.md`。 |
 | 第二名队员复现 | TODO，不伪造队友复现结果。 |
 | `riscv64-unknown-elf-gcc` 缺失 | 当前使用 `riscv64-linux-gnu-gcc` 构建成功，继续记录 WARN。 |
 | linker RWX warning | 已记录为风险；后续需要解释来源和影响。 |
 | patch 绑定 baseline commit | patch 目标 commit 为 `74f84181a3404d1d6a6ff98d342233979066ebb8`，baseline 变化时需重新验证。 |
+| lab1/lab2 patch 合并 | lab2 patch 独立于 lab1 patch，未来如要组合使用需要重新规划 syscall number。 |
 | 第三方源码提交风险 | `external/xv6-riscv/` 被 `.gitignore` 忽略，验证 `git ls-files external/xv6-riscv` 无输出。 |
 | 原始日志提交风险 | `logs/*.log` 被 `.gitignore` 忽略，验证 `git ls-files logs/*.log` 无输出。 |
 
@@ -296,10 +325,10 @@ AI 工具不得用于：
 
 ## 10. 下一步路线
 
-1. 第二名队员独立复现 lab0/lab1，并填写复现记录。
-2. 完成人工交互 demo：手动进入 xv6 shell，输入 `hello`，退出 QEMU。
-3. 将 lab1 的 hello/add2 两档内容整理成更完整的 step by step 教程。
-4. 在 lab2 或 lab4 中选择一个方向深化，避免同时展开过多内容。
+1. 第二名队员独立复现 lab0/lab1/lab2，并填写复现记录。
+2. 完成人工交互 demo：手动进入 xv6 shell，输入 `hello`、`add2test`、`pstatetest`，退出 QEMU。
+3. 将 lab1 的 hello/add2 两档内容和 lab2 pstate 内容整理成更完整的 step by step 教程。
+4. 在 lab2 扩展或 lab4 中选择一个方向深化，避免同时展开过多内容。
 5. 将本文档升级为初赛技术报告 v0.2，并补充 PPT 与 Demo 结果。
 
 ## 11. 附录索引
@@ -310,6 +339,8 @@ AI 工具不得用于：
 - lab1 clean baseline 复现审查：`docs/12_lab1_patch_review.md`
 - lab1 argint 进阶复现审查：`docs/14_lab1_argint_extension_review.md`
 - lab1 patch 说明：`patches/lab1-system-call/README.md`
+- lab2 进程观察复现审查：`docs/15_lab2_process_observation_review.md`
+- lab2 patch 说明：`patches/lab2-process-observation/README.md`
 - lab1 patch 应用脚本：`scripts/xv6/apply-lab1-patch.sh`
 - 复现包：`reproducibility/README.md`
 - Demo 脚本：`videos/demo_script.md`
