@@ -514,3 +514,30 @@
   - This is boot evidence capture hardening, not long-running stability testing.
   - Manual video and second teammate reproduction remain TODO.
   - `external/xv6-riscv/` and `logs/*.log` remain ignored and must not be committed.
+
+## 2026-06-05: stage6d red-team submission-readiness review
+
+- Commit hash: TODO after commit
+- Goal: assess whether the repo is trustworthy, reproducible, and presentable for the preliminary (初赛) submission; full integrated reproduction + whole-repo doc consistency audit.
+- Verdict: trustworthy / reproducible / presentable, but NOT yet submission-complete. Honest MVP is submittable now; awards require teammate reproduction + manual recording + lab3 or deeper lab4. No OS feature or patch changed this round (documentation only).
+- Real validation (WSL2 Ubuntu-24.04, clean baseline):
+  - `check-env.sh` / `check-xv6-baseline.sh`: PASS (qemu + riscv64-linux-gnu-gcc present; `riscv64-unknown-elf-gcc` WARN, optional).
+  - `apply-integrated-labs.sh` preview: PASS (lists `0001-0005`).
+  - `apply-integrated-labs.sh --make --yes`: PASS; 5 patches `[OK]`; `make` exit 0 (log `logs/integrated-make-20260605-081851.log`).
+  - `boot-xv6.sh` default 45s/2: PASS (attempt 1 `BOOT_EVIDENCE_FOUND`).
+  - `XV6_BOOT_TIMEOUT_SECONDS=60 XV6_BOOT_RETRIES=2 boot-xv6.sh`: PASS (attempt 1; env overrides honored, timeout shown as 60s).
+  - hello / add2test / pstatetest / pcounttest(`pcount(RUNNING) = 1`, `pcount(99) = -1`) / pchildtest(`2 (SLEEPING)` and `3 (RUNNABLE)` in one boot) / fcounttest(`before=1, after_open=2, after_close=1`, `fcounttest done`): all PASS — 10 expected prefixes captured.
+- Doc consistency audit (README, docs/04/13/17/18/19/20, reproducibility, videos, slides, patches/integrated-labs, labs/lab1/lab2/lab4, submissions index): no fabrication or overclaim found.
+  - integrated final path unified to `0001-0005`; residual `0001-0004` are historical records or correct "0005 applies after 0001-0004" statements.
+  - No real `pstatechildtest` command invocation (all are rename explanations); command is `pchildtest` everywhere.
+  - No fixed `pcount(RUNNING)=1` or fcount number promised (all qualified as not-fixed).
+  - lab3 not claimed done; lab4 explicitly "file table observation only, not a full file system"; recording/teammate/long-running stability all TODO.
+  - GitLab-as-main-repo and external/logs-not-committed both stated.
+- Changes this round (documentation only):
+  - Added `docs/21_submission_readiness_review.md`.
+  - README: added `docs/20` and `docs/21` to the judge quick-path; added an explicit WSL2 build-requirement note to 快速开始; added a stage6d section.
+  - Updated `docs/05_ai_usage_record.md`, `docs/06_progress_log.md`, `scripts/collect-report.sh`, `submissions/draft-report-index.md`.
+- Most serious risks: teammate independent reproduction (TODO) and manual recording (TODO) — all evidence is single-machine timeout capture; plus lab3 not done and lab4 not a full file system.
+- Boundaries:
+  - All PASS is timeout-captured text only; not long-running stability, manual recording, or teammate reproduction.
+  - `external/xv6-riscv/` and `logs/*.log` remain ignored and must not be committed.
