@@ -8,9 +8,8 @@
 
 ## 2026-06-03: Scaffold and MVP v0.1
 
-- Commit hash: TODO after commit
+- Commit hash: TODO after commit (spans e354a61+f5f5ae6+50ca6d9; no single commit uniquely matches)
 - Completed:
-  - Project scaffold initialized.
   - Platform placeholder `main.py` removed; reason: `replace platform placeholder with project scaffold`.
   - README, docs, labs, scripts, tests, references, slides, videos, and submissions structure created.
   - MVP v0.1 docs and lightweight scripts prepared.
@@ -24,7 +23,7 @@
 
 ## 2026-06-03: stage1b fetch xv6 baseline and record metadata
 
-- Commit hash: TODO after commit
+- Commit hash: af6a29f
 - Completed:
   - Added `scripts/xv6/fetch-xv6.sh`.
   - Added `scripts/xv6/check-xv6-baseline.sh`.
@@ -58,7 +57,7 @@
 
 ## 2026-06-03: xv6-riscv baseline make success
 
-- Commit hash: TODO after commit
+- Commit hash: b2ddced
 - Completed:
   - The team lead ran `bash scripts/xv6/check-xv6-baseline.sh --make` in WSL2 Ubuntu.
   - xv6-riscv baseline `make` completed successfully.
@@ -82,7 +81,7 @@
 
 ## 2026-06-04: stage2a boot evidence and lab1 hello syscall
 
-- Commit hash: TODO after commit
+- Commit hash: be933c4
 - Completed:
   - Added `scripts/xv6/boot-xv6.sh` to capture xv6 boot evidence without claiming full manual interaction.
   - Ran `bash scripts/xv6/boot-xv6.sh`.
@@ -110,7 +109,7 @@
 
 ## 2026-06-04: stage2c technical report and reproducibility package
 
-- Commit hash: TODO after commit
+- Commit hash: 78d7b7f
 - Completed:
   - Added `docs/13_technical_report_v0.1.md` as the initial technical report draft.
   - Added `reproducibility/README.md` for lab0/lab1 reproduction steps and teammate review template.
@@ -140,7 +139,7 @@
 
 ## 2026-06-04: stage3a lab1 argint syscall extension
 
-- Commit hash: TODO after commit
+- Commit hash: 4675da7
 - Completed:
   - Added lab1 advanced syscall design: `add2(int a, int b)`.
   - Implemented `sys_add2()` in ignored `external/xv6-riscv/`, using `argint(0, &a)` and `argint(1, &b)`.
@@ -165,7 +164,7 @@
 
 ## 2026-06-04: stage2b red-team lab1 patch reproducibility
 
-- Commit hash: TODO after commit
+- Commit hash: dd23660
 - Role: strict reviewer + engineering red team + OS lab TA (Claude Code).
 - Goal: verify the lab1 patch is reproducible from a clean baseline and that the evidence chain is honest enough for judges.
 - Completed (real runs in WSL2 Ubuntu, inside the ignored `external/xv6-riscv/`):
@@ -194,7 +193,7 @@
 
 ## 2026-06-04: stage3b red-team lab1 argint extension and teaching value
 
-- Commit hash: TODO after commit
+- Commit hash: 2b28763
 - Role: strict reviewer + OS lab TA + engineering red team (Claude Code).
 - Goal: verify the `0002` add2 argint patch is reproducible on top of `0001`, and judge whether lab1 is becoming a teaching lab system rather than two demos.
 - Completed (real runs in WSL2 Ubuntu, inside the ignored `external/xv6-riscv/`):
@@ -224,7 +223,7 @@
 
 ## 2026-06-04: stage4a lab2 process state observation
 
-- Commit hash: TODO after commit
+- Commit hash: 20d43a4
 - Completed:
   - Added lab2 experiment design: `pstate(int pid)` process state observation.
   - Implemented `sys_pstate()` in ignored `external/xv6-riscv/`.
@@ -251,7 +250,7 @@
 
 ## 2026-06-04: stage4b red-team lab2 process observation and patch strategy
 
-- Commit hash: TODO after commit
+- Commit hash: 06d3b4a
 - Role: strict reviewer + OS lab TA + engineering red team (Claude Code).
 - Goal: judge whether lab2 works as a process-observation v0.1, and whether lab1/lab2 patches will conflict in a future integrated demo.
 - Completed (real runs in WSL2 Ubuntu, inside the ignored `external/xv6-riscv/`):
@@ -280,7 +279,7 @@
 
 ## 2026-06-04: stage4c integrated lab1 lab2 patch sequence
 
-- Commit hash: TODO after commit
+- Commit hash: 799e4e9
 - Completed:
   - Added `patches/integrated-labs/`.
   - Copied lab1 `0001` and `0002` into the integrated sequence after verifying they apply from clean baseline in order.
@@ -314,7 +313,7 @@
 
 ## 2026-06-04: stage4d red-team integrated-labs patch sequence
 
-- Commit hash: TODO after commit
+- Commit hash: 6ea5fd7
 - Role: strict reviewer + OS lab TA + engineering red team (Claude Code).
 - Goal: verify integrated-labs really solves the combined demo (all three programs in one xv6 build) and that docs are no longer stale.
 - Completed (real runs in WSL2 Ubuntu, inside the ignored `external/xv6-riscv/`):
@@ -341,7 +340,7 @@
 
 ## 2026-06-04: stage4e integrated labs apply helper
 
-- Commit hash: TODO after commit
+- Commit hash: 23dd28e
 - Completed:
   - Added `scripts/xv6/apply-integrated-labs.sh`.
   - Default mode is preview only; it checks target directory, baseline commit, patch files, and prints planned operations without reset/apply/make.
@@ -365,7 +364,7 @@
 
 ## 2026-06-04: stage4f red-team integrated apply helper safety
 
-- Commit hash: TODO after commit
+- Commit hash: 7aad2af
 - Role: strict reviewer + engineering red team + OS lab TA (Claude Code).
 - Goal: verify `scripts/xv6/apply-integrated-labs.sh` is safe and reproducible enough for teammates/judges.
 - Finding and fix:
@@ -390,7 +389,7 @@
 
 ## 2026-06-04: stage5a lab2 v0.2 process observation extension
 
-- Commit hash: TODO after commit
+- Commit hash: 10e5d3f
 - Goal: extend lab2 beyond `pstate(self)` by adding process-state counting, child-process observation, and negative input checks in the integrated-labs path.
 - Completed:
   - Added `patches/integrated-labs/0004-extend-process-observation.patch`.
@@ -417,7 +416,7 @@
 
 ## 2026-06-04: stage5b red-team review of lab2 v0.2 process observation
 
-- Commit hash: TODO after commit
+- Commit hash: 932bb0a
 - Goal: strictly re-verify whether lab2 v0.2 truly improves teaching depth and whether the `0004` patch is clean, reproducible, and safe.
 - Verdict: `0004` patch is clean/minimal/correct and needs NO code change; v0.2 genuinely deepens teaching over v0.1. Work this round is documentation + honest-boundary completion only.
 - `0004` patch audit (read-only):
@@ -444,7 +443,7 @@
 
 ## 2026-06-04: stage6a lab4 file table observation experiment
 
-- Commit hash: TODO after commit
+- Commit hash: 8523298
 - Goal: add a scoped lab4 file table observation experiment with both independent patch and integrated demo patch.
 - Completed:
   - Added `patches/lab4-file-table-observation/0001-add-fcount-syscall.patch`.
@@ -467,7 +466,7 @@
 
 ## 2026-06-05: stage6b red-team review of lab4 file table observation
 
-- Commit hash: TODO after commit
+- Commit hash: b493333
 - Goal: strictly re-verify whether lab4 has real teaching value, whether `fcount`/`filecount` is correct/safe, and whether the independent and integrated patches are clean and reproducible.
 - Verdict: independent lab4 patch and integrated `0005` are clean/minimal/correct/safe and need NO code change; lab4 genuinely bridges user fd → kernel `struct file` → `ref` → `ftable.lock`, but remains a file-table count observation, not a full file-system lab. Work this round is documentation + honest-boundary completion only.
 - Patch audit (read-only):
@@ -492,7 +491,7 @@
 
 ## 2026-06-05: stage6c boot evidence timeout and retry hardening
 
-- Commit hash: TODO after commit
+- Commit hash: 2e0048f
 - Goal: reduce false boot evidence failures after clean build when `make qemu` spends the first timeout window rebuilding `fs.img` or reacting to `/mnt/d` mtime skew.
 - Completed:
   - Updated `scripts/xv6/boot-xv6.sh`.
@@ -517,7 +516,7 @@
 
 ## 2026-06-05: stage6d red-team submission-readiness review
 
-- Commit hash: TODO after commit
+- Commit hash: a07d555
 - Goal: assess whether the repo is trustworthy, reproducible, and presentable for the preliminary (初赛) submission; full integrated reproduction + whole-repo doc consistency audit.
 - Verdict: trustworthy / reproducible / presentable, but NOT yet submission-complete. Honest MVP is submittable now; awards require teammate reproduction + manual recording + lab3 or deeper lab4. No OS feature or patch changed this round (documentation only).
 - Real validation (WSL2 Ubuntu-24.04, clean baseline):

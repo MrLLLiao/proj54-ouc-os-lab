@@ -56,6 +56,7 @@
 22. AI 使用记录：`docs/05_ai_usage_record.md`
 23. 引用与许可证说明：`docs/08_reference_and_license.md`
 24. 初赛材料索引：`submissions/draft-report-index.md`
+25. 提交前 Checklist：`submissions/submission_checklist.md`
 
 ## 当前状态
 
@@ -76,6 +77,7 @@
 | Demo 脚本 | 初版 | 记录见 `videos/demo_script.md` |
 | 队友二次复现 | TODO | 不伪造第二名队员独立复现 |
 | 人工交互录屏 | TODO | 目前只有自动捕获证据，不声称已录屏 |
+| 提交材料 Checklist | 已完成 | 见 `submissions/submission_checklist.md`；包含状态总览、补齐项、禁止项和提交前命令清单 |
 | lab3/lab5 | 计划中 | lab3 尚未完成；lab5 最终集成与报告仍为 TODO |
 
 ## 关键边界
