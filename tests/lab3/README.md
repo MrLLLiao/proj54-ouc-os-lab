@@ -1,25 +1,46 @@
-# lab3 测试计划
+# lab3 测试记录
+
+> 维护时间：2026-06-06（stage9b）。
 
 ## 当前测试目标
 
-lab3 未来用于验证页表与内存观察实验，包括地址空间布局、页表映射、内存分配和异常路径。
+验证 independent Lab3 `pgcount()` 页表观察 patch：
 
-当前状态：规划中，尚未引入 xv6-riscv baseline，没有真实测试结果。
+- eager `sbrk(2 * PGSIZE)` 后已映射用户页数量增加 2。
+- lazy `sbrklazy(2 * PGSIZE)` 触摸前不增加映射页数量。
+- 触摸 lazy 区域两页后映射页数量增加 2。
+- `pgcounttest` 正常结束。
 
-## 未来测试方式
+## 测试命令
 
-- TODO：运行页表或地址空间观察程序。
-- TODO：检查预期映射是否存在。
-- TODO：设计边界条件和异常路径测试。
-- TODO：记录构建命令、运行命令、输出和结论。
+```bash
+bash scripts/xv6/check-xv6-baseline.sh
+cd external/xv6-riscv
+git reset --hard 74f84181a3404d1d6a6ff98d342233979066ebb8
+git clean -fdx
+git apply ../../patches/lab3-memory-and-pagetable/0001-add-pgcount-syscall.patch
+make
+cd ../..
+bash scripts/xv6/run-xv6-command.sh pgcounttest "pgcount eager delta = 2"
+bash scripts/xv6/run-xv6-command.sh pgcounttest "pgcount lazy delta before touch = 0"
+bash scripts/xv6/run-xv6-command.sh pgcounttest "pgcount lazy delta after two touches = 2"
+bash scripts/xv6/run-xv6-command.sh pgcounttest "pgcounttest done"
+```
 
-## 记录要求
+## 真实结果
 
-- 不伪造测试结果。
-- 不写虚假的 PASS。
-- 实际命令和输出应记录在 docs/04_test_report.md 或后续测试日志中。
-- 地址和页表输出可能与 baseline 版本相关，必须记录版本和环境。
+| 测试项 | 结果 |
+| --- | --- |
+| baseline check | PASS |
+| clean baseline reset/apply | PASS |
+| `make` | PASS |
+| `pgcount eager delta = 2` | PASS |
+| `pgcount lazy delta before touch = 0` | PASS |
+| `pgcount lazy delta after two touches = 2` | PASS |
+| `pgcounttest done` | PASS |
 
-## 与测试报告模板的关系
+## 证据边界
 
-正式测试记录使用 [../../docs/04_test_report.md](../../docs/04_test_report.md) 中的模板。本文档只说明 lab3 的测试目标和未来测试范围。
+- 原始 QEMU logs 在 `logs/` 下，Git ignored，不提交。
+- `pgcount before/after` 的绝对数值不固定，不作为验收标准。
+- 本测试只覆盖 independent Lab3 patch，不覆盖 integrated `0006`，也不代表队友已经复现 Lab3。

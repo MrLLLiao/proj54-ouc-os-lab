@@ -21,7 +21,7 @@
 | `logs/*.log` | ignored，不被跟踪 |
 | `logs/*.summary.txt` | ignored，不被跟踪 |
 | `.claude/`、`.vscode/` | ignored，不被跟踪 |
-| integrated patches | `patches/integrated-labs/0001-0005` 不在 stage8a 修改 |
+| integrated patches | `patches/integrated-labs/0001-0005` 不在 stage9b 修改；未新增 integrated `0006` |
 | remote | 不修改 GitLab/GitHub remote |
 
 ## 3. 工程复现
@@ -31,6 +31,7 @@
 | 环境诊断 | `bash scripts/xv6/doctor.sh` | PASS；可能有可接受 WARN |
 | clean apply + make | `bash scripts/xv6/apply-integrated-labs.sh --make --yes` | PASS |
 | boot evidence | `bash scripts/xv6/boot-xv6.sh` | PASS |
+| Lab3 independent pgcount | `bash scripts/xv6/run-xv6-command.sh pgcounttest "pgcount eager delta = 2"` | PASS；independent patch only，未进入 teammate full |
 | 一键 full 验证 | `bash scripts/xv6/teammate-verify.sh --full` | 队长本机 PASS；已收到 2 份队友 full PASS summary |
 | 本地录屏前预检 | `bash scripts/xv6/local-verify.sh --quick` | 队长本机 PASS |
 | QEMU cleanup | `bash scripts/xv6/cleanup-qemu.sh` | 可用 |
@@ -42,6 +43,7 @@
 | 评委入口 README | `README.md` | stage8a 已重构 |
 | 正式文档入口 | `docs/final/` | stage8a 已新增正式初版 |
 | 测试覆盖表 | `docs/final/06_testing_and_verification.md` | 已包含 doctor/baseline/boot/用户程序/local/teammate/manual demo |
+| Lab3 independent patch | `patches/lab3-memory-and-pagetable/0001-add-pgcount-syscall.patch` | 已生成并本机验证 |
 | AI 使用声明 | `docs/final/09_ai_usage_and_contribution_statement.md` | 已补充 |
 | 引用与许可证声明 | `docs/final/10_reference_and_license_statement.md` | 已补充 xv6 MIT 与参考项目待核对项 |
 | 已知限制 | `docs/final/11_known_limits_and_future_work.md` | 已补充 |
@@ -82,6 +84,8 @@
 - `docs/final/` 是否覆盖项目概述、环境、每个 lab、测试、队友复现、设计取舍、AI、许可证、限制。
 - 是否仍把 timeout 捕获夸大成长期稳定性。
 - 是否把 fcount 夸大成完整文件系统。
+- 是否把 pgcount 夸大成完整内存管理实验。
+- 是否把 Lab3 independent patch 写成 integrated 或队友已复现。
 - 是否把本机验证写成队友复现。
 - 是否存在 external/logs/.claude/video/隐私材料入库风险。
 

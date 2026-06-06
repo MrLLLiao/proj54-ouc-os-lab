@@ -749,3 +749,35 @@
   - `patches/integrated-labs/0001-0005` were not modified.
   - `external/xv6-riscv/`, raw logs, summary files, screenshots, `.claude/`, videos, archives, large binaries, and privacy materials must not be tracked.
   - Teammate real names, teammate B exact raw summary conflict, teammate system versions, video durations, platform submission method, and final privacy review remain pending unless confirmed later.
+
+## 2026-06-06: stage9b independent Lab3 pgcount page-table observation
+
+- Commit hash: TODO after commit
+- Goal: implement Lab3 as an independent `pgcount()` page-table observation patch, using the baseline eager/lazy allocation behavior as the teaching point, without modifying integrated `0001-0005` or `scripts/xv6/`.
+- Completed:
+  - Reset ignored `external/xv6-riscv/` to baseline commit `74f84181a3404d1d6a6ff98d342233979066ebb8`.
+  - Confirmed clean baseline syscall numbers end at `SYS_close = 21`; independent `SYS_pgcount = 22` is available.
+  - Confirmed baseline has `sbrk(n)` -> `SBRK_EAGER`, `sbrklazy(n)` -> `SBRK_LAZY`, `walk()`, `PTE_V`, `PTE_U`, `PGSIZE`, `struct proc.sz`, `struct proc.pagetable`, and lazy `vmfault()`.
+  - Implemented `uvmpagecount(pagetable, sz)` in `kernel/vm.c`; it uses `walk(pagetable, va, 0)` and counts only `PTE_V && PTE_U`, without allocating or changing PTEs.
+  - Implemented `sys_pgcount()` in `kernel/sysproc.c`; it only observes `myproc()` and takes no pid.
+  - Added `user/pgcounttest.c` with eager and lazy checks. The test computes real deltas; it does not hard-code success strings.
+  - Generated `patches/lab3-memory-and-pagetable/0001-add-pgcount-syscall.patch`.
+  - Added `patches/lab3-memory-and-pagetable/README.md`.
+  - Updated lab3 docs, tests, final status, submission checklist, AI record, collect-report script, and generated material index.
+- Real validation (WSL2 Ubuntu):
+  - `bash scripts/xv6/check-xv6-baseline.sh`: PASS.
+  - `git -C external/xv6-riscv reset --hard 74f84181a3404d1d6a6ff98d342233979066ebb8 && git -C external/xv6-riscv clean -fdx`: completed.
+  - `git apply ../../patches/lab3-memory-and-pagetable/0001-add-pgcount-syscall.patch`: PASS.
+  - `cd external/xv6-riscv && make`: PASS; only known baseline `LOAD segment with RWX permissions` linker warning.
+  - `bash scripts/xv6/run-xv6-command.sh pgcounttest "pgcount eager delta = 2"`: PASS.
+  - `bash scripts/xv6/run-xv6-command.sh pgcounttest "pgcount lazy delta before touch = 0"`: PASS.
+  - `bash scripts/xv6/run-xv6-command.sh pgcounttest "pgcount lazy delta after two touches = 2"`: PASS.
+  - `bash scripts/xv6/run-xv6-command.sh pgcounttest "pgcounttest done"`: PASS.
+- Boundaries:
+  - No GitLab/GitHub remote was modified.
+  - `patches/integrated-labs/0001-0005` were not modified.
+  - No integrated `0006` was added.
+  - No `scripts/xv6/` file was modified.
+  - `external/xv6-riscv/` and raw logs remain ignored and must not be committed.
+  - The two teammate full PASS summaries at commit `1ba9db6` do not cover Lab3; teammate full should be rerun only if Lab3 is later integrated into the one-shot workflow or claimed as teammate-verified.
+  - Lab3 is a page-table mapping count observation, not a complete memory-management experiment.

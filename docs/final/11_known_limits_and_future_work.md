@@ -4,7 +4,7 @@
 
 | 项目 | 当前状态 | 说明 |
 | --- | --- | --- |
-| lab3 memory/pagetable | 未完成 | 目前不声称实现内存/页表实验 |
+| lab3 memory/pagetable | independent 已完成 | `pgcount()` 页表映射数量观察已验证；尚未 integrated，尚未队友 full 复现 |
 | lab4 file system | 部分完成 | 仅做文件表引用计数观察，不是完整文件系统实验 |
 | 长期稳定性测试 | 未完成 | 当前为 timeout 自动捕获 evidence |
 | 队友独立复现 | 已收到 2 份 full PASS summary | 原始 logs/summary/截图不入仓；文字摘要已记录；真实姓名/系统版本待补充 |
@@ -18,6 +18,7 @@
 - `fcount()` 不能写成完整文件系统实验。
 - `pcount(RUNNING)` 不能写成固定数值。
 - `pchildtest` 不能写成固定状态。
+- `pgcount()` 不能写成完整内存管理实验；只能写页表映射数量观察。
 - timeout evidence 不能写成长期稳定性测试。
 - 队长本机 PASS 不能写成队友独立复现；队友 PASS 只能按已收到的 summary/截图摘要记录。
 - 已录制视频不能自动等同于已完成平台提交；还需补充时长和提交方式。
@@ -38,11 +39,11 @@
 - scheduler trace，但不轻易修改调度策略。
 - wait/exit 状态观察。
 
-### lab3 计划
+### lab3 后续计划
 
-- 页表 walk 观察。
-- 用户虚拟地址到物理地址映射解释。
-- 简单 page fault / copyin 路径教学。
+- 将 independent `pgcount()` 评估是否纳入 integrated `0006`。
+- 补一篇正式 Lab3 final 文档和技术报告章节。
+- 设计学生骨架版和扩展问题。
 - 必须先设计安全的最小实验，不应临时堆功能。
 
 ### lab4 扩展

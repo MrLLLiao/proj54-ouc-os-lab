@@ -22,7 +22,7 @@ proj54 是教学型功能挑战，不是“内核实现赛道刷 LTP”项目。
 | 赛题关注点 | 权重 | 本项目对应材料 |
 | --- | ---: | --- |
 | 文档完整度 | 50% | `docs/final/` 正式文档、各 lab 教程、常见错误、测试方法、边界说明、AI/许可证声明 |
-| 实现完整度 | 30% | lab0/lab1/lab2/lab4 patch 与 integrated `0001-0005`，覆盖 syscall、进程观察和文件表观察 |
+| 实现完整度 | 30% | lab0/lab1/lab2/lab3 independent/lab4 patch 与 integrated `0001-0005`，覆盖 syscall、进程观察、页表观察和文件表观察 |
 | 测试完整度 | 10% | `doctor.sh`、`teammate-verify.sh`、`local-verify.sh`、boot/command evidence、测试覆盖表 |
 | 创新性 | 10% | OUC 本校课程叙事、clean baseline patch workflow、队友一键复现、QEMU cleanup/timeout 体验、透明 AI 过程记录 |
 
@@ -33,12 +33,12 @@ proj54 是教学型功能挑战，不是“内核实现赛道刷 LTP”项目。
 | lab0 | 已完成 | 环境检查、baseline metadata、make、boot evidence |
 | lab1 | 已完成 | `hello()` 与 `add2(int,int)` syscall |
 | lab2 | 已完成 | `pstate`、`pcount`、`pchildtest` |
+| lab3 | independent 已完成 | `pgcount()` 页表映射数量观察；eager/lazy allocation 对比；未 integrated |
 | lab4 | 已完成 | `fcount()` 文件表引用计数观察 |
 | integrated-labs | 已完成 | `0001-0005` 可从 clean baseline 顺序应用并 make |
 | 一键验证 | 已完成 | doctor/local/teammate/cleanup 脚本 |
 | 视频 | 已录制 3 段 | 文件在仓库外；文件名/大小/外部位置已记录，时长和平台提交方式待补充 |
 | 队友独立复现 | 已收到 2 份 full PASS summary | 原始 logs/summary/截图不入仓；文字摘要见 `submissions/teammate_reproduction_record.md`；真实姓名/系统版本待补充 |
-| lab3 | 未完成 | 后续扩展方向 |
 
 ## OUC 本校课程特色
 
@@ -47,8 +47,9 @@ proj54 是教学型功能挑战，不是“内核实现赛道刷 LTP”项目。
 1. lab0 解决环境和 baseline，降低首次进入 OS 实验的门槛。
 2. lab1 从最小 syscall 到带整数参数 syscall，帮助学生理解 user/kernel 边界。
 3. lab2 把 syscall 连接到进程表、状态枚举和锁。
-4. lab4 连接用户态 fd、内核 `struct file`、全局 file table 和引用计数。
-5. integrated-labs 让多个实验在同一构建中演示，避免“每个实验只能孤立跑”的问题。
+4. lab3 把 syscall 连接到用户页表、`PTE_V/PTE_U` 和 eager/lazy allocation 观察。
+5. lab4 连接用户态 fd、内核 `struct file`、全局 file table 和引用计数。
+6. integrated-labs 让多个实验在同一构建中演示，避免“每个实验只能孤立跑”的问题。
 
 这个组织方式更适合课程教学和竞赛入门，而不是单次功能冲刺。
 
@@ -67,6 +68,7 @@ proj54 是教学型功能挑战，不是“内核实现赛道刷 LTP”项目。
 
 - 不提交 `external/xv6-riscv/`。
 - 不提交 `logs/*.log`、`logs/*.summary.txt`、视频、大文件、隐私材料。
+- 不把 Lab3 independent patch 写成 integrated `0006` 或队友已复现。
 - 不把 timeout 捕获写成长期稳定性测试。
 - 不把 lab4 `fcount()` 写成完整文件系统实验。
 - 不把队长本机验证写成队友独立复现；队友记录只按已收到 summary/截图摘要整理，未知姓名和系统版本保持待补充。

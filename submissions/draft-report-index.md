@@ -34,18 +34,19 @@ It is not the final technical report, does not generate PDF, and does not includ
 | submission readiness review | `docs/21_submission_readiness_review.md` | exists | stage6d red-team: full integrated 0001-0005 reproduced from clean baseline (make/boot x2/hello/add2test/pstatetest/pcounttest+negative/pchildtest/fcounttest); doc consistency audit; risk list and pre-submission must-do (teammate reproduction + manual recording still TODO) |
 | teammate reproduction troubleshooting | `docs/22_teammate_reproduction_troubleshooting.md` | exists | stage7a0: explains apply/make completion, boot normal duration, Ctrl+Z risk, qemu/make cleanup, continuation steps, feedback format, and no-log/no-secret boundaries |
 | teammate quickstart | `docs/23_teammate_quickstart.md` | exists | stage7a2: official teammate testing entry; --full first run, --quick retest after make, local-verify before recording, cleanup-qemu after stuck/Ctrl+Z, summary feedback, no external/logs/secrets |
-| final project overview | `docs/final/00_project_overview.md` | exists | stage8a formal portal: OUC xv6 Lab Kit positioning, scoring weights, status, OUC teaching value, reference-project comparison, boundaries |
+| lab3/lab5 completion plan | `docs/24_lab3_lab5_completion_plan.md` | exists | stage9a plan plus stage9b update: pgcount independent patch done; Lab5 remains capstone plan |
+| final project overview | `docs/final/00_project_overview.md` | exists | stage9b status: OUC xv6 Lab Kit positioning, scoring weights, lab3 independent status, OUC teaching value, reference-project comparison, boundaries |
 | final environment setup | `docs/final/01_environment_setup.md` | exists | stage8a formal environment and repository hygiene guide |
 | final lab0 guide | `docs/final/02_lab0_baseline_build_boot.md` | exists | stage8a formal lab0 baseline/build/boot guide |
 | final lab1 guide | `docs/final/03_lab1_hello_add2.md` | exists | stage8a formal hello/add2 syscall lab guide |
 | final lab2 guide | `docs/final/04_lab2_process_observation.md` | exists | stage8a formal pstate/pcount/pchild process observation lab guide |
 | final lab4 guide | `docs/final/05_lab4_file_table_observation.md` | exists | stage8a formal fcount file table observation lab guide |
-| final testing and verification | `docs/final/06_testing_and_verification.md` | exists | stage8a formal testing coverage table with real-result boundaries |
+| final testing and verification | `docs/final/06_testing_and_verification.md` | exists | stage9b testing coverage table includes Lab3 pgcount independent evidence and real-result boundaries |
 | final teammate reproduction guide | `docs/final/07_teammate_reproduction_guide.md` | exists | stage8a formal teammate reproduction and feedback guide |
 | final design decisions | `docs/final/08_design_decisions_and_tradeoffs.md` | exists | stage8a formal design tradeoffs and scope control |
 | final AI usage statement | `docs/final/09_ai_usage_and_contribution_statement.md` | exists | stage8a formal AI usage and contribution statement |
 | final reference and license statement | `docs/final/10_reference_and_license_statement.md` | exists | stage8a formal xv6 MIT license boundary and reference-project notes |
-| final limits and future work | `docs/final/11_known_limits_and_future_work.md` | exists | stage8a formal known limits and follow-up plan |
+| final limits and future work | `docs/final/11_known_limits_and_future_work.md` | exists | stage9b limits: Lab3 independent done but not integrated/teammate verified; Lab5 still pending |
 | submission checklist | `submissions/submission_checklist.md` | exists | stage8b submission checklist: platform compliance, Git hygiene, reproducibility, docs, video metadata, teammate summaries, red-team review, final commands |
 | demo video record | `submissions/demo_record.md` | exists | stage8b records 3 video file names, external path, approximate sizes, and no-video-in-Git boundary |
 | teammate reproduction record | `submissions/teammate_reproduction_record.md` | exists | stage8b records two teammate --full PASS summary digests; raw logs/summary/screenshots are not committed |
@@ -54,12 +55,12 @@ It is not the final technical report, does not generate PDF, and does not includ
 | lab0 environment guide | `labs/lab0-env-setup/README.md` | exists | xv6 baseline make succeeded; boot evidence found; manual interaction TODO |
 | lab1 syscall lab | `labs/lab1-system-call/README.md` | exists | hello minimal and add2 argint patches generated and verified |
 | lab2 process state observation | `labs/lab2-process-and-scheduling/README.md` | exists | pstate independent patch verified; integrated v0.2 adds pcount, pcounttest, pchildtest |
-| lab3 memory and pagetable | `labs/lab3-memory-and-pagetable/README.md` | exists | planned |
+| lab3 memory and pagetable | `labs/lab3-memory-and-pagetable/README.md` | exists | stage9b pgcount page-table observation lab: eager/lazy allocation comparison; independent patch only |
 | lab4 file system | `labs/lab4-file-system/README.md` | exists | file table observation v0.1: fcount/fcounttest verified; not a complete file system lab |
 | lab5 final integration | `labs/lab5-final-integration/README.md` | exists | planned |
 | lab1 test record | `tests/lab1/README.md` | exists | records patched make and hello output evidence |
 | lab2 test record | `tests/lab2/README.md` | exists | records pstatetest, pcounttest, and pchildtest output evidence |
-| lab3 test plan | `tests/lab3/README.md` | exists | draft |
+| lab3 test record | `tests/lab3/README.md` | exists | records pgcount eager/lazy output captures from independent patch; not integrated or teammate verified |
 | lab4 test record | `tests/lab4/README.md` | exists | records fcounttest prefix capture and non-fixed count boundary |
 | xv6 fetch script | `scripts/xv6/fetch-xv6.sh` | exists | stage1b tooling |
 | xv6 baseline check script | `scripts/xv6/check-xv6-baseline.sh` | exists | stage1b tooling; make not run by default |
@@ -76,6 +77,8 @@ It is not the final technical report, does not generate PDF, and does not includ
 | lab1 patch guide | `patches/lab1-system-call/README.md` | exists | apply/build/run instructions |
 | lab2 pstate syscall patch | `patches/lab2-process-observation/0001-add-pstate-syscall.patch` | exists | commit-ready independent patch from clean baseline |
 | lab2 patch guide | `patches/lab2-process-observation/README.md` | exists | apply/build/run instructions |
+| lab3 pgcount syscall patch | `patches/lab3-memory-and-pagetable/0001-add-pgcount-syscall.patch` | exists | stage9b independent patch from clean baseline; SYS_pgcount 22; eager/lazy pgcounttest verified |
+| lab3 patch guide | `patches/lab3-memory-and-pagetable/README.md` | exists | apply/build/run instructions and eager/lazy allocation teaching notes |
 | lab4 fcount syscall patch | `patches/lab4-file-table-observation/0001-add-fcount-syscall.patch` | exists | commit-ready independent patch from clean baseline |
 | lab4 patch guide | `patches/lab4-file-table-observation/README.md` | exists | apply/build/run instructions |
 | integrated hello syscall patch | `patches/integrated-labs/0001-add-hello-syscall.patch` | exists | comprehensive demo sequence step 1 |
@@ -100,6 +103,7 @@ It is not the final technical report, does not generate PDF, and does not includ
 - xv6 baseline make, hardened boot evidence retry, lab1 patched make, hello output, add2 output, pstatetest output, pcounttest output, pchildtest output, fcounttest output, and integrated sequence evidence are summarized in docs/04_test_report.md.
 - lab1 now has two patch levels: 0001 hello minimal syscall and 0002 add2 argint extension.
 - lab2 has an independent pstate process observation patch from clean baseline.
+- lab3 now has an independent pgcount page-table observation patch from clean baseline; it is not part of integrated-labs and is not covered by teammate full verification yet.
 - integrated-labs provides the verified comprehensive demo sequence with hello=22, add2=23, pstate=24, pcount=25, fcount=26.
 - The child-state demo command is pchildtest; the longer pstatechildtest name is not used because xv6 DIRSIZ caused a real mkfs failure.
 - scripts/xv6/apply-integrated-labs.sh is the recommended helper for final integrated demo reproduction and now applies integrated 0001-0005.
