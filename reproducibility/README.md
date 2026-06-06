@@ -11,7 +11,7 @@
 - stage4c integrated-labs 综合 patch sequence 已完成，见 `patches/integrated-labs/README.md`。
 - stage5a lab2 v0.2 已新增 integrated `0004`，包含 `pcount(int state)`、`pcounttest` 和 `pchildtest`，见 `docs/19_lab2_v0.2_process_observation_review.md`。
 - stage7a0 已加固 QEMU timeout/cleanup，队友卡住排查见 `docs/22_teammate_reproduction_troubleshooting.md`。
-- stage7a1 已新增队友一键复现脚本，见 `scripts/xv6/teammate-verify.sh` 和 `docs/23_teammate_quickstart.md`。
+- stage7a2 已优化队友一键复现脚本，见 `scripts/xv6/doctor.sh`、`scripts/xv6/teammate-verify.sh --full/--quick`、`scripts/xv6/local-verify.sh` 和 `docs/23_teammate_quickstart.md`。
 - 第二名队员独立复现：TODO。
 
 ## 复现目标
@@ -88,10 +88,24 @@ bash scripts/xv6/run-xv6-command.sh pstatetest "RUNNING"
 队友优先使用一键脚本：
 
 ```bash
-bash scripts/xv6/teammate-verify.sh
+bash scripts/xv6/teammate-verify.sh --full
 ```
 
-该脚本会自动执行环境检查、baseline 检查、apply+make、boot 和全部用户程序验证，并把 summary 写入 ignored 的 `logs/teammate-verify-*.summary.txt`。如果需要手动分步复现，再使用下面命令。
+第一次正式复现使用 `--full`，会自动执行 doctor、环境检查、baseline 检查、apply+make、boot 和全部用户程序验证，并把 `COPY THIS SUMMARY TO TEAM LEAD` summary 写入 ignored 的 `logs/teammate-verify-*.summary.txt`。
+
+如果已经看到 `[OK] make completed successfully`，二次重测使用：
+
+```bash
+bash scripts/xv6/teammate-verify.sh --quick
+```
+
+队长录屏前本地预检使用：
+
+```bash
+bash scripts/xv6/local-verify.sh --quick
+```
+
+如果需要手动分步复现，再使用下面命令。
 
 ```bash
 bash scripts/check-env.sh
@@ -270,7 +284,7 @@ XV6_COMMAND_TIMEOUT_SECONDS=75 XV6_COMMAND_RETRIES=2 XV6_COMMAND_HARD_TIMEOUT_SE
 新增脚本：
 
 ```bash
-bash scripts/xv6/teammate-verify.sh
+bash scripts/xv6/teammate-verify.sh --full
 ```
 
 它会自动运行：
@@ -294,3 +308,39 @@ bash scripts/xv6/cleanup-qemu.sh
 ```
 
 `apply-integrated-labs.sh --make --yes` 的 make 阶段现在也有 timeout：默认 `XV6_MAKE_TIMEOUT_SECONDS=600`，可按需覆盖。队友大白话说明见 `docs/23_teammate_quickstart.md`。
+
+## stage7a2 更新：doctor / full / quick / local verify
+
+新增只读环境诊断：
+
+```bash
+bash scripts/xv6/doctor.sh
+```
+
+它不运行 make/QEMU，不修改仓库；会检查当前时间、路径、uname、commit、Git 仓库、关键工具、baseline 文件、logs ignored 状态、QEMU 残留进程和 `/mnt/` 路径风险。结论为 `READY`、`READY WITH WARNINGS` 或 `NOT READY`。
+
+队友正式测试：
+
+```bash
+bash scripts/xv6/teammate-verify.sh --full
+```
+
+已经 make 成功后的重测：
+
+```bash
+bash scripts/xv6/teammate-verify.sh --quick
+```
+
+队长录屏前本地预检：
+
+```bash
+bash scripts/xv6/local-verify.sh --quick
+```
+
+卡住或误按 `Ctrl+Z` 后：
+
+```bash
+bash scripts/xv6/cleanup-qemu.sh
+```
+
+`pcount(RUNNING)`、`fcount(...)` 的具体数字不固定；`pchildtest` 状态受调度时序影响。复现只看脚本匹配到的稳定输出前缀和 summary，不伪造固定数字。

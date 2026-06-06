@@ -1,133 +1,119 @@
-# 队友一键复现 Quickstart
+# 队友正式复现 Quickstart
 
-> 维护时间：2026-06-06（stage7a1 一键复现流程）。
-> 面向不熟悉 WSL/QEMU 的队友：按下面步骤做，不要自己猜命令。
+> 维护时间：2026-06-06（stage7a2，队友正式测试前一键流程）。
+> 队友正式测试只看本文即可。所有真实 make / QEMU / boot / 命令验证都必须在 WSL2 Ubuntu 里执行。
 
 ## 1. 先更新仓库
 
-在 WSL2 Ubuntu 里进入仓库目录后运行：
+在 WSL2 Ubuntu 里进入仓库目录：
 
 ```bash
 git pull
 ```
 
-所有真实 `make` / QEMU / boot / 命令验证都必须在 WSL2 Ubuntu 里跑，不要在 PowerShell 或 Git Bash 里伪报成功。
+不要在 PowerShell、Git Bash 或 MINGW64 里伪报 make/QEMU 成功。
 
-## 2. 只运行这一条
+## 2. 第一次正式复现
+
+第一次复现只运行这一条：
 
 ```bash
-bash scripts/xv6/teammate-verify.sh
+bash scripts/xv6/teammate-verify.sh --full
 ```
 
-它会自动完成：
+`--full` 会自动执行：
 
-- 环境检查；
-- xv6 baseline 检查；
-- integrated `0001-0005` apply + make；
-- boot evidence；
-- hello / add2test / pstatetest / pcounttest / pchildtest / fcounttest 验证；
-- 最终 summary。
+- doctor 环境诊断；
+- `scripts/check-env.sh`；
+- `scripts/xv6/check-xv6-baseline.sh`；
+- `scripts/xv6/apply-integrated-labs.sh --make --yes`；
+- `scripts/xv6/boot-xv6.sh`；
+- hello / add2test / pstatetest / pcounttest / pchildtest / fcounttest 验证。
 
-summary 会写到：
+每一步都会记录 PASS/FAIL。最后会打印 `COPY THIS SUMMARY TO TEAM LEAD` 块，并写入：
 
 ```text
 logs/teammate-verify-YYYYMMDD-HHMMSS.summary.txt
 ```
 
-`logs/` 是 ignored，不要提交。
+复制这个 summary 块或 summary 文件内容发给队长。`logs/` 是 ignored，不要提交。
 
-## 3. 正常情况
+## 3. 已经 make 成功后的二次重测
 
-正常情况下，终端最后会看到一个 summary 表格，大致长这样：
+如果你已经看到过：
 
 ```text
-| environment | PASS |
-| apply+make | PASS |
-| boot | PASS |
-| hello | PASS |
-| add2test | PASS |
-| pstatetest | PASS |
-| pcounttest | PASS |
-| pchildtest | PASS |
-| fcounttest | PASS |
+[OK] make completed successfully
 ```
 
-以你本机真实输出为准，不要手改结果。
+说明 apply + make 阶段已经完成，不要继续等那个命令。二次重测用：
 
-## 4. 如果卡住超过 5 分钟
+```bash
+bash scripts/xv6/teammate-verify.sh --quick
+```
 
-先按：
+`--quick` 会跳过 clean apply + make，只重新跑 doctor、环境/baseline 检查、boot 和用户程序验证。
+
+## 4. 队长录屏前检查
+
+队长本人录屏前推荐先跑：
+
+```bash
+bash scripts/xv6/local-verify.sh --quick
+```
+
+这是 local pre-recording verification wrapper，内部复用 teammate workflow，避免队长本地检查和队友检查走两套逻辑。
+
+## 5. 卡住或误按 Ctrl+Z
+
+正常情况下 `boot-xv6.sh` 和每个命令验证应在 1-2 分钟内返回。超过 5 分钟先按：
 
 ```text
 Ctrl+C
 ```
 
-不要按 `Ctrl+Z`。`Ctrl+Z` 是挂起，不是退出，可能把 QEMU 留在后台。
+不要按 `Ctrl+Z`。`Ctrl+Z` 是 suspend（挂起），不是退出，可能把 QEMU 或 `make qemu` 留在后台。
 
-如果你已经按过 `Ctrl+Z`，运行：
+如果卡住、误按 `Ctrl+Z`，或怀疑有 QEMU 残留，运行：
 
 ```bash
 bash scripts/xv6/cleanup-qemu.sh
 ```
 
-如果终端显示 `Stopped` 和 `%1`，可以在同一个 shell 里执行：
+如果同一个 shell 里显示了 stopped job，再执行：
 
 ```bash
 jobs -l
 kill %1
 ```
 
-如果编号不是 `%1`，按 `jobs -l` 显示的实际编号改。
+如果 job 编号不是 `%1`，按 `jobs -l` 显示的实际编号改。
 
-## 5. 怎么反馈给队长
+## 6. 反馈给队长
 
-请发这些内容：
+请反馈以下内容：
 
-- 最终 summary 截图；
-- `logs/teammate-verify-*.summary.txt` 的文本内容；
+- `COPY THIS SUMMARY TO TEAM LEAD` 整块文本；
+- 或 `logs/teammate-verify-YYYYMMDD-HHMMSS.summary.txt` 的文本内容；
 - 如果失败，复制失败步骤附近的终端输出；
-- 说明你是否按过 `Ctrl+Z`，是否运行过 `cleanup-qemu.sh`。
+- 说明是否按过 `Ctrl+Z`，是否运行过 `cleanup-qemu.sh`；
+- 说明运行模式是 `--full` 还是 `--quick`。
 
-不要发：
+不要发送 token、密码、cookie、报名材料或包含隐私的截图。
 
-- token；
-- 密码；
-- cookie；
-- 报名材料；
-- 含隐私信息的截图。
+## 7. 常见说明
 
-不要提交：
+- `riscv64-unknown-elf-gcc` 缺失只是 WARN；当前 xv6 构建使用 `riscv64-linux-gnu-gcc`。
+- `LOAD segment with RWX permissions` 是当前 baseline/binutils 的 linker warning，不等于实验失败。
+- `pcount(RUNNING)` 的数字不固定，只验证 `pcount(RUNNING) =` 和 `pcount(99) = -1`。
+- `fcount(...)` 的数字不固定，只验证稳定输出和 `fcounttest done`。
+- `pchildtest` 的状态受调度时序影响，可能看到 RUNNABLE、SLEEPING 等有效状态；只验证 `pstate(child) =`。
 
-- `logs/*.log`；
-- `logs/teammate-verify-*.summary.txt`；
-- `external/xv6-riscv/`。
+## 8. 禁止事项
 
-## 6. 常见问题
-
-### `riscv64-unknown-elf-gcc` 是 WARN
-
-可以接受。当前工程使用 `riscv64-linux-gnu-gcc` 可以完成 xv6 构建。
-
-### `LOAD segment with RWX permissions`
-
-这是当前 xv6 baseline / binutils 的 linker warning，不等于本轮实验失败。只要脚本 summary 是 PASS，就按 PASS 记录。
-
-### `pcount(RUNNING)` 的数字不一样
-
-正常。`pcount` 受运行时状态影响，验证只看稳定前缀 `pcount(RUNNING) =` 和负例 `pcount(99) = -1`。
-
-### `fcount(...)` 的数字不一样
-
-正常。`fcount` 绝对数值受环境影响，验证只看稳定输出和 `fcounttest done`。
-
-### `pchildtest` 状态不一样
-
-正常。child state 受调度时序影响，可能出现 `RUNNABLE`、`SLEEPING` 等有效状态。验证只看 `pstate(child) =`。
-
-## 7. 不能做什么
-
-- 不要 `git add external`。
-- 不要 `git add logs`。
-- 不要把密码、token、cookie 截图发群里。
-- 不要把失败改成成功。
-- 不要把自动 timeout 证据说成人工录屏。
+- 不提交 `external/xv6-riscv/`。
+- 不提交 `logs/*.log`。
+- 不提交 `logs/teammate-verify-*.summary.txt`。
+- 不发 token、密码、cookie 或隐私截图。
+- 不把失败结果改写成成功。
+- 不把自动 timeout 捕获说成人工交互录屏。

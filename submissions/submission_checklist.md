@@ -1,6 +1,6 @@
 # 初赛提交材料 Checklist
 
-> 维护时间：2026-06-06（stage7a1 队友一键复现 workflow）。
+> 维护时间：2026-06-06（stage7a2 队友正式测试前一键验证 UX）。
 > 这不是最终提交材料，不包含报名信息、个人隐私、账号密码、token 或大型二进制文件。
 
 ## 1. 当前提交状态总览
@@ -77,9 +77,12 @@
 
 ### 3.9 teammate one-shot verification
 
-- `scripts/xv6/teammate-verify.sh`：队友一键复现脚本，自动运行环境检查、baseline 检查、apply+make、boot 和 7 个用户程序验证，最后输出 PASS/FAIL summary
-- `scripts/xv6/cleanup-qemu.sh`：QEMU/make qemu 救援清理脚本，解释 Ctrl+C / Ctrl+Z 并执行 `pkill` 清理
-- `docs/23_teammate_quickstart.md`：给队友的极简说明
+- `scripts/xv6/doctor.sh`：只读环境诊断，不运行 make/QEMU，不修改仓库
+- `scripts/xv6/teammate-verify.sh --full`：队友第一次正式复现，自动运行 doctor、环境检查、baseline 检查、apply+make、boot 和 7 个用户程序验证，最后输出 PASS/FAIL summary
+- `scripts/xv6/teammate-verify.sh --quick`：已 make 成功后的二次重测，跳过 clean apply+make
+- `scripts/xv6/local-verify.sh --quick`：队长录屏前本地预检 wrapper，复用 teammate workflow
+- `scripts/xv6/cleanup-qemu.sh`：QEMU/make qemu 救援清理脚本，解释 Ctrl+C / Ctrl+Z，清理前后列出相关进程，并执行 rescue-level `pkill` 清理
+- `docs/23_teammate_quickstart.md`：给队友正式测试的极简说明
 - `apply-integrated-labs.sh` 的 make 阶段已有 `XV6_MAKE_TIMEOUT_SECONDS`，默认 600 秒
 
 ## 4. 当前已完成文档/证据
@@ -97,7 +100,7 @@
 | 审查文档 | `docs/12/14/15/16/17/18/19/20/21` | 全部完成 |
 | 提交就绪度审查 | `docs/21_submission_readiness_review.md` | stage6d 总审查 |
 | 队友故障排查 | `docs/22_teammate_reproduction_troubleshooting.md` | stage7a0 QEMU 卡住、Ctrl+Z、清理和反馈说明 |
-| 队友一键复现 | `docs/23_teammate_quickstart.md` | stage7a1：git pull 后只运行 teammate-verify，失败时 cleanup-qemu |
+| 队友一键复现 | `docs/23_teammate_quickstart.md` | stage7a2：第一次用 teammate-verify --full，make 成功后二次重测用 --quick，队长录屏前用 local-verify --quick |
 | 材料索引 | `submissions/draft-report-index.md` | 自动生成 |
 | 提交 Checklist | `submissions/submission_checklist.md` | 本文档 |
 
@@ -133,14 +136,20 @@ git ls-files external/xv6-riscv
 # 3. 确认 logs/*.log 未被 track
 git ls-files logs/*.log
 
-# 4. 综合演示：从 clean baseline 构建并逐项验证
-bash scripts/xv6/teammate-verify.sh
+# 4. 只读 doctor 环境诊断
+bash scripts/xv6/doctor.sh
+
+# 5. 综合演示：从 clean baseline 构建并逐项验证
+bash scripts/xv6/teammate-verify.sh --full
+
+# 5b. 队长录屏前本地预检（已 make 成功后）
+bash scripts/xv6/local-verify.sh --quick
 
 # 也可以手动分步验证
 bash scripts/xv6/apply-integrated-labs.sh --make --yes
 bash scripts/xv6/boot-xv6.sh
 
-# 5. 6 个用户程序验证
+# 6. 6 个用户程序验证
 bash scripts/xv6/run-xv6-command.sh hello "hello syscall returned 2026"
 bash scripts/xv6/run-xv6-command.sh add2test "add2(20, 6) returned 26"
 bash scripts/xv6/run-xv6-command.sh pstatetest "pstate(self) ="
@@ -148,21 +157,21 @@ bash scripts/xv6/run-xv6-command.sh pcounttest "pcount(RUNNING) ="
 bash scripts/xv6/run-xv6-command.sh pchildtest "pstate(child) ="
 bash scripts/xv6/run-xv6-command.sh fcounttest "fcounttest done"
 
-# 6. 可选：boot / command 环境变量覆盖
+# 7. 可选：boot / command 环境变量覆盖
 XV6_BOOT_TIMEOUT_SECONDS=60 XV6_BOOT_RETRIES=2 XV6_BOOT_HARD_TIMEOUT_SECONDS=90 bash scripts/xv6/boot-xv6.sh
 XV6_COMMAND_TIMEOUT_SECONDS=75 XV6_COMMAND_RETRIES=2 XV6_COMMAND_HARD_TIMEOUT_SECONDS=90 bash scripts/xv6/run-xv6-command.sh fcounttest "fcounttest done"
 XV6_MAKE_TIMEOUT_SECONDS=900 bash scripts/xv6/apply-integrated-labs.sh --make --yes
 
-# 6b. 如 QEMU 卡住或误按 Ctrl+Z
+# 7b. 如 QEMU 卡住或误按 Ctrl+Z
 bash scripts/xv6/cleanup-qemu.sh
 
-# 7. 材料索引更新
+# 8. 材料索引更新
 bash scripts/collect-report.sh
 
-# 8. 代码一致性
+# 9. 代码一致性
 git diff --check
 
-# 9. 最终 grep：不应有未处理的 TODO after commit
+# 10. 最终 grep：不应有未处理的 TODO after commit
 grep -R "TODO after commit" -n README.md docs labs tests patches reproducibility videos slides submissions scripts || echo "(OK: all resolved or intentionally kept with explanation)"
 ```
 
@@ -179,3 +188,4 @@ grep -R "TODO after commit" -n README.md docs labs tests patches reproducibility
 | 2026-06-05 | 初始版本，stage6e 提交材料整理 | 蓝色系统队 |
 | 2026-06-06 | stage7a0：加固 boot/run QEMU hard timeout、cleanup 与队友故障排查文档 | 蓝色系统队 |
 | 2026-06-06 | stage7a1：新增 teammate-verify 一键复现、cleanup-qemu 救援脚本、make timeout 和队友 quickstart | 蓝色系统队 |
+| 2026-06-06 | stage7a2：新增 doctor/local-verify，增强 teammate-verify full/quick/help 和 copy-to-lead summary，优化 cleanup 与队友 quickstart | 蓝色系统队 |

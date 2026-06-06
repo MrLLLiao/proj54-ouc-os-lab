@@ -602,3 +602,41 @@
   - `patches/integrated-labs/0001-0005` were not modified.
   - `external/xv6-riscv/` and `logs/*.log` remain ignored and must not be committed.
   - The one-shot run is still timeout-captured evidence, not long-running stability, manual recording, or a second teammate's independent reproduction.
+
+## 2026-06-06: stage7a2 polish one-shot verification UX before teammate testing
+
+- Commit hash: TODO after commit
+- Goal: make teammate official testing and team-lead pre-recording checks use clear one-shot commands with doctor, full/quick modes, local wrapper, copy-to-lead summary, and safer QEMU cleanup messaging.
+- Completed:
+  - Added `scripts/xv6/doctor.sh`.
+  - The doctor script is read-only: it checks current time, cwd, uname, current commit, Git repo status, required tools, optional `riscv64-unknown-elf-gcc`, baseline files, logs ignored status, QEMU leftovers, and `/mnt/` path risk.
+  - Updated `scripts/xv6/teammate-verify.sh` to support `--full`, `--quick`, and `--help`.
+  - Added `INT` / `TERM` / `TSTP` handling in teammate verification so Ctrl+C/Ctrl+Z paths try cleanup and still write a summary.
+  - `--full` runs doctor/check-env/baseline, clean integrated apply+make, boot, and hello/add2test/pstatetest/pcounttest/pcount invalid/pchildtest/fcounttest checks.
+  - `--quick` runs doctor/check-env/baseline, skips clean apply+make, then runs boot and the same user-program checks.
+  - The final summary includes a `COPY THIS SUMMARY TO TEAM LEAD` block and writes to ignored `logs/teammate-verify-YYYYMMDD-HHMMSS.summary.txt`.
+  - Added `scripts/xv6/local-verify.sh` as a team-lead local pre-recording wrapper around teammate workflow.
+  - Updated `scripts/xv6/cleanup-qemu.sh` output to explain `Ctrl+C` as interrupt, `Ctrl+Z` as suspend, list processes before/after cleanup, and warn that `pkill` is rescue-level.
+  - Rewrote `docs/23_teammate_quickstart.md` so teammate official testing uses `bash scripts/xv6/teammate-verify.sh --full`, retesting after make uses `--quick`, team-lead pre-recording uses `local-verify.sh --quick`, and stuck cleanup uses `cleanup-qemu.sh`.
+  - Updated `docs/22_teammate_reproduction_troubleshooting.md`, README, reproducibility package, submission checklist, AI usage record, report index script, and generated material index.
+- Real validation (WSL2 Ubuntu-24.04):
+  - `bash -n scripts/xv6/doctor.sh`: PASS.
+  - `bash -n scripts/xv6/teammate-verify.sh`: PASS.
+  - `bash -n scripts/xv6/local-verify.sh`: PASS.
+  - `bash -n scripts/xv6/cleanup-qemu.sh`: PASS.
+  - `bash scripts/xv6/doctor.sh`: PASS with expected warnings: optional `riscv64-unknown-elf-gcc` missing and current path under `/mnt/`.
+  - `bash scripts/xv6/cleanup-qemu.sh`: PASS; no QEMU/make qemu process found.
+  - `bash scripts/xv6/teammate-verify.sh --help`: PASS.
+  - `bash scripts/xv6/local-verify.sh --help`: PASS.
+  - `bash scripts/xv6/local-verify.sh --quick`: PASS; summary `logs/teammate-verify-20260606-163220.summary.txt` ignored; apply+make SKIPPED, boot and all user-program checks PASS.
+  - `bash scripts/xv6/teammate-verify.sh --quick`: PASS; summary `logs/teammate-verify-20260606-164138.summary.txt` ignored; apply+make SKIPPED, boot and all user-program checks PASS.
+  - Optional `bash scripts/xv6/teammate-verify.sh --full`: PASS; clean apply+make PASS, boot PASS, hello/add2test/pstatetest/pcounttest (`pcount(RUNNING)` and `pcount(99)`)/pchildtest/fcounttest PASS; summary `logs/teammate-verify-20260606-165208.summary.txt` ignored.
+  - WSL emitted a localhost/NAT warning on stderr during Start-Process-launched runs; it did not affect command exit or QEMU evidence matching.
+  - The known `/mnt/d` `user/usys.pl has type 100644, expected 100755` warning appeared during full apply; apply + make still completed successfully.
+- Boundaries:
+  - No OS feature was added.
+  - No GitLab/GitHub remote was modified.
+  - `patches/integrated-labs/0001-0005` were not modified.
+  - `external/xv6-riscv/` and `logs/*.log` remain ignored and must not be committed.
+  - Summary files under `logs/` are for feedback only and must not be tracked.
+  - The workflow remains timeout-captured evidence, not long-running stability, manual recording, or a second teammate's independent reproduction.

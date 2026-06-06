@@ -32,8 +32,8 @@ It is not the final technical report, does not generate PDF, and does not includ
 | lab4 file table observation review | `docs/20_lab4_file_table_observation_review.md` | exists | stage6a + stage6b red-team: fcount/fcounttest; independent lab4 patch and integrated 0005 re-reproduced from clean baseline; both patches unchanged; filecount lock/deadlock/no-leak analysis; sys_fcount in sysfile.c; open/close +1/-1 delta; fcount numbers non-fixed |
 | submission readiness review | `docs/21_submission_readiness_review.md` | exists | stage6d red-team: full integrated 0001-0005 reproduced from clean baseline (make/boot x2/hello/add2test/pstatetest/pcounttest+negative/pchildtest/fcounttest); doc consistency audit; risk list and pre-submission must-do (teammate reproduction + manual recording still TODO) |
 | teammate reproduction troubleshooting | `docs/22_teammate_reproduction_troubleshooting.md` | exists | stage7a0: explains apply/make completion, boot normal duration, Ctrl+Z risk, qemu/make cleanup, continuation steps, feedback format, and no-log/no-secret boundaries |
-| teammate quickstart | `docs/23_teammate_quickstart.md` | exists | stage7a1: plain-language one-shot reproduction instructions; git pull, teammate-verify, cleanup-qemu, feedback format, common warnings, and no external/logs/secrets |
-| submission checklist | `submissions/submission_checklist.md` | exists | stage7a1 pre-submission checklist: completion status, must-fill items, teammate one-shot workflow, forbidden items, pre-submit commands, and honest-MVP conclusion |
+| teammate quickstart | `docs/23_teammate_quickstart.md` | exists | stage7a2: official teammate testing entry; --full first run, --quick retest after make, local-verify before recording, cleanup-qemu after stuck/Ctrl+Z, summary feedback, no external/logs/secrets |
+| submission checklist | `submissions/submission_checklist.md` | exists | stage7a2 pre-submission checklist: completion status, must-fill items, doctor/full/quick/local workflows, forbidden items, pre-submit commands, and honest-MVP conclusion |
 | Technical report v0.1 | `docs/13_technical_report_v0.1.md` | exists | stage2c draft; not final report |
 | Reproducibility package | `reproducibility/README.md` | exists | lab0/lab1/lab2/integrated-labs reproduction checklist and template |
 | lab0 environment guide | `labs/lab0-env-setup/README.md` | exists | xv6 baseline make succeeded; boot evidence found; manual interaction TODO |
@@ -52,8 +52,10 @@ It is not the final technical report, does not generate PDF, and does not includ
 | xv6 command evidence script | `scripts/xv6/run-xv6-command.sh` | exists | captures user program output under soft+hard timeout; default 60s soft, max(timeout+15,75)s hard, 2 attempts, fs.img prebuild, trap cleanup |
 | lab1 patch apply helper | `scripts/xv6/apply-lab1-patch.sh` | exists | preview by default; --run resets clean baseline and applies; --make optional |
 | integrated labs apply helper | `scripts/xv6/apply-integrated-labs.sh` | exists | preview by default; --run/--make always require --yes (reset/clean ignored tree); make has XV6_MAKE_TIMEOUT_SECONDS; make logs ignored |
-| xv6 QEMU cleanup helper | `scripts/xv6/cleanup-qemu.sh` | exists | stage7a1 rescue tool: lists qemu/make qemu processes, explains Ctrl+C vs Ctrl+Z, runs pkill cleanup, exits 0 |
-| teammate one-shot verification | `scripts/xv6/teammate-verify.sh` | exists | stage7a1 workflow: check-env, baseline, apply+make, boot, hello/add2/pstate/pcount/pchild/fcount verification, PASS/FAIL summary in ignored logs |
+| xv6 doctor script | `scripts/xv6/doctor.sh` | exists | stage7a2 read-only environment diagnosis: time/cwd/uname/commit, Git repo, tools, baseline files, logs ignored, QEMU leftovers, /mnt warning; no make or QEMU run |
+| xv6 QEMU cleanup helper | `scripts/xv6/cleanup-qemu.sh` | exists | stage7a2 rescue tool: explains Ctrl+C interrupt vs Ctrl+Z suspend, lists qemu/make qemu processes before/after, warns pkill may affect same-WSL QEMU, exits 0 |
+| teammate one-shot verification | `scripts/xv6/teammate-verify.sh` | exists | stage7a2 workflow: --full clean apply+make and --quick retest; doctor/check-env/baseline, boot, hello/add2/pstate/pcount/pchild/fcount verification, copy-to-lead summary in ignored logs |
+| local pre-recording verification | `scripts/xv6/local-verify.sh` | exists | stage7a2 team-lead wrapper around teammate-verify; --full/--quick; recommended --quick before recording |
 | lab1 hello syscall patch | `patches/lab1-system-call/0001-add-hello-syscall.patch` | exists | tracked patch; third-party source not submitted |
 | lab1 add2 argint syscall patch | `patches/lab1-system-call/0002-add-argint-add2-syscall.patch` | exists | commit-ready incremental patch after 0001 |
 | lab1 patch guide | `patches/lab1-system-call/README.md` | exists | apply/build/run instructions |
@@ -86,7 +88,9 @@ It is not the final technical report, does not generate PDF, and does not includ
 - integrated-labs provides the verified comprehensive demo sequence with hello=22, add2=23, pstate=24, pcount=25, fcount=26.
 - The child-state demo command is pchildtest; the longer pstatechildtest name is not used because xv6 DIRSIZ caused a real mkfs failure.
 - scripts/xv6/apply-integrated-labs.sh is the recommended helper for final integrated demo reproduction and now applies integrated 0001-0005.
-- scripts/xv6/teammate-verify.sh is the recommended teammate one-shot workflow; it writes summary files under ignored logs/.
+- scripts/xv6/doctor.sh is the read-only environment diagnosis entry and does not run make/QEMU.
+- scripts/xv6/teammate-verify.sh --full is the recommended first teammate workflow; --quick is for retesting after make already succeeded.
+- scripts/xv6/local-verify.sh --quick is recommended for team-lead pre-recording checks.
 - scripts/xv6/cleanup-qemu.sh is the rescue command when QEMU is stuck or Ctrl+Z suspended a job.
 - Technical report v0.1 and reproducibility package are drafts for review, not final submission files.
 - Raw logs remain ignored by Git; do not submit logs/*.log.
@@ -94,4 +98,4 @@ It is not the final technical report, does not generate PDF, and does not includ
 - run-xv6-command.sh now defaults to 60s soft timeout, hard timeout max(timeout+15,75), and 2 attempts; success is still based only on real log matching.
 - apply-integrated-labs.sh --make --yes uses XV6_MAKE_TIMEOUT_SECONDS, default 600 seconds; make success is never fabricated.
 - Teammate QEMU cleanup troubleshooting is documented in docs/22_teammate_reproduction_troubleshooting.md.
-- Plain-language teammate quickstart is documented in docs/23_teammate_quickstart.md.
+- Plain-language teammate quickstart is documented in docs/23_teammate_quickstart.md; teammates should copy the COPY THIS SUMMARY TO TEAM LEAD block to the team lead.

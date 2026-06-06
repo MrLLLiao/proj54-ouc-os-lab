@@ -2,6 +2,43 @@
 set -u
 
 PROJECT_NAME="proj54-ouc-os-lab"
+MODE="full"
+
+usage() {
+  cat <<'EOF'
+Usage:
+  bash scripts/xv6/teammate-verify.sh --full
+      First teammate reproduction. Runs doctor, environment checks, clean apply+make,
+      boot, and all user-program checks.
+
+  bash scripts/xv6/teammate-verify.sh --quick
+      Re-test after apply+make already succeeded. Skips clean apply and make.
+      Runs doctor, environment checks, baseline check, boot, and all user-program checks.
+
+  bash scripts/xv6/teammate-verify.sh --help
+      Show this help.
+
+Plain-language notes:
+  - First time: use --full.
+  - Already saw "[OK] make completed successfully": use --quick.
+  - If it gets stuck: press Ctrl+C, then run bash scripts/xv6/cleanup-qemu.sh.
+  - Do not press Ctrl+Z as an exit; Ctrl+Z suspends QEMU/make.
+EOF
+}
+
+for arg in "$@"; do
+  case "$arg" in
+    --full) MODE="full" ;;
+    --quick) MODE="quick" ;;
+    --help|-h) usage; exit 0 ;;
+    *)
+      echo "[ERROR] unknown argument: ${arg}"
+      usage
+      exit 2
+      ;;
+  esac
+done
+
 TS="$(date +%Y%m%d-%H%M%S)"
 REPO_ROOT="$(git rev-parse --show-toplevel 2>/dev/null || pwd)"
 
@@ -13,6 +50,7 @@ cd "$REPO_ROOT" || {
 mkdir -p logs
 SUMMARY_FILE="logs/teammate-verify-${TS}.summary.txt"
 
+doctor_status="NOT_RUN"
 check_env_status="NOT_RUN"
 baseline_status="NOT_RUN"
 environment_status="NOT_RUN"
@@ -25,12 +63,14 @@ pcount_running_status="NOT_RUN"
 pcount_invalid_status="NOT_RUN"
 pchildtest_status="NOT_RUN"
 fcounttest_status="NOT_RUN"
+overall_status="FAIL"
 interrupted_status="NO"
 
 set_status() {
   key="$1"
   value="$2"
   case "$key" in
+    doctor) doctor_status="$value" ;;
     check_env) check_env_status="$value" ;;
     baseline) baseline_status="$value" ;;
     apply_make) apply_make_status="$value" ;;
@@ -47,9 +87,9 @@ set_status() {
 }
 
 aggregate_environment() {
-  if [ "$check_env_status" = "PASS" ] && [ "$baseline_status" = "PASS" ]; then
+  if [ "$doctor_status" = "PASS" ] && [ "$check_env_status" = "PASS" ] && [ "$baseline_status" = "PASS" ]; then
     environment_status="PASS"
-  elif [ "$check_env_status" = "NOT_RUN" ] && [ "$baseline_status" = "NOT_RUN" ]; then
+  elif [ "$doctor_status" = "NOT_RUN" ] && [ "$check_env_status" = "NOT_RUN" ] && [ "$baseline_status" = "NOT_RUN" ]; then
     environment_status="NOT_RUN"
   else
     environment_status="FAIL"
@@ -64,6 +104,35 @@ aggregate_pcount() {
   else
     echo "FAIL"
   fi
+}
+
+calculate_overall() {
+  aggregate_environment
+  pcount_status="$(aggregate_pcount)"
+
+  if [ "$environment_status" != "PASS" ]; then
+    echo "FAIL"
+    return
+  fi
+
+  if [ "$MODE" = "full" ] && [ "$apply_make_status" != "PASS" ]; then
+    echo "FAIL"
+    return
+  fi
+
+  if [ "$MODE" = "quick" ] && [ "$apply_make_status" != "SKIPPED" ]; then
+    echo "FAIL"
+    return
+  fi
+
+  for status in "$boot_status" "$hello_status" "$add2test_status" "$pstatetest_status" "$pcount_status" "$pchildtest_status" "$fcounttest_status"; do
+    if [ "$status" != "PASS" ]; then
+      echo "FAIL"
+      return
+    fi
+  done
+
+  echo "PASS"
 }
 
 print_command() {
@@ -100,21 +169,41 @@ run_step() {
 write_summary() {
   aggregate_environment
   pcounttest_status="$(aggregate_pcount)"
+  overall_status="$(calculate_overall)"
   commit="$(git log --oneline -1 2>/dev/null || echo unknown)"
+  environment_line="doctor=${doctor_status}; check-env=${check_env_status}; baseline=${baseline_status}"
 
   {
     echo "teammate verification summary"
     echo "project       : ${PROJECT_NAME}"
     echo "time          : $(date -Iseconds 2>/dev/null || date)"
     echo "repo root     : ${REPO_ROOT}"
-    echo "commit        : ${commit}"
+    echo "current commit: ${commit}"
+    echo "mode          : ${MODE}"
     echo "user          : $(id -un 2>/dev/null || whoami 2>/dev/null || echo unknown)"
     echo "interrupted   : ${interrupted_status}"
     echo "summary file  : ${SUMMARY_FILE}"
     echo
+    echo "COPY THIS SUMMARY TO TEAM LEAD"
+    echo "current commit: ${commit}"
+    echo "mode: ${MODE}"
+    echo "environment: ${environment_line}"
+    echo "apply+make: ${apply_make_status}"
+    echo "boot: ${boot_status}"
+    echo "hello: ${hello_status}"
+    echo "add2test: ${add2test_status}"
+    echo "pstatetest: ${pstatetest_status}"
+    echo "pcounttest: ${pcounttest_status}"
+    echo "pchildtest: ${pchildtest_status}"
+    echo "fcounttest: ${fcounttest_status}"
+    echo "overall: ${overall_status}"
+    echo "summary file: ${SUMMARY_FILE}"
+    echo "END SUMMARY"
+    echo
     echo "| item | status |"
     echo "| --- | --- |"
     echo "| environment | ${environment_status} |"
+    echo "| doctor | ${doctor_status} |"
     echo "| check-env | ${check_env_status} |"
     echo "| baseline | ${baseline_status} |"
     echo "| apply+make | ${apply_make_status} |"
@@ -127,6 +216,7 @@ write_summary() {
     echo "| pcounttest: pcount(99) | ${pcount_invalid_status} |"
     echo "| pchildtest | ${pchildtest_status} |"
     echo "| fcounttest | ${fcounttest_status} |"
+    echo "| overall | ${overall_status} |"
     echo
     echo "timeout overrides:"
     echo "  XV6_BOOT_TIMEOUT_SECONDS=${XV6_BOOT_TIMEOUT_SECONDS:-default}"
@@ -135,10 +225,16 @@ write_summary() {
     echo "  XV6_COMMAND_RETRIES=${XV6_COMMAND_RETRIES:-default}"
     echo "  XV6_MAKE_TIMEOUT_SECONDS=${XV6_MAKE_TIMEOUT_SECONDS:-default}"
     echo
-    echo "If any item is FAIL or the script was interrupted, run:"
-    echo "  bash scripts/xv6/cleanup-qemu.sh"
-    echo
+    if [ "$overall_status" != "PASS" ] || [ "$interrupted_status" = "YES" ]; then
+      echo "Next steps after failure:"
+      echo "  bash scripts/xv6/cleanup-qemu.sh"
+      echo "  bash scripts/xv6/teammate-verify.sh --quick"
+      echo "  If the machine is slow, try higher timeout env vars, for example:"
+      echo "    XV6_BOOT_TIMEOUT_SECONDS=90 XV6_BOOT_RETRIES=2 XV6_COMMAND_TIMEOUT_SECONDS=90 XV6_COMMAND_RETRIES=2 bash scripts/xv6/teammate-verify.sh --quick"
+      echo
+    fi
     echo "Do not commit external/xv6-riscv/ or logs/*.log."
+    echo "Do not commit ${SUMMARY_FILE}."
     echo "Do not share passwords, tokens, cookies, or private screenshots."
   } | tee "$SUMMARY_FILE"
 }
@@ -152,7 +248,7 @@ on_interrupt() {
   exit 130
 }
 
-trap on_interrupt INT TERM
+trap on_interrupt INT TERM TSTP
 
 echo "${PROJECT_NAME} teammate one-shot verification"
 echo "time   : $(date -Iseconds 2>/dev/null || date)"
@@ -160,12 +256,22 @@ echo "cwd    : $(pwd)"
 echo "uname  : $(uname -a 2>/dev/null || echo unknown)"
 echo "commit : $(git log --oneline -1 2>/dev/null || echo unknown)"
 echo "user   : $(id -un 2>/dev/null || whoami 2>/dev/null || echo unknown)"
+echo "mode   : ${MODE}"
 echo "summary: ${SUMMARY_FILE}"
 echo
+echo "[INFO] First reproduction: bash scripts/xv6/teammate-verify.sh --full"
+echo "[INFO] Re-test after make succeeded: bash scripts/xv6/teammate-verify.sh --quick"
 echo "[INFO] Ctrl+C interrupts. Ctrl+Z suspends and is not an exit."
 echo "[INFO] If QEMU gets stuck, run: bash scripts/xv6/cleanup-qemu.sh"
 
 overall=0
+
+if ! run_step "doctor environment check" doctor bash scripts/xv6/doctor.sh; then
+  overall=1
+  echo "[STOP] doctor failed; stopping before apply/make and QEMU."
+  write_summary
+  exit "$overall"
+fi
 
 if ! run_step "environment check" check_env bash scripts/check-env.sh; then
   overall=1
@@ -181,11 +287,18 @@ if ! run_step "xv6 baseline check" baseline bash scripts/xv6/check-xv6-baseline.
   exit "$overall"
 fi
 
-if ! run_step "integrated apply + make" apply_make bash scripts/xv6/apply-integrated-labs.sh --make --yes; then
-  overall=1
-  echo "[STOP] apply+make failed; stopping before boot and command checks."
-  write_summary
-  exit "$overall"
+if [ "$MODE" = "full" ]; then
+  if ! run_step "integrated apply + make" apply_make bash scripts/xv6/apply-integrated-labs.sh --make --yes; then
+    overall=1
+    echo "[STOP] apply+make failed; stopping before boot and command checks."
+    write_summary
+    exit "$overall"
+  fi
+else
+  apply_make_status="SKIPPED"
+  echo
+  echo "[SKIP] integrated apply + make (quick mode)"
+  echo "[INFO] quick mode assumes apply+make already completed successfully."
 fi
 
 if ! run_step "boot evidence" boot bash scripts/xv6/boot-xv6.sh; then
@@ -204,12 +317,13 @@ run_step "pchildtest output" pchildtest bash scripts/xv6/run-xv6-command.sh pchi
 run_step "fcounttest output" fcounttest bash scripts/xv6/run-xv6-command.sh fcounttest "fcounttest done" || overall=1
 
 echo
-if [ "$overall" -eq 0 ]; then
+write_summary
+
+if [ "$overall_status" = "PASS" ]; then
   echo "[OK] teammate verification completed successfully."
-else
-  echo "[WARN] teammate verification completed with failures."
-  echo "[INFO] Run cleanup if QEMU is still present: bash scripts/xv6/cleanup-qemu.sh"
+  exit 0
 fi
 
-write_summary
-exit "$overall"
+echo "[WARN] teammate verification completed with failures."
+echo "[INFO] Run cleanup if QEMU is still present: bash scripts/xv6/cleanup-qemu.sh"
+exit 1

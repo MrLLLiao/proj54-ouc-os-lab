@@ -6,9 +6,12 @@ echo "time : $(date -Iseconds 2>/dev/null || date)"
 echo "cwd  : $(pwd)"
 echo
 
-echo "[INFO] Ctrl+C interrupts the foreground command."
-echo "[INFO] Ctrl+Z suspends it; Ctrl+Z is not an exit."
+echo "[INFO] Ctrl+C = interrupt the foreground command."
+echo "[INFO] Ctrl+Z = suspend the foreground command; it is not an exit."
 echo "[INFO] If your shell shows a stopped job such as %1, run: kill %1"
+echo
+echo "[WARN] This is a rescue-level cleanup."
+echo "[WARN] pkill may affect other xv6/QEMU runs inside the same WSL instance."
 echo
 
 echo "[INFO] In the shell where you pressed Ctrl+Z, check jobs with:"
