@@ -77,6 +77,17 @@ logs/teammate-verify-YYYYMMDD-HHMMSS.summary.txt
 
 注意：summary 文件不提交 Git，只作为反馈文本。
 
+## 当前已收到的队友结果
+
+截至 2026-06-06，已收到两份队友 `--full` verification PASS summary：
+
+| 记录 | 终端 user | repo root | commit | mode | overall |
+| --- | --- | --- | --- | --- | --- |
+| 队友 A | `root` | `/root/workspace/proj54-ouc-os-lab` | `1ba9db6 tooling: speed up verification and clean repo hygiene` | `full` | PASS |
+| 队友 B | `z2996` | `/home/z2996/workspace/proj54-ouc-os-lab` | `1ba9db6 tooling: speed up verification and clean repo hygiene` | `full` | PASS |
+
+文字摘要见 `submissions/teammate_reproduction_record.md`。原始 logs、summary 文件和截图不入仓；队友真实姓名、系统版本和队友 B 的精确 summary 文件冲突仍待核对，不补造。
+
 ## 队友反馈模板
 
 ```text

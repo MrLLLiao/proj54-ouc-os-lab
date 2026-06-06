@@ -9,7 +9,8 @@ It is not the final technical report, does not generate PDF, and does not includ
 
 | Material | Path | File | Content status |
 | --- | --- | --- | --- |
-| Project homepage | `README.md` | exists | MVP draft |
+| Project homepage | `README.md` | exists | judge-facing portal |
+| Documentation guide | `docs/README.md` | exists | stage8b guide: docs/final is official documentation portal; docs/00-23 are process records; docs/13 is historical v0.1 draft |
 | Project plan | `docs/00_project_plan.md` | exists | MVP draft |
 | Requirement and scoring analysis | `docs/01_requirement_analysis.md` | exists | MVP draft |
 | Lab system design | `docs/02_lab_design.md` | exists | MVP draft |
@@ -45,9 +46,10 @@ It is not the final technical report, does not generate PDF, and does not includ
 | final AI usage statement | `docs/final/09_ai_usage_and_contribution_statement.md` | exists | stage8a formal AI usage and contribution statement |
 | final reference and license statement | `docs/final/10_reference_and_license_statement.md` | exists | stage8a formal xv6 MIT license boundary and reference-project notes |
 | final limits and future work | `docs/final/11_known_limits_and_future_work.md` | exists | stage8a formal known limits and follow-up plan |
-| submission checklist | `submissions/submission_checklist.md` | exists | stage8a submission checklist: platform compliance, Git hygiene, reproducibility, docs, videos, teammate summary, red-team review, final commands |
-| demo video record | `submissions/demo_record.md` | exists | stage8a records 3 videos outside Git, with file names/platform submission details pending |
-| Technical report v0.1 | `docs/13_technical_report_v0.1.md` | exists | stage2c draft; not final report |
+| submission checklist | `submissions/submission_checklist.md` | exists | stage8b submission checklist: platform compliance, Git hygiene, reproducibility, docs, video metadata, teammate summaries, red-team review, final commands |
+| demo video record | `submissions/demo_record.md` | exists | stage8b records 3 video file names, external path, approximate sizes, and no-video-in-Git boundary |
+| teammate reproduction record | `submissions/teammate_reproduction_record.md` | exists | stage8b records two teammate --full PASS summary digests; raw logs/summary/screenshots are not committed |
+| Technical report v0.1 | `docs/13_technical_report_v0.1.md` | exists | historical stage2c draft with stage8b obsolete notice; not final report |
 | Reproducibility package | `reproducibility/README.md` | exists | lab0/lab1/lab2/integrated-labs reproduction checklist and template |
 | lab0 environment guide | `labs/lab0-env-setup/README.md` | exists | xv6 baseline make succeeded; boot evidence found; manual interaction TODO |
 | lab1 syscall lab | `labs/lab1-system-call/README.md` | exists | hello minimal and add2 argint patches generated and verified |
@@ -106,11 +108,14 @@ It is not the final technical report, does not generate PDF, and does not includ
 - scripts/xv6/local-verify.sh --quick is recommended for team-lead pre-recording checks.
 - scripts/xv6/cleanup-qemu.sh is the rescue command when QEMU is stuck or Ctrl+Z suspended a job.
 - docs/final/ is the formal submission documentation portal for stage8a and should be the basis for technical report v1.0 and PPT.
+- docs/README.md explains the boundary between formal docs/final documentation and historical process records.
 - Technical report v0.1 and reproducibility package are drafts for review, not final submission files.
+- docs/13_technical_report_v0.1.md is explicitly marked as a historical draft superseded by docs/final and a future technical report v1.0.
 - Raw logs remain ignored by Git; do not submit logs/*.log.
 - boot-xv6.sh now defaults to 45s soft timeout, hard timeout max(timeout+15,75), and 2 attempts; QEMU long-running stability and manual interactive shell testing remain TODO.
 - run-xv6-command.sh now defaults to 60s soft timeout, hard timeout max(timeout+15,75), and 2 attempts; success is still based only on real log matching.
 - apply-integrated-labs.sh --make --yes uses XV6_MAKE_TIMEOUT_SECONDS, default 600 seconds; make success is never fabricated.
 - Teammate QEMU cleanup troubleshooting is documented in docs/22_teammate_reproduction_troubleshooting.md.
 - Plain-language teammate quickstart is documented in docs/23_teammate_quickstart.md; teammates should copy the COPY THIS SUMMARY TO TEAM LEAD block to the team lead.
-- Video files are not committed; stage8a video status is recorded in submissions/demo_record.md.
+- Video files are not committed; stage8b video file names, external path, and approximate sizes are recorded in submissions/demo_record.md.
+- Two teammate --full verification PASS summaries are recorded as text in submissions/teammate_reproduction_record.md; raw logs/summary files/screenshots are not committed.

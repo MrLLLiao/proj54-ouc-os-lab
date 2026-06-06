@@ -24,13 +24,26 @@ xv6-riscv 上游 LICENSE 为 MIT License。项目使用 xv6 作为教学 OS base
 
 | 参考 | 用途 | 当前状态 |
 | --- | --- | --- |
-| uCore | 分阶段 OS 实验组织参考 | URL/许可证待补充 |
-| rCore | 教程结构、实验章节化参考 | URL/许可证待补充 |
-| YatSen OS | 往届/同类课程 OS 材料展示参考 | URL/许可证待补充 |
-| F-Tutorials | tutorial 组织和教学表达参考 | URL/许可证待补充 |
-| 往届 OS 竞赛资料 | 提交材料结构、评审关注点参考 | URL/许可证待补充 |
+| uCore Tutorial / uCore OS Lab | 分阶段 OS 实验组织参考 | URL/许可证待核对 |
+| rCore Tutorial | 教程结构、实验章节化参考 | URL/许可证待核对 |
+| YatSen OS | 往届/同类课程 OS 材料展示参考 | URL/许可证待核对 |
+| F-Tutorials | tutorial 组织和教学表达参考 | URL/许可证待核对 |
+| 往届 OS 竞赛资料 | 提交材料结构、评审关注点参考 | URL/许可证待核对 |
 
 当前 `docs/final/` 中只做定位性对比，不复制上述项目的大段文本、代码或图片。
+
+## 待核对清单
+
+最终技术报告/PPT 引用前必须逐项核对 URL、许可证和引用位置，不要在未核对时补造链接：
+
+- uCore Tutorial / uCore OS Lab。
+- rCore Tutorial。
+- YatSen OS。
+- F-Tutorials。
+- xv6-riscv MIT License。
+- 往届 OS 竞赛作品仓库。
+
+当前已确认项：xv6-riscv 是本项目上游 baseline，baseline commit 为 `74f84181a3404d1d6a6ff98d342233979066ebb8`，LICENSE 为 MIT License，`external/xv6-riscv/` 不入仓。
 
 ## 本队增量贡献
 
@@ -40,7 +53,7 @@ xv6-riscv 上游 LICENSE 为 MIT License。项目使用 xv6 作为教学 OS base
 - `patches/integrated-labs/0001-0005`：统一 syscall number 的综合 patch sequence。
 - `scripts/xv6/`：fetch/check/apply/boot/run/doctor/local/teammate/cleanup 工具链。
 - `docs/final/`：面向提交和评委阅读的正式文档入口。
-- OUC 本校课程叙事、队友复现流程、测试覆盖表和诚信边界说明。
+- OUC 本校课程叙事、一键验证、队友复现流程、测试覆盖表和诚信边界说明。
 
 ## 禁止事项
 

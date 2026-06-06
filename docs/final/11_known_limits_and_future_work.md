@@ -7,8 +7,8 @@
 | lab3 memory/pagetable | 未完成 | 目前不声称实现内存/页表实验 |
 | lab4 file system | 部分完成 | 仅做文件表引用计数观察，不是完整文件系统实验 |
 | 长期稳定性测试 | 未完成 | 当前为 timeout 自动捕获 evidence |
-| 队友独立复现 | 待补充 | 等待队友 summary，不伪造 |
-| 视频提交信息 | 待补充 | 已录制 3 段，文件名/时长/平台提交方式待记录 |
+| 队友独立复现 | 已收到 2 份 full PASS summary | 原始 logs/summary/截图不入仓；文字摘要已记录；真实姓名/系统版本待补充 |
+| 视频提交信息 | 部分补充 | 已录制 3 段，文件名/外部位置/约略大小已记录；时长/平台提交方式待补充 |
 | 同类项目引用 URL | 待补充 | uCore/rCore/YatSen OS/F-Tutorials 等需最终核对 |
 | 技术报告 v1.0 | 待制作 | 可基于 `docs/final/` 整理 |
 | PPT | 待制作 | 可基于 README、overview、testing、tradeoffs 整理 |
@@ -19,8 +19,8 @@
 - `pcount(RUNNING)` 不能写成固定数值。
 - `pchildtest` 不能写成固定状态。
 - timeout evidence 不能写成长期稳定性测试。
-- 队长本机 PASS 不能写成队友独立复现。
-- 已录制视频不能自动等同于已完成平台提交；还需补充文件名和提交方式。
+- 队长本机 PASS 不能写成队友独立复现；队友 PASS 只能按已收到的 summary/截图摘要记录。
+- 已录制视频不能自动等同于已完成平台提交；还需补充时长和提交方式。
 
 ## 后续可扩展实验
 
@@ -54,8 +54,8 @@
 
 ## 提交前必须补齐
 
-1. 队友 `teammate-verify.sh --full` summary。
-2. 三段视频的文件名、时长、内容和平台提交方式。
+1. 队友真实姓名、系统版本和队友 B 精确 summary 文件名冲突（如最终材料需要）。
+2. 三段视频的时长、内容确认和平台提交方式。
 3. 技术报告 v1.0。
 4. PPT。
 5. 参考来源 URL 和许可证核对。
@@ -63,7 +63,6 @@
 
 ## 建议下一轮工作
 
-- `stage8b`: 根据 `docs/final/` 生成技术报告 v1.0。
-- `stage8c`: 生成 PPT 大纲和讲稿。
-- `stage8d`: 补充队友 summary 与视频记录。
+- `stage8c`: 根据 `docs/final/` 和 stage8b 证据生成技术报告 v1.0。
+- `stage8d`: 生成 PPT 大纲和讲稿。
 - `stage8e`: 最终提交前红队审核。

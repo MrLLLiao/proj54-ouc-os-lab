@@ -717,4 +717,35 @@
   - `patches/integrated-labs/0001-0005` were not modified.
   - `.claude/` local files were preserved; only git tracking was removed.
   - `external/xv6-riscv/` and `logs/*.log` remain ignored and must not be committed.
-  - Evidence remains timeout-captured log matching with early QEMU termination, not long-running stability, manual recording, or a second teammate's independent reproduction.
+- Evidence remains timeout-captured log matching with early QEMU termination, not long-running stability, manual recording, or a second teammate's independent reproduction.
+
+## 2026-06-06: stage8b record reproduction evidence and fix submission-readiness gaps
+
+- Commit hash: TODO after commit
+- Goal: record teammate reproduction evidence and demo video metadata without committing raw logs, summary files, screenshots, videos, secrets, or third-party source.
+- Completed:
+  - Added `submissions/teammate_reproduction_record.md`.
+  - Recorded teammate A full verification summary: user `root`, repo root `/root/workspace/proj54-ouc-os-lab`, time `2026-06-06T19:15:02+08:00`, commit `1ba9db6 tooling: speed up verification and clean repo hygiene`, mode `full`, interrupted `NO`, summary file `logs/teammate-verify-20260606-191352.summary.txt`, all checks PASS.
+  - Recorded teammate B full verification summary from screenshot/log: user `z2996`, repo root `/home/z2996/workspace/proj54-ouc-os-lab`, commit `1ba9db6 tooling: speed up verification and clean repo hygiene`, mode `full`, all checks PASS, summary file shown as `logs/teammate-verify-20260606-201839.summary.txt` or related teammate summary log. Exact raw file/timestamp conflict remains noted, not fabricated.
+  - Updated `submissions/demo_record.md` with three external video filenames: `20260606_auto_verify_demo.mp4`, `20260606_full_verify_demo.mp4`, `20260606_manual_xv6_shell_demo.mp4`; external path `D:\Edge Download\CSCC\proj54_submission_assets\videos`; approximate sizes 13,043 KB / 10,475 KB / 15,174 KB; durations and platform submission method still pending.
+  - Added `docs/README.md` to explain that `docs/final/` is the formal submission documentation portal, while `docs/00-23` are process/red-team/stage records.
+  - Marked `docs/13_technical_report_v0.1.md` as a historical draft superseded by `docs/final/` and future technical report v1.0.
+  - Updated README, final docs, submission checklist, reference/license notes, AI usage record, collect-report script, and generated material index.
+- Real validation:
+  - `bash scripts/collect-report.sh`: PASS; regenerated `submissions/draft-report-index.md`.
+  - `git diff --check`: PASS.
+  - `git status --short`: showed only intended documentation/index changes plus new `docs/README.md` and `submissions/teammate_reproduction_record.md`.
+  - `git status --ignored --short external logs .claude`: showed `.claude/`, `external/xv6-riscv/`, and `logs/` artifacts as ignored.
+  - `git ls-files external/xv6-riscv`: empty.
+  - `git ls-files logs/*.log`: empty.
+  - `git ls-files logs/*.summary.txt`: empty.
+  - `git ls-files logs/*.console.txt`: empty.
+  - `git ls-files .claude`: empty.
+  - `git ls-files | grep -Ei '\.(mp4|mov|avi|mkv|zip|7z|rar)$' || true`: no tracked video/archive files.
+  - WSL emitted the known localhost/NAT warning on stderr, but all validation commands exited 0.
+- Boundaries:
+  - No OS feature was added.
+  - No GitLab/GitHub remote was modified.
+  - `patches/integrated-labs/0001-0005` were not modified.
+  - `external/xv6-riscv/`, raw logs, summary files, screenshots, `.claude/`, videos, archives, large binaries, and privacy materials must not be tracked.
+  - Teammate real names, teammate B exact raw summary conflict, teammate system versions, video durations, platform submission method, and final privacy review remain pending unless confirmed later.

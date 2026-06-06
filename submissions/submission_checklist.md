@@ -1,6 +1,6 @@
 # Submission Checklist
 
-> 维护时间：2026-06-06（stage8a submission documentation portal）。
+> 维护时间：2026-06-06（stage8b reproduction evidence record）。
 > 本 checklist 面向最终提交前自查，不包含报名信息、个人隐私、token、视频文件或大文件。
 
 ## 1. 平台提交合规
@@ -10,7 +10,7 @@
 | 官方主仓库 | 待最终确认 | 最终以比赛 GitLab / 平台要求为准，不修改 remote |
 | GitHub 使用边界 | 已说明 | GitHub 仅作私有备份/协作，不作为最终提交平台 |
 | 报名材料 | 禁止入库 | 姓名、学号、手机号、身份证等不进 Git |
-| 视频文件 | 禁止入库 | 已录制 3 段，文件名/提交方式待补充到 `submissions/demo_record.md` |
+| 视频文件 | 禁止入库 | 已录制 3 段，文件名/外部位置/约略大小已记录到 `submissions/demo_record.md`；时长和提交方式待补充 |
 | 大文件/压缩包 | 禁止入库 | `.mp4/.mov/.zip/.7z/.rar` 等均禁止提交 |
 
 ## 2. Git 仓库卫生
@@ -31,7 +31,7 @@
 | 环境诊断 | `bash scripts/xv6/doctor.sh` | PASS；可能有可接受 WARN |
 | clean apply + make | `bash scripts/xv6/apply-integrated-labs.sh --make --yes` | PASS |
 | boot evidence | `bash scripts/xv6/boot-xv6.sh` | PASS |
-| 一键 full 验证 | `bash scripts/xv6/teammate-verify.sh --full` | 队长本机 PASS；队友 summary 待补充 |
+| 一键 full 验证 | `bash scripts/xv6/teammate-verify.sh --full` | 队长本机 PASS；已收到 2 份队友 full PASS summary |
 | 本地录屏前预检 | `bash scripts/xv6/local-verify.sh --quick` | 队长本机 PASS |
 | QEMU cleanup | `bash scripts/xv6/cleanup-qemu.sh` | 可用 |
 
@@ -46,6 +46,8 @@
 | 引用与许可证声明 | `docs/final/10_reference_and_license_statement.md` | 已补充 xv6 MIT 与参考项目待核对项 |
 | 已知限制 | `docs/final/11_known_limits_and_future_work.md` | 已补充 |
 | 材料索引 | `submissions/draft-report-index.md` | 由 `scripts/collect-report.sh` 生成 |
+| docs 导引 | `docs/README.md` | 已说明正式文档与过程文档边界 |
+| 队友复现记录 | `submissions/teammate_reproduction_record.md` | 已记录 2 份队友 full PASS summary 的文字摘要 |
 
 ## 5. 视频记录
 
@@ -53,9 +55,9 @@
 | --- | --- |
 | 已录制 3 段视频 | 已记录 |
 | 视频文件不入库 | 必须保持 |
-| 视频文件名 | 待补充 |
+| 视频文件名 | 已记录 |
 | 视频时长 | 待补充 |
-| 外部存放位置 | 待补充 |
+| 外部存放位置 | 已记录 |
 | 平台提交方式 | 待补充 |
 | 隐私/token/密码检查 | 待人工复核 |
 
@@ -66,9 +68,11 @@
 | 检查项 | 状态 |
 | --- | --- |
 | 队友使用命令 | `bash scripts/xv6/teammate-verify.sh --full` |
-| copy-to-lead summary | 待队友提交 |
+| copy-to-lead summary | 已收到 2 份 full PASS summary；原始 logs/summary/截图不入仓 |
 | 失败时 cleanup 流程 | `bash scripts/xv6/cleanup-qemu.sh` |
-| 是否伪造队友结果 | 禁止；缺失则写待补充 |
+| 是否伪造队友结果 | 禁止；未知姓名/系统版本保持待补充 |
+
+记录文件：`submissions/teammate_reproduction_record.md`。
 
 ## 7. 红队审核
 
@@ -105,12 +109,12 @@ bash scripts/xv6/teammate-verify.sh --full
 
 ## 9. 当前剩余待补充
 
-- 队友复现 summary。
-- 三段视频的文件名、时长、外部位置和平台提交方式。
+- 队友真实姓名、系统版本和队友 B 精确 summary 文件冲突（如最终材料需要）。
+- 三段视频的时长、平台提交方式和最终隐私复核结论。
 - 技术报告 v1.0。
 - PPT。
 - uCore/rCore/YatSen OS/F-Tutorials/往届资料的最终 URL 与许可证核对。
 
 ## 10. 结论
 
-当前工程功能和验证链可作为诚实 MVP；stage8a 已补正式文档入口。冲奖前仍必须补齐队友复现、视频记录、技术报告 v1.0、PPT 和最终红队审核。
+当前工程功能、验证链、两份队友 full PASS 摘要和视频元数据已经形成提交证据基础。冲奖前仍必须补齐技术报告 v1.0、PPT、视频时长/平台提交方式、引用 URL/许可证核对和最终红队审核。

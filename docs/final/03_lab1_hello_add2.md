@@ -105,7 +105,7 @@ add2(20, 6) returned 26
 | hello output | PASS |
 | add2test output | PASS |
 | 长期稳定性测试 | 未执行 |
-| 队友独立复现 | 待补充 |
+| 队友独立复现 | 已覆盖在 2 份队友 `teammate-verify.sh --full` PASS summary 中；文字摘要见 `submissions/teammate_reproduction_record.md` |
 
 ## 常见错误
 

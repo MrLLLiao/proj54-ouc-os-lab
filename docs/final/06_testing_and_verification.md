@@ -22,8 +22,8 @@
 | pchildtest | lab2 子进程状态观察 | `bash scripts/xv6/run-xv6-command.sh pchildtest "pstate(child) ="` | 匹配前缀；状态不固定 | PASS | `docs/19_lab2_v0.2_process_observation_review.md` |
 | fcounttest | lab4 文件表观察 | `bash scripts/xv6/run-xv6-command.sh fcounttest "fcounttest done"` | 匹配 `fcounttest done`；可选检查 before/open/close 前缀 | PASS；数字不固定 | `docs/20_lab4_file_table_observation_review.md` |
 | local-verify | 队长本机预检 | `bash scripts/xv6/local-verify.sh --quick` 或 `--full` | copy-to-lead summary overall PASS | 队长本机 local/full PASS；summary 在 ignored logs | `docs/06_progress_log.md`，`logs/teammate-verify-*.summary.txt` ignored |
-| teammate-verify | 队友正式复现入口 | `bash scripts/xv6/teammate-verify.sh --full` | 队友机器 summary overall PASS | 待队友 summary 补充；队长本机 full 路径已 PASS | `docs/23_teammate_quickstart.md`，待队友提交 summary |
-| manual xv6 shell demo | 人工进入 xv6 shell 运行 hello/add2/pstate/pcount/pchild/fcount | `cd external/xv6-riscv && make qemu` 后手动输入用户程序 | 真实 shell 输出，不依赖 timeout 自动捕获 | 已录制 3 段视频；文件名、时长、平台提交方式待补充 | `submissions/demo_record.md` |
+| teammate-verify | 队友正式复现入口 | `bash scripts/xv6/teammate-verify.sh --full` | 队友机器 summary overall PASS | 已收到 2 份队友 full verification PASS summary；原始 logs/summary/截图不入仓；真实姓名/系统版本待补充 | `submissions/teammate_reproduction_record.md`，`docs/23_teammate_quickstart.md` |
+| manual xv6 shell demo | 人工进入 xv6 shell 运行 hello/add2/pstate/pcount/pchild/fcount | `cd external/xv6-riscv && make qemu` 后手动输入用户程序 | 真实 shell 输出，不依赖 timeout 自动捕获 | 已录制 3 段视频；文件名和约略大小已记录，时长和平台提交方式待补充 | `submissions/demo_record.md` |
 
 ## 一键验证路径
 
@@ -64,3 +64,4 @@ kill %1
 - 脚本 PASS 必须来自真实日志匹配，不从 expected text 标题中伪匹配。
 - `apply-integrated-labs.sh --make --yes` 打印 `[OK] make completed successfully` 才表示 make 阶段完成。
 - manual video 与 timeout evidence 分开记录。
+- 队友复现记录只保存文字摘要；原始 logs、summary 文件和截图不入仓。

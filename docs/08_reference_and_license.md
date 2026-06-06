@@ -23,9 +23,26 @@ Do not copy the full upstream LICENSE text into this document. Keep the upstream
 | Name | URL | License | Planned usage | Notes |
 | --- | --- | --- | --- | --- |
 | xv6-riscv book | TODO | TODO | Background reading for xv6 code paths | Do not copy large sections |
-| rCore Tutorial | TODO | TODO | Course organization reference | Reference structure only |
-| uCore Tutorial | TODO | TODO | Course organization reference | Reference structure only |
+| uCore Tutorial / uCore OS Lab | TODO | TODO | Course organization reference | Reference structure only; verify URL/license before final report/PPT |
+| rCore Tutorial | TODO | TODO | Course organization reference | Reference structure only; verify URL/license before final report/PPT |
+| YatSen OS | TODO | TODO | Comparable course/contest material reference | Verify URL/license before final report/PPT |
+| F-Tutorials | TODO | TODO | Tutorial organization reference | Verify URL/license before final report/PPT |
 | Prior OS contest works | TODO | TODO | Step-by-step process and teaching design reference | Record all adaptation details |
+
+## Pending Verification List
+
+Do not invent unchecked URLs. Before final report or PPT publication, verify:
+
+- uCore Tutorial / uCore OS Lab URL and license.
+- rCore Tutorial URL and license.
+- YatSen OS URL and license.
+- F-Tutorials URL and license.
+- xv6-riscv MIT License citation format.
+- Prior OS contest repository URLs and licenses.
+
+Confirmed now: xv6-riscv is the upstream baseline, its local upstream LICENSE is MIT License, and the source tree under `external/xv6-riscv/` is ignored and not submitted.
+
+Team-owned incremental contributions are the OUC teaching organization, patch sequence, one-shot verification workflow, teammate reproduction process, and formal documentation system.
 
 ## License Checklist for xv6-riscv
 

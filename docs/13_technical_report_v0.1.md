@@ -1,5 +1,11 @@
 # 技术报告 v0.1
 
+> **历史草案说明（stage8b 补充）**
+>
+> 本文档是早期技术报告草案 v0.1，不是最终技术报告。它不包含 stage6+ 的完整 lab4 文件表观察、stage7+ 的 doctor/local/teammate verification workflow、stage8 的 `docs/final/` 正式文档体系，也不包含 stage8b 的两份队友 full verification PASS 摘要和视频元数据记录。
+>
+> 正式提交应以根 `README.md`、`docs/final/` 和后续技术报告 v1.0 为准。保留本文档是为了过程透明，不代表最终报告。
+
 项目：`proj54-ouc-os-lab`
 
 队伍：中国海洋大学“蓝色系统队”
