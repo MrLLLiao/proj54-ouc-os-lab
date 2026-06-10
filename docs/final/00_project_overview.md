@@ -21,7 +21,7 @@ proj54 是教学型功能挑战，不是“内核实现赛道刷 LTP”项目。
 
 | 赛题关注点 | 权重 | 本项目对应材料 |
 | --- | ---: | --- |
-| 文档完整度 | 50% | `docs/final/` 正式文档、各 lab 教程、常见错误、测试方法、边界说明、AI/许可证声明 |
+| 文档完整度 | 50% | `docs/final/` 正式文档、各 lab 教程式 README 与 `student_tasks.md`（必做/选做/评分 rubric）、教师指南/评分标准/troubleshooting（`docs/teacher_guide.md` 等）、常见错误、测试方法、边界说明、AI/许可证声明 |
 | 实现完整度 | 30% | lab0/lab1/lab2/lab3/lab4 与 integrated `0001-0009`（含进阶 memstat `0008` / fdinfo `0009`），覆盖 syscall、进程观察、页表观察、file table / fd table 观察和 copyout struct ABI |
 | 测试完整度 | 10% | `doctor.sh`、`teammate-verify.sh`、`local-verify.sh`、boot/command evidence、测试覆盖表 |
 | 创新性 | 10% | OUC 本校课程叙事、clean baseline patch workflow、队友一键复现、QEMU cleanup/timeout 体验、透明 AI 过程记录 |
@@ -40,6 +40,7 @@ proj54 是教学型功能挑战，不是“内核实现赛道刷 LTP”项目。
 | 一键验证 | 已更新 | doctor/local/teammate/cleanup 脚本；local/teammate 覆盖 pgcounttest、fdcounttest、memstattest 和 fdinfotest |
 | 视频 | `0001-0007` historical；`0001-0009` TBD | `e8e2fb9` / integrated `0001-0007` 视频已记录大小、时长、SHA256，降级为 historical stable checkpoint，只覆盖 `0001-0007`；覆盖 `0001-0009` 的新视频与新 SHA256 为 TBD；旧三段视频为 historical evidence |
 | 队友独立复现 | `0001-0007` historical；`0001-0009` TBD | root 与 z2996 两份 `e8e2fb9` / integrated `0001-0007` full PASS 已记录，为 historical stable checkpoint，不覆盖 `0001-0009`；含 memstat/fdinfo 的 `0001-0009` 队友 full verify 为 TBD，不得伪造；旧 `1ba9db6` 只作 historical evidence |
+| 教学材料（stage12） | 已完成 | 每个 lab 配教程式 README + `student_tasks.md`（必做/选做/rubric/扣分点）；`docs/teacher_guide.md`（2/3/5 次课排法与验收）、`docs/grading_and_rubric.md`、`docs/troubleshooting.md`；根 README 与 docs 导航改为学习者优先，比赛证据分层到 `submissions/` 与 `docs/final/` |
 
 ## OUC 本校课程特色
 

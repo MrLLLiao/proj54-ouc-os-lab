@@ -1,11 +1,22 @@
-# lab2: 进程状态观察实验
+# Lab2：进程在内核里长什么样
 
-## 实验目标
+## 这一关学什么
 
-lab2 通过新增进程观察类 syscall，帮助同学从 lab1 的 syscall 参数传递过渡到 xv6 的进程表和进程状态观察。当前包含 v0.1 和 v0.2 两层：
+- 用 Lab1 学会的"加 syscall 七件套"，给内核加观察接口：`pstate(int pid)` 看单个进程状态，`pcount(int state)` 数某种状态的进程个数。
+- 第一次接触内核数据结构：`struct proc`、`enum procstate`、进程表 `proc[]`。
+- 第一次正经面对并发：为什么读 `p->state` 要 `acquire(&p->lock)`，漏 `release` 会怎样。
+- 用 `pchildtest` fork 一个子进程去观察它的状态，亲眼看到调度时序不确定——同一程序两次跑出 `RUNNABLE` 和 `SLEEPING` 都是对的。
 
-- v0.1：`pstate(int pid)`，观察单个进程状态。
-- v0.2：`pcount(int state)`，统计某类进程状态数量；新增子进程状态观察和负向输入测试。
+## 为什么重要
+
+Lab1 的 syscall 只是"传数字进来、传数字出去"；从这一关开始，syscall 真正去读内核状态。进程表是 OS 里最常被问的结构（面试也躲不开），而"读共享数据要拿锁"是你以后写任何内核代码的本能。负向测试（`pcount(99) = -1`）则是第一次练"内核必须不信任用户输入"。
+
+## 和前后 Lab 的关系
+
+- 前置：Lab1（你得知道加 syscall 要改哪 7 个文件）。
+- 后继：Lab3 用同样的"观察"思路去看页表；Lab2 的"状态数字不固定、只验证前缀"的纪律在后面每个 lab 都会复用。
+
+实验分两层：v0.1 `pstate(int pid)`；v0.2 加 `pcount(int state)`、子进程观察和负向输入测试。
 
 本实验目标：
 
@@ -150,7 +161,11 @@ pstatetest
 | 人工交互录屏 | TODO | 未执行 |
 | 第二名队员独立复现 | TODO | 未执行 |
 
-## 常见错误
+## 自己动手任务
+
+跑通不等于会。打开 [student_tasks.md](student_tasks.md)：必做任务包括解释锁的每条返回路径、设计一个新的状态观察，并有评分 rubric。
+
+## 常见卡点（常见错误）
 
 | 问题 | 可能原因 | 处理方式 |
 | --- | --- | --- |
@@ -162,12 +177,15 @@ pstatetest
 | patch 基线不一致 | patch 应用到 lab1 或其他修改后的 tree | 从指定 baseline commit 开始应用 lab2 patch。 |
 | `pstatechildtest` 文件名导致 `mkfs` 失败 | xv6 `DIRSIZ` 限制目录项文件名长度；`_pstatechildtest` 过长 | integrated v0.2 使用较短命令名 `pchildtest`，输出仍是 `pstate(child) = ...`。 |
 
-## 当前边界
+## 不要误解什么
 
-- 只观察单个 pid。
-- 不实现完整 `ps`。
-- 不修改调度算法。
-- timeout 自动捕获不代表长期稳定性测试。
-- lab2 patch 独立于 lab1 patch；若要组合 lab1/lab2，需要重新规划 syscall number。
-- integrated v0.2 不是完整 `ps`，也不修改调度器。
-- `pchildtest` 的子进程状态观察存在调度时序不确定性。
+- 这不是完整 `ps`，也不修改调度算法——只是状态**观察**。
+- `pcount(RUNNING)` 的数字不固定，`pstate(child)` 的状态受调度时序影响；实验报告里写"观察到的一次取值"，不要写成"必然等于"。
+- lab2 independent patch 用 `SYS_pstate = 22`，和 lab1 independent 的 `SYS_hello = 22` 冲突——independent patch 之间**不可叠加**，这是实测过的（`git apply --check` 直接失败）。组合演示走 integrated `0001-0009`（integrated 里 pstate=24、pcount=25）。
+- timeout 自动捕获只证明"那一次跑出了预期文本"，不是长期稳定性测试。
+
+## 下一步看哪里
+
+- 动手：做 [student_tasks.md](student_tasks.md)。
+- 继续闯关：[Lab3 页表观察](../lab3-memory-and-pagetable/README.md)——同样是观察，但对象从进程表换成你自己进程的页表。
+- 想看 v0.2 的红队审查（锁的逐路径分析、`pstatechildtest` 名字踩的 `DIRSIZ` 坑）：[docs/19_lab2_v0.2_process_observation_review.md](../../docs/19_lab2_v0.2_process_observation_review.md)。

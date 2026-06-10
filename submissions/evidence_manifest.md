@@ -1,7 +1,8 @@
 # Evidence Manifest
 
-> 维护时间：2026-06-07（stage10a final evidence manifest）。
+> 维护时间：2026-06-10（stage12 分层说明；证据内容自 stage11b 起未变）。
 > 本文件是最终证据索引，不保存原始证据文件。
+> 读者定位：这是**评委/提交材料**入口。如果你是来学实验的，请从根 [README.md](../README.md) 开始，不需要读本文件。
 
 ## Manifest Purpose
 

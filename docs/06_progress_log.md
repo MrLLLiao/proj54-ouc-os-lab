@@ -983,3 +983,24 @@
   - No teammate reproduction, new video, or new SHA256 was fabricated; all `0001-0009` evidence remains TBD.
   - `external/xv6-riscv/`, logs, summaries, screenshots, videos, `.claude/`, `.vscode/` remain uncommitted.
 - Validation: `bash scripts/collect-report.sh`, `git diff --check`, `git status --short`, no-change checks on integrated `0001-0007` patches and `external`, and `git ls-files` hygiene checks; results reported in the final assistant response. `local-verify --full` was not re-run because no engineering file changed (last run on 2026-06-10 remains overall PASS).
+
+## 2026-06-10: stage12 learner-first offensive upgrade
+
+- Commit hash: TODO after commit
+- Goal: turn the repo from a competition-submission layout into a course package that a beginner can study, a teacher can assign, and a TA can grade — without touching engineering state or faking any pending evidence.
+- Completed (documentation + non-xv6 tooling only):
+  - `README.md` rewritten learner-first: what this is / who it is for / what you will learn / Step 0-7 learning path / shortest-run commands / teacher and judge pointers / honest evidence status moved to the last section.
+  - `docs/README.md` rebuilt as reader routing: first-time learners, people who can already boot xv6, teachers/TAs, judges, and historical process records (explicitly lowest priority for newcomers).
+  - All five lab READMEs tutorialized with a shared frame (what you learn / why it matters / relation to neighbors / hands-on pointer / common snags / what not to misread / where next). Lab3 now contrasts `pgcount` (int observation) vs `memstat` (struct copyout observation); Lab4 explains the three-level view `fcount`/`fdcount`/`fdinfo`; Lab5 states capstone-only and integrated `0001-0009`.
+  - Added `labs/*/student_tasks.md` x5: goals, mandatory tasks (predict-then-verify, break-and-fix, path walkthroughs), optional challenges, submission list, self-check commands, 100-point rubric, deduction list, report questions. No ready-made answers.
+  - Added `docs/teacher_guide.md` (2/3/5-session plans, acceptance via teammate-verify summary blocks, anti-fabrication spot checks), `docs/grading_and_rubric.md` (four dimensions, unified deduction table), `docs/troubleshooting.md` (symptom/cause/fix/what-to-report for WSL, /mnt slowness, Ctrl+Z + cleanup-qemu, apply order, benign warnings, DIRSIZ, timeout semantics).
+  - `docs/final/technical_report_v1.0.md`: abstract now states the learner-first material chain; section 12.1 explains that memstat/fdinfo's value is completing the `argaddr + copyout + struct ABI` teaching chain, not adding two syscalls; innovation list gains the course-material point. `docs/final/00_project_overview.md` gains the teaching-material row.
+  - `submissions/evidence_manifest.md` header now routes learners back to the README; evidence content itself unchanged (current `0001-0009` TBD, `e8e2fb9 / 0001-0007` historical).
+  - Slides source/outline synced (teaching-material innovation bullet, memstat/fdinfo boundary line, four-beat slogan replaced); `slides/final_defense_ppt.pptx` regenerated from tracked Markdown.
+  - Added `scripts/check-final-hygiene.sh` (tracked-material gate with single PPTX whitelist) and `scripts/check-evidence-sha256.sh` (hashes external historical evidence in place, case-insensitive compare, skips when the external directory is absent, never fails on TBD `0001-0009` evidence).
+  - `scripts/collect-report.sh` descriptors extended for all new files; `submissions/draft-report-index.md` regenerated.
+- Boundaries:
+  - No `patches/integrated-labs/` content, `scripts/xv6/`, or OS code modified; engineering state identical to commit `b6014d1`, so `local-verify --full` was not re-run (2026-06-10 runs remain overall PASS).
+  - No teammate reproduction, new video, or new SHA256 fabricated; all `0001-0009` evidence remains TBD.
+  - No external source, logs, media, archives, `.claude/`, `.vscode/`, or privacy material committed.
+- Validation: `bash -n` on both new scripts; `collect-report.sh`; `check-final-hygiene.sh` PASS; `check-evidence-sha256.sh` run on this machine; PPTX zip inspection (16 slides, no `ppt/media/`); `git diff --check`; full `git ls-files` hygiene battery. Results in the final assistant response.

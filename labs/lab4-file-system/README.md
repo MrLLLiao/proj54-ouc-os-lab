@@ -1,10 +1,24 @@
-# lab4: 文件表观察实验
+# Lab4：fd 后面到底是什么
 
-## 实验目标
+## 这一关学什么
 
-本实验通过新增 `fcount()` / `fdcount()` syscall 和用户程序 `fcounttest` / `fdcounttest`，观察 xv6 全局文件表中正在被引用的 `struct file` 数量，以及当前进程 fd table 中非空 fd 数量。目标是让低年级同学理解 file descriptor、`struct file`、全局 file table、当前进程 `ofile[]`、引用计数 `ref`、`open/dup/close` 对内核对象的影响，以及为什么读取共享内核数据结构时需要锁保护。
+三个观察接口，从粗到细看清"fd → `struct file` → 全局 file table"三层关系：
 
-本实验是文件系统观察 v0.2，不是完整文件系统改造。
+- `fcount()`：看**全局** file table 里 `ref > 0` 的 `struct file` 有几个——系统级趋势。
+- `fdcount()`：看**当前进程** `ofile[]` 里非空 fd 有几个——你自己开了几个文件。
+- 进阶 `fdinfo(int fd, struct fdinfo *out)`：看**单个 fd** 的结构化状态 `{type, readable, writable, ref}`，用 `argint + argaddr + copyout` 拷回来。
+
+配套实验：`open` 让 fcount/fdcount 都 +1；`dup` 让 fdcount +1 但 fcount **不变**（两个 fd 指向同一个 `struct file`，只是 `ref` +1）；`close` 反向。这一组对比做完，三层关系就不再是背的。
+
+## 为什么重要
+
+"fd 只是个整数索引"这句话，直到你看见 `dup` 后 fdcount 涨了而 fcount 没涨，才真正懂。引用计数、全局表和每进程表的区别，是以后理解管道、重定向、`fork` 共享文件偏移的地基。进阶 `fdinfo` 还复用了 Lab3 学的 copyout：同一个机制第二次出现，你就掌握了。
+
+## 和前后 Lab 的关系
+
+- 前置：Lab1（syscall 套路）、Lab2（锁纪律——这次拿的是 `ftable.lock`）、Lab3 进阶（copyout 写法）。
+- 后继：Lab5 把全部实验串成一次综合验收。
+- 边界：文件表**观察** v0.2，不观察 inode、不改文件系统布局——不是完整文件系统实验。
 
 ## 前置知识
 
@@ -95,14 +109,17 @@ bash scripts/xv6/run-xv6-command.sh fdcounttest "fdcounttest done"
 
 自动验证只匹配稳定前缀，不固定具体数字。
 
-## 常见错误
+## 自己动手任务
 
-- syscall number 与已有实验冲突。
-- 忘记更新 `user/user.h`。
-- 忘记更新 `user/usys.pl`。
-- `Makefile` 未加入 `_fcounttest`。
+打开 [student_tasks.md](student_tasks.md)：必做任务包括预测-验证 `dup` 对两个计数的影响、解释 `fdinfo` 为什么拒绝坏 fd，并有评分 rubric。
+
+## 常见卡点（常见错误）
+
+- syscall number 与已有实验冲突（independent 各自用 22，不可叠加；integrated 里 fcount=26、fdcount=28、fdinfo=30）。
+- 忘记更新 `user/user.h` 或 `user/usys.pl`。
+- `Makefile` 未加入 `_fcounttest` / `_fdcounttest` / `_fdinfotest`。
 - 读取 `ftable.file[]` 时忘记释放 `ftable.lock`。
-- 在文档或测试中固定承诺 `fcount` 的具体数字。
+- 在文档或测试中固定承诺 `fcount` 的具体数字（shell/console/init 都会占用文件表）。
 - 把 integrated patch 和 independent patch 的 syscall number 混用。
 
 ## 当前验证结果
@@ -128,12 +145,15 @@ bash scripts/xv6/run-xv6-command.sh fdcounttest "fdcounttest done"
 
 边界与状态：仍然是 fd table **观察**实验，不是完整文件系统；independent 版 `SYS_fdinfo = 22` 与 `fcount` 相同，两个 independent patch **不可叠加**，各自从 clean baseline 单独应用。stage11b 起 `fdinfo` **已进入** integrated `0009`（`patches/integrated-labs/0009-add-fdinfo-copyout-observation.patch`，`SYS_fdinfo = 30`），current integrated suite 为 `0001-0009`，队长本机 `local-verify --full` overall PASS（含 `fdinfotest`）。证据边界：`e8e2fb9 / 0001-0007` 三方 full PASS 是 historical stable checkpoint，**不覆盖** `0001-0009`；含 fdinfo 的 `0001-0009` 队友 full verify、新视频、新 SHA256 均为 TBD，待重新复现后填写，不得伪造。
 
-## 当前边界
+## 不要误解什么
 
-- 这不是完整文件系统实验。
-- 不观察 inode。
-- 不修改文件系统布局。
-- 不实现 `fdinfo(pid, fd)` 或 open file summary。
-- timeout 自动捕获不等于长期稳定性测试。
-- 第二名队员独立复现 TODO。
-- 人工交互录屏 TODO。
+- 这不是完整文件系统实验：不观察 inode，不修改文件系统布局，`fdinfo` 不返回路径/inode 号/文件内容。
+- `fdinfo` 只能查**自己**的 fd（`myproc()->ofile[fd]`），没有实现跨进程的 `fdinfo(pid, fd)`，也没有 open file summary。
+- `fcount` 的绝对数字不固定，稳定的只有 open/close 的 +1/-1 delta。
+- timeout 自动捕获不等于长期稳定性测试；`0001-0009` 的队友复现/新视频仍为 TBD。
+
+## 下一步看哪里
+
+- 动手：做 [student_tasks.md](student_tasks.md)。
+- 最后一关：[Lab5 综合复现](../lab5-final-integration/README.md)——把 Lab0 到 Lab4 的全部成果从干净源码一次复现并写报告。
+- 想看 fcount 的红队审查（锁/死锁/无泄漏分析）：[docs/20_lab4_file_table_observation_review.md](../../docs/20_lab4_file_table_observation_review.md)。

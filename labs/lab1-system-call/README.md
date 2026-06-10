@@ -1,13 +1,20 @@
-# lab1: 系统调用实验
+# Lab1：你的第一个系统调用
 
-## 实验目标
+## 这一关学什么
 
-lab1 通过两个递进 syscall 帮助同学理解 xv6-riscv 的系统调用路径：
+- 给 xv6 加一个最小系统调用 `hello()`（无参数，返回 `2026`），打通"用户程序 → 内核函数 → 返回值"的完整链路。
+- 再加一个带参数的 `add2(int a, int b)`，学会用 `argint()` 在内核里取用户传来的整数。
+- 记住加 syscall 必改的 7 个文件：`syscall.h`、`syscall.c`、`sysproc.c`、`user.h`、`usys.pl`、`Makefile`、用户测试程序。后面每个 lab 都在重复这套动作。
 
-- minimal：`hello()`，无参数，返回固定整数 `2026`。
-- advanced：`add2(int a, int b)`，通过 `argint()` 获取两个整数参数并返回 `a + b`。
+## 为什么重要
 
-当前 lab1 只覆盖 syscall 入门与参数传递机制，不扩展到 lab2 的进程/调度内容。
+系统调用是用户程序和内核之间唯一的正门。你以后看到的每个实验（观察进程、数页表、查 fd）本质上都是"再加一个 syscall"——所以这一关把路径走熟，后面就只剩"内核里做什么"的差别。`hello()` 故意做到最小，让你第一次成功来得便宜；`add2()` 引入参数传递，是 Lab3/Lab4 进阶里 `argaddr`/`copyout` 的前置。
+
+## 和前后 Lab 的关系
+
+- 前置：Lab0 已经能 `make` + 启动进 shell。
+- 后继：Lab2 用同样的套路加 `pstate`/`pcount`，区别是内核里要遍历进程表、拿锁。
+- 当前 lab1 只覆盖 syscall 入门与**整数**参数传递，指针参数（`argaddr`）留到 Lab3/Lab4 进阶。
 
 ## baseline 与 patch
 
@@ -160,7 +167,11 @@ bash scripts/xv6/run-xv6-command.sh add2test "add2(20, 6) returned 26"
 
 原始日志被 Git 忽略。正式摘要记录在 `docs/04_test_report.md` 和 `docs/14_lab1_argint_extension_review.md`。
 
-## 常见错误
+## 自己动手任务
+
+照着教程跑通不算完成。打开 [student_tasks.md](student_tasks.md)：必做任务是自己实现一个新 syscall（不是抄 `hello`/`add2`），那里有验收标准、提交内容和评分 rubric。
+
+## 常见卡点（常见错误）
 
 | 问题 | 可能原因 | 处理方式 |
 | --- | --- | --- |
@@ -171,24 +182,15 @@ bash scripts/xv6/run-xv6-command.sh add2test "add2(20, 6) returned 26"
 | xv6 shell 找不到 `add2test` | `Makefile` 未加入 `_add2test` | 将 `$U/_add2test\` 加入 `UPROGS`。 |
 | patch 无法应用 | 未先应用 `0001` 或 baseline 不一致 | 从指定 baseline 开始，按 `0001` 后 `0002` 顺序应用。 |
 
-## 当前未覆盖
+## 不要误解什么
 
-lab1 现阶段只覆盖 syscall 入门与**整数参数**传递，明确**未覆盖**：
+- lab1 只覆盖 syscall 入门与**整数参数**传递，**未覆盖**指针参数（`argaddr`）、字符串参数（`argstr`）、参数校验语义——这些在 Lab3/Lab4 进阶（`memstat`/`fdinfo`）里才出现。
+- 不要把 lab1 表述为"已覆盖全部 syscall 机制"。
+- `hello()` 返回固定值 `2026` 是刻意设计（让验证文本稳定），不代表 syscall 都该返回常量。
+- 注意编号：independent patch 里 `SYS_hello = 22`；integrated 序列里 hello 也是 22，但 lab2/lab3/lab4 的 independent patch 各自也用 22——所以 independent patch 互相**不可叠加**，组合演示必须走 integrated `0001-0009`（编号 22-30 连续分配）。
 
-- 指针参数（`argaddr`）与字符串参数（`argstr`）。
-- 参数校验与错误返回（如非法参数应返回 -1 的语义）。
-- 进程/调度、内存、文件系统等 lab2-lab5 的内容。
+## 下一步看哪里
 
-不要把 lab1 表述为"已覆盖全部 syscall 机制"。
-
-## 教学化下一步（学生练习，设计中，未计入已完成）
-
-为把 lab1 从"参考实现 demo"升级为"可布置的实验"，以下练习正在设计中（尚未提供答案与评分细则，标注为 TODO）：
-
-1. **补全式实现**：提供去掉 `sys_add2()` 实现体的骨架，让学生自己用 `argint()` 补全并通过 `add2test`。
-2. **负向实验**：故意删去 `entry("add2")` 或 dispatch 表项，让学生观察报错并定位修复（对照"常见错误"表）。
-3. **指针/字符串扩展**：新增一个 `argaddr`/`argstr` 的 syscall（如把字符串回显到内核再返回），引出地址翻译与 `copyin`。
-4. **边界用例**：为 `add2` 增加负数、0、溢出用例，讨论 `int` 语义。
-5. **评分标准**：给出"编译通过 / 输出正确 / 路径讲解清楚 / 失败定位"四档评分 rubric。
-
-上述为设计方向，本轮不声称已完成；教学价值评估见 [../../docs/14_lab1_argint_extension_review.md](../../docs/14_lab1_argint_extension_review.md)。
+- 动手：做 [student_tasks.md](student_tasks.md) 的必做任务。
+- 继续闯关：[Lab2 进程状态观察](../lab2-process-and-scheduling/README.md)，同样的 7 文件套路，但内核侧要遍历 `proc[]` 并拿锁。
+- 想看教学价值评估和踩坑记录：[docs/14_lab1_argint_extension_review.md](../../docs/14_lab1_argint_extension_review.md)。

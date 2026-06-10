@@ -9,8 +9,11 @@ It is not the final technical report, does not generate PDF, and does not includ
 
 | Material | Path | File | Content status |
 | --- | --- | --- | --- |
-| Project homepage | `README.md` | exists | judge-facing portal |
-| Documentation guide | `docs/README.md` | exists | stage8b guide: docs/final is official documentation portal; docs/00-23 are process records; docs/13 is historical v0.1 draft |
+| Project homepage | `README.md` | exists | stage12 learner-first homepage: what/for-whom/learning path Step0-7, quick run, teacher and judge pointers, honest evidence status last |
+| Documentation guide | `docs/README.md` | exists | stage12 reader routing: first-time learners, lab runners, teachers/TAs, judges, and historical process records (lowest priority for newcomers) |
+| teacher guide | `docs/teacher_guide.md` | exists | stage12: 2/3/5-session course plans, mandatory vs optional labs, acceptance via teammate-verify summary blocks, anti-fabrication spot checks, student environment handling |
+| grading and rubric | `docs/grading_and_rubric.md` | exists | stage12: four grading dimensions, per-lab focus, unified deduction table (hardcoded outputs = fabrication), bonus items, grade bands |
+| troubleshooting | `docs/troubleshooting.md` | exists | stage12: symptom/cause/fix/what-to-report for WSL, PATH, /mnt slowness, Ctrl+Z + cleanup-qemu, git apply order, usys.pl filemode warning, RWX warning, DIRSIZ, timeout semantics |
 | Project plan | `docs/00_project_plan.md` | exists | MVP draft |
 | Requirement and scoring analysis | `docs/01_requirement_analysis.md` | exists | MVP draft |
 | Lab system design | `docs/02_lab_design.md` | exists | MVP draft |
@@ -56,11 +59,16 @@ It is not the final technical report, does not generate PDF, and does not includ
 | Technical report v0.1 | `docs/13_technical_report_v0.1.md` | exists | historical stage2c draft with stage8b obsolete notice; not final report |
 | Reproducibility package | `reproducibility/README.md` | exists | lab0/lab1/lab2/integrated-labs reproduction checklist and template |
 | lab0 environment guide | `labs/lab0-env-setup/README.md` | exists | xv6 baseline make succeeded; boot evidence found; manual interaction TODO |
-| lab1 syscall lab | `labs/lab1-system-call/README.md` | exists | hello minimal and add2 argint patches generated and verified |
-| lab2 process state observation | `labs/lab2-process-and-scheduling/README.md` | exists | pstate independent patch verified; integrated v0.2 adds pcount, pcounttest, pchildtest |
-| lab3 memory and pagetable | `labs/lab3-memory-and-pagetable/README.md` | exists | pgcount page-table observation lab: eager/lazy allocation comparison; independent and integrated 0006 verified |
-| lab4 file system | `labs/lab4-file-system/README.md` | exists | file table/fd table observation v0.2: fcount/fdcount verified; not a complete file system lab |
-| lab5 final integration | `labs/lab5-final-integration/README.md` | exists | capstone reproduction workflow for integrated 0001-0009; no new kernel mechanism |
+| lab1 syscall lab | `labs/lab1-system-call/README.md` | exists | stage12 tutorial-style: hello minimal and add2 argint, 7-file checklist, call path, hands-on pointer to student tasks |
+| lab1 student tasks | `labs/lab1-system-call/student_tasks.md` | exists | stage12 assignment sheet: reproduce, build your own integer syscall, break-and-fix experiment, rubric and deduction list |
+| lab2 process state observation | `labs/lab2-process-and-scheduling/README.md` | exists | stage12 tutorial-style: pstate/pcount/pchildtest, proc table and lock discipline, scheduling nondeterminism |
+| lab2 student tasks | `labs/lab2-process-and-scheduling/student_tasks.md` | exists | stage12 assignment sheet: lock path audit, new observation syscall, repeated-run timing observation, rubric |
+| lab3 memory and pagetable | `labs/lab3-memory-and-pagetable/README.md` | exists | stage12 tutorial-style: pgcount int observation vs memstat struct-copyout observation; eager/lazy delta experiment; integrated 0006/0008 |
+| lab3 student tasks | `labs/lab3-memory-and-pagetable/student_tasks.md` | exists | stage12 assignment sheet: predict-then-verify lazy deltas, copyout data-flow walkthrough, add a struct field with padding analysis, rubric |
+| lab4 file system | `labs/lab4-file-system/README.md` | exists | stage12 tutorial-style: fcount global trend / fdcount per-process / fdinfo single-fd struct view; open-dup-close contrast; not a complete file system lab |
+| lab4 student tasks | `labs/lab4-file-system/student_tasks.md` | exists | stage12 assignment sheet: predict-verify dup effects, fdinfo validation audit, ref observation, negative cases, rubric |
+| lab5 final integration | `labs/lab5-final-integration/README.md` | exists | stage12 tutorial-style capstone for integrated 0001-0009; reproducibility and evidence discipline; no new kernel mechanism |
+| lab5 student tasks | `labs/lab5-final-integration/student_tasks.md` | exists | stage12 assignment sheet: full-suite reproduction with summary block, patch walkthrough incl. 0008/0009, fault log, evidence boundary statement, rubric |
 | lab1 test record | `tests/lab1/README.md` | exists | records patched make and hello output evidence |
 | lab2 test record | `tests/lab2/README.md` | exists | records pstatetest, pcounttest, and pchildtest output evidence |
 | lab3 test record | `tests/lab3/README.md` | exists | records pgcount eager/lazy output captures from independent and integrated 0006; final teammate coverage recorded in submissions evidence manifest |
@@ -75,6 +83,8 @@ It is not the final technical report, does not generate PDF, and does not includ
 | xv6 QEMU cleanup helper | `scripts/xv6/cleanup-qemu.sh` | exists | stage7a2 rescue tool: explains Ctrl+C interrupt vs Ctrl+Z suspend, lists qemu/make qemu processes before/after, warns pkill may affect same-WSL QEMU, exits 0 |
 | teammate one-shot verification | `scripts/xv6/teammate-verify.sh` | exists | stage11b workflow: --full clean apply+make and --quick retest; doctor/check-env/baseline, boot, hello/add2/pstate/pcount/pchild/fcount/pgcount/fdcount/memstat/fdinfo verification, copy-to-lead summary in ignored logs |
 | local pre-recording verification | `scripts/xv6/local-verify.sh` | exists | stage7a2 team-lead wrapper around teammate-verify; --full/--quick; recommended --quick before recording |
+| final hygiene gate | `scripts/check-final-hygiene.sh` | exists | stage12 read-only pre-submission gate: external/logs/.claude/.vscode/media-office tracking checks with single PPTX whitelist plus git diff --check |
+| external evidence SHA256 check | `scripts/check-evidence-sha256.sh` | exists | stage12: hashes externally stored historical evidence in place against recorded SHA256; skips when evidence dir absent; new 0001-0009 evidence stays TBD and unchecked |
 | lab1 hello syscall patch | `patches/lab1-system-call/0001-add-hello-syscall.patch` | exists | tracked patch; third-party source not submitted |
 | lab1 add2 argint syscall patch | `patches/lab1-system-call/0002-add-argint-add2-syscall.patch` | exists | commit-ready incremental patch after 0001 |
 | lab1 patch guide | `patches/lab1-system-call/README.md` | exists | apply/build/run instructions |
@@ -124,6 +134,8 @@ It is not the final technical report, does not generate PDF, and does not includ
 - scripts/xv6/teammate-verify.sh --full is the recommended first teammate workflow; --quick is for retesting after make already succeeded.
 - scripts/xv6/local-verify.sh --quick is recommended for team-lead pre-recording checks.
 - scripts/xv6/cleanup-qemu.sh is the rescue command when QEMU is stuck or Ctrl+Z suspended a job.
+- stage12 reorganized the repo learner-first: README and docs/README route students/teachers/judges separately; every lab has a tutorial README plus a student_tasks.md assignment sheet; teacher_guide/grading_and_rubric/troubleshooting support running this as a course; submission evidence stays rigorous under submissions/ and docs/final/.
+- scripts/check-final-hygiene.sh and scripts/check-evidence-sha256.sh are the stage12 pre-submission gates; evidence hashes are verified in place outside Git and TBD 0001-0009 evidence is never faked.
 - docs/final/ is the formal submission documentation portal for stage8a and should be the basis for technical report v1.0 and PPT.
 - docs/README.md explains the boundary between formal docs/final documentation and historical process records.
 - Technical report v1.0 draft is docs/final/technical_report_v1.0.md; technical report v0.1 is historical only.

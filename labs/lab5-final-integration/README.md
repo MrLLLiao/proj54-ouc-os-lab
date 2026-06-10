@@ -1,6 +1,16 @@
-# lab5：综合复现实验 / capstone
+# Lab5：综合复现（capstone）
 
-## 实验目标
+## 这一关学什么
+
+- 从干净的 xv6 源码出发，一口气应用 integrated `0001-0009` 九个 patch，构建、启动、跑全部 10 个测试程序，并把过程整理成一份有证据的实验报告。
+- 学会"可复现"的工程含义：别人在另一台机器上按你的报告操作，应该得到同样的结果。
+- 学会区分证据等级：自动捕获 vs 人工演示、本机验证 vs 他人复现、当前结果 vs 历史记录。
+
+## 为什么重要
+
+前四关你每次只面对一个实验；这一关像真实项目验收：环境诊断 → 干净基线 → 按序应用 → 构建 → 验证 → 报告。它不新增任何内核机制，考察的是你能否把已有工作组织成别人可以检查、可以重跑的东西——这恰恰是课程实验和竞赛提交里最常丢分的部分。
+
+## 和前面 Lab 的关系
 
 把 lab0 到 lab4 的内容串成一次完整、可复现、可汇报的 OS 课程综合实验。Lab5 不新增新的内核机制；它要求学生从 clean xv6-riscv baseline 出发，顺序应用 integrated `0001-0009`（stage11b 起的 current integrated suite），完成构建、启动、用户程序验证、证据记录和实验报告。
 
@@ -87,13 +97,30 @@
 | 证据与诚信 | 20 | 不伪造 PASS；不提交 raw logs/external；记录失败和边界 |
 | 扩展思考 | 10 | 能提出 lab3/lab4 后续扩展，但不夸大当前实现 |
 
+## 自己动手任务
+
+完整任务书和验收标准见 [student_tasks.md](student_tasks.md)。
+
 ## 扩展问题
 
 1. 为什么 `pgcount()` 只统计 `PTE_V && PTE_U`？
 2. 为什么 `sbrklazy()` 触摸前 `pgcount` 不增加？
 3. `fcount()` 与 `fdcount()` 的观察对象有什么区别？
 4. 为什么 `dup(fd)` 会增加 `fdcount()`，但不一定增加 `fcount()`？
-5. 如果把 Lab5 拍成演示视频，应如何避免泄露 token、密码和个人信息？
+5. `memstat()` 和 `fdinfo()` 为什么必须用 `copyout` 而不能直接写用户指针？
+6. 如果把 Lab5 拍成演示视频，应如何避免泄露 token、密码和个人信息？
+
+## 不要误解什么
+
+- Lab5 **不新增内核机制**——九个 syscall 都是前面各关加的，这一关考察组织与复现。
+- "我机器上跑通了" ≠ "可复现"：报告里要写清 baseline commit、patch 顺序、真实命令和输出，失败也要如实记录。
+- 旧证据不覆盖新 suite：`e8e2fb9 / 0001-0007` 三方 PASS 是 historical checkpoint，当前 `0001-0009` 的队友复现/新视频为 TBD。
+
+## 下一步看哪里
+
+- 当助教/老师：[docs/teacher_guide.md](../../docs/teacher_guide.md) 讲怎么布置和验收这套实验。
+- 看证据怎么管理：[submissions/evidence_manifest.md](../../submissions/evidence_manifest.md)。
+- 卡住了：[docs/troubleshooting.md](../../docs/troubleshooting.md)。
 
 ## 当前状态
 

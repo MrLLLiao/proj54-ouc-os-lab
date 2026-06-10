@@ -1,119 +1,94 @@
-# OUC xv6 Lab Kit
+# OUC xv6 Lab Kit：从零开始的操作系统实验
 
-面向中国海洋大学操作系统课程的 xv6-riscv 分阶段实验指导、参考实现与可复现验证体系。
+这是一个用 xv6-riscv 学操作系统的教学实验包。它不假设你写过内核：从"把 xv6 跑起来"开始，一关一关带你看懂系统调用、进程、页表、文件表，最后你能自己给内核加一个系统调用，并解释它从用户态到内核态的完整路径。
 
-## 赛事与赛题
+如果你第一次接触 xv6，可以直接从下面的 [Step 0](#从零开始怎么学) 开始，不需要先读完整个 README。
 
-| 项目     | 内容                                                       |
-| -------- | ---------------------------------------------------------- |
-| 比赛     | 2026 全国大学生计算机系统能力大赛 - 操作系统设计赛（全国） |
-| 赛道     | OS 功能挑战赛道                                            |
-| 赛题     | proj54：面向操作系统课程的操作系统竞赛和实验               |
-| 队伍     | 中国海洋大学“蓝色系统队”                                 |
-| 项目定位 | 教学型实验包                                               |
+## 这是什么
 
-本项目围绕“课程实验可教、可复现、可验证、可扩展”推进。当前不盲目新增内核功能，而是把 lab0/lab1/lab2/lab3/lab4、综合 patch、验证脚本、队友复现和提交文档整理成评委可快速理解的材料体系。
+- 一套基于 [xv6-riscv](https://github.com/mit-pdos/xv6-riscv) 的分阶段实验：Lab0 到 Lab5，外加一条把所有实验合在一个内核里的 integrated patch 路线（`0001-0009`）。
+- 每个实验都是"小步增量"：一个 patch、一个用户测试程序、一组能照抄的验证命令。
+- 所有实验都能从干净的 xv6 源码一键复现——这不是口号，仓库里有脚本（`scripts/xv6/`）替你做 reset、apply、make、boot、跑测试。
+- 仓库不包含 xv6 源码本体（第三方代码不入库），只包含我们写的 patch、脚本、文档和测试记录。
 
-## 完成状态
+## 适合谁
 
-| 模块                          | 当前状态                      | 说明                                                                                                                  |
-| ----------------------------- | ----------------------------- | --------------------------------------------------------------------------------------------------------------------- |
-| lab0 baseline/build/boot      | 已完成                        | 环境检查、xv6 baseline metadata、make、boot evidence                                                                  |
-| lab1 hello/add2               | 已完成                        | `hello()`、`add2(int,int)` syscall 入门与参数传递                                                                 |
-| lab2 pstate/pcount/pchildtest | 已完成                        | 进程状态观察、状态计数、子进程状态观察                                                                                |
-| lab3 pgcount                  | integrated 已完成             | 页表映射数量观察；eager/lazy allocation 对比；integrated `0006`                                                       |
-| lab4 fcount/fdcount           | v0.2 已完成                   | 全局 file table 与当前进程 fd table 观察；不是完整文件系统实验                                                        |
-| lab5 capstone                 | 已完成文档闭环                | 综合复现实验；组织 clean baseline、integrated `0001-0009`、make/boot/全部用户程序验证，不新增内核机制 |
-| integrated-labs 0001-0009     | 已完成（队长本机）            | clean baseline 可顺序应用并 make；同一构建验证 hello/add2/pstate/pcount/pchild/fcount/pgcount/fdcount/memstat/fdinfo（队长本机 `local-verify --full` PASS） |
-| 进阶 memstat/fdinfo（integrated `0008`/`0009`） | integrated 已完成（队长本机），队友复现 TBD | `memstat`(独立 lab3 `0002` + integrated `0008`，`SYS 29`)/`fdinfo`(独立 lab4 `0002` + integrated `0009`，`SYS 30`) 教 `argaddr/argint + copyout + struct ABI`；队长本机 `local-verify --full` PASS；含 memstat/fdinfo 的 `0001-0009` 队友 full verify 为 TBD；非完整内存管理/文件系统 |
-| verification scripts          | 已更新                        | `doctor.sh`、`teammate-verify.sh`、`local-verify.sh`、`cleanup-qemu.sh`；full/quick 覆盖 pgcounttest 和 fdcounttest |
-| 队长本机验证                  | `0001-0009` full PASS（本机）  | stage11b `0001-0009` 队长本机 `local-verify --full` overall PASS（含 memstat/fdinfo）；旧 `e8e2fb9 / 0001-0007` 为 historical；summary/raw logs 不入库 |
-| 视频记录                      | `0001-0007` historical；`0001-0009` TBD | `0001-0007` 视频（historical stable checkpoint）已记录大小、时长、SHA256；覆盖 `0001-0009` 的新视频与新 SHA256 为 TBD；视频文件在仓库外，不提交 Git |
-| 队友独立复现                  | `0001-0007` historical；`0001-0009` TBD | root 与 z2996 两份 `e8e2fb9` / integrated `0001-0007` full PASS 记录为 historical stable checkpoint（只覆盖 `0001-0007`）；含 memstat/fdinfo 的 `0001-0009` 队友 full verify 为 TBD，不得伪造；旧 `1ba9db6` 只作 historical evidence |
+- 大一/大二，学过一点 C，但没碰过内核的同学。
+- 想提前入门操作系统的高中/初中信息学竞赛学生——只要你会用命令行、能看懂指针，就能跟下来。
+- 上 OS 课需要做 xv6 实验、想要一套带验收标准的练习的人。
+- 想看一个"实验怎么做到可复现、证据怎么留"的完整工程样例的人。
 
-## 评委快速复现
+不适合：想找现成大作业答案直接交的人。每个 lab 的 `student_tasks.md` 留了必做任务，答案要你自己写。
 
-所有真实 `make` / QEMU / boot / 命令验证必须在 WSL2 Ubuntu 或等价 Linux 中执行。
+## 你会学到什么
+
+按 Lab 顺序，每一关解决一个具体问题：
+
+| 关卡 | 你会搞明白的事 |
+| --- | --- |
+| Lab0 | xv6 怎么编译、怎么在 QEMU 里启动、`init: starting sh` 之前发生了什么 |
+| Lab1 | 用户程序调用 `hello()` 时，怎么穿过 `usys.pl` 生成的 stub、`ecall`、`syscall.c` 分发表，落到内核函数上；`argint()` 怎么把整数参数取出来 |
+| Lab2 | 进程在内核里长什么样（`struct proc`）、状态枚举怎么读、为什么观察进程状态要拿锁 |
+| Lab3 | 进程地址空间和页表映射的区别；`sbrk` 立刻给页（eager）和先记账后给页（lazy）在页表里看起来差多少 |
+| Lab4 | fd、`struct file`、全局 file table 三层关系；`dup` 为什么让 fd 变多但 file table 不一定变多 |
+| Lab3/4 进阶 | 内核怎么把一个结构体安全拷回用户态：`argaddr + copyout + struct ABI`（`memstat`/`fdinfo`），为什么不能直接解引用用户指针 |
+| Lab5 | 把前面所有实验从干净源码一次性复现，写出一份有证据的实验报告（capstone，不新增内核机制） |
+
+另外你会顺带学到一套工程习惯：为什么实验要可复现、为什么测试程序要自己算 delta 而不是硬编码输出、为什么日志和第三方源码不进 Git。
+
+## 从零开始怎么学
+
+> 所有 make/QEMU 命令都要在 WSL2 Ubuntu 或等价 Linux 里跑，Windows Git Bash 只能看文档。环境装好前别急着跳关。
+
+- **Step 0：准备环境。** 看 [docs/final/01_environment_setup.md](docs/final/01_environment_setup.md)，装好 `qemu-system-riscv64` 和 RISC-V gcc，然后跑 `bash scripts/xv6/doctor.sh` 体检。
+- **Step 1：Lab0，把 xv6 跑起来。** [labs/lab0-env-setup/README.md](labs/lab0-env-setup/README.md)。看到 `init: starting sh` 这关就过了。
+- **Step 2：Lab1，第一个系统调用。** [labs/lab1-system-call/README.md](labs/lab1-system-call/README.md)。从 `hello()` 到带参数的 `add2(int, int)`。
+- **Step 3：Lab2，观察进程。** [labs/lab2-process-and-scheduling/README.md](labs/lab2-process-and-scheduling/README.md)。`pstate`/`pcount`/`pchildtest`。
+- **Step 4：Lab3，观察页表。** [labs/lab3-memory-and-pagetable/README.md](labs/lab3-memory-and-pagetable/README.md)。`pgcount` 数页，进阶 `memstat` 用 copyout 拷结构体。
+- **Step 5：Lab4，观察文件表。** [labs/lab4-file-system/README.md](labs/lab4-file-system/README.md)。`fcount`/`fdcount` 数数，进阶 `fdinfo` 看单个 fd 的元数据。
+- **Step 6：Lab5，综合复现。** [labs/lab5-final-integration/README.md](labs/lab5-final-integration/README.md)。把全部实验串成一次验收。
+- **Step 7：integrated `0001-0009`。** 一个内核同时装下全部 9 个实验 syscall（编号 22-30），入口见 [patches/integrated-labs/README.md](patches/integrated-labs/README.md)。
+
+每个 lab 目录里有两个文件：`README.md` 是教程，`student_tasks.md` 是练习和验收标准。建议先读教程、跑通验证命令，再做任务。
+
+## 如果你只想先跑起来
+
+在 WSL2 Ubuntu 里：
 
 ```bash
-bash scripts/xv6/doctor.sh
+bash scripts/xv6/doctor.sh                         # 环境体检
+bash scripts/xv6/apply-integrated-labs.sh --make --yes   # 干净源码 + 全部 9 个 patch + make
+bash scripts/xv6/boot-xv6.sh                       # 启动并抓 boot 证据
+bash scripts/xv6/run-xv6-command.sh hello "hello syscall returned 2026"
+```
+
+或者一条命令全做完（apply + make + boot + 10 个测试程序）：
+
+```bash
 bash scripts/xv6/teammate-verify.sh --full
 ```
 
-如果已经看到过 `[OK] make completed successfully`，二次重测可用：
+卡住、报错、或者误按了 `Ctrl+Z`：先跑 `bash scripts/xv6/cleanup-qemu.sh`，再看 [docs/troubleshooting.md](docs/troubleshooting.md)。`/mnt/` 路径下第一次 boot 偏慢是正常的。
 
-```bash
-bash scripts/xv6/teammate-verify.sh --quick
-```
+## 如果你是老师或助教
 
-队长录屏前本地预检：
+- [docs/teacher_guide.md](docs/teacher_guide.md)：怎么把这套实验拆成 2-5 次课、每次讲什么、怎么验收。
+- [docs/grading_and_rubric.md](docs/grading_and_rubric.md)：每个 lab 的评分建议和常见扣分点。
+- 学生交上来的验证结果统一用 `teammate-verify.sh --full` 输出的 `COPY THIS SUMMARY TO TEAM LEAD` 块，方便批量核对。
 
-```bash
-bash scripts/xv6/local-verify.sh --quick
-```
+## 如果你是评委或在看提交材料
 
-卡住或误按 `Ctrl+Z` 后：
+- 证据总索引：[submissions/evidence_manifest.md](submissions/evidence_manifest.md)
+- 技术报告：[docs/final/technical_report_v1.0.md](docs/final/technical_report_v1.0.md)
+- 答辩 PPT 源稿：[slides/final_ppt.md](slides/final_ppt.md)（成稿 `slides/final_defense_ppt.pptx`）
+- 正式文档目录：[docs/final/](docs/final/)，材料索引 [submissions/draft-report-index.md](submissions/draft-report-index.md)
 
-```bash
-bash scripts/xv6/cleanup-qemu.sh
-```
+比赛信息：2026 全国大学生计算机系统能力大赛 OS 设计赛（全国）OS 功能挑战赛道 proj54，中国海洋大学"蓝色系统队"。
 
-`teammate-verify.sh` 会输出 `COPY THIS SUMMARY TO TEAM LEAD` 块，并把 summary 写入 ignored 的 `logs/teammate-verify-*.summary.txt`。
+## 当前证据状态（诚实边界）
 
-## 正式文档导航
-
-正式提交/评委入口位于 `docs/final/`：
-
-| 文档                                                     | 内容                                           |
-| -------------------------------------------------------- | ---------------------------------------------- |
-| `docs/final/00_project_overview.md`                    | 项目定位、评分权重对应、完成状态、同类项目对比 |
-| `docs/final/01_environment_setup.md`                   | WSL2/xv6 环境搭建与仓库卫生                    |
-| `docs/final/02_lab0_baseline_build_boot.md`            | baseline build 与 boot 实验                    |
-| `docs/final/03_lab1_hello_add2.md`                     | hello/add2 系统调用实验                        |
-| `docs/final/04_lab2_process_observation.md`            | pstate/pcount/pchildtest 进程观察实验          |
-| `docs/final/04b_lab3_page_table_observation.md`        | pgcount 页表映射数量观察实验                   |
-| `docs/final/05_lab4_file_table_observation.md`         | fcount/fdcount 文件表与 fd 表观察实验          |
-| `docs/final/06_testing_and_verification.md`            | 测试覆盖总表与证据边界                         |
-| `docs/final/07_teammate_reproduction_guide.md`         | 队友复现指南                                   |
-| `docs/final/08_design_decisions_and_tradeoffs.md`      | 设计取舍与风险控制                             |
-| `docs/final/09_ai_usage_and_contribution_statement.md` | AI 使用与贡献说明                              |
-| `docs/final/10_reference_and_license_statement.md`     | 引用与许可证说明                               |
-| `docs/final/11_known_limits_and_future_work.md`        | 已知限制与后续计划                             |
-| `docs/final/technical_report_v1.0.md`                  | 正式技术报告 v1.0 草案                         |
-| `slides/final_ppt_outline.md`                          | 最终答辩 PPT 大纲                              |
-| `slides/final_ppt.md`                                  | 最终答辩 PPT 源稿                              |
-| `slides/final_defense_ppt.pptx`                        | 最终答辩 PPT 成稿                              |
-
-提交材料索引见 `submissions/draft-report-index.md`；运行 `bash scripts/collect-report.sh` 可重新生成。
-
-## 视频说明
-
-`0001-0007` 视频已录制并记录 SHA256，但只覆盖 `0001-0007`，stage11b 后降级为 historical stable checkpoint；覆盖 `0001-0009`（含 memstat/fdinfo）的新视频与新 SHA256 为 TBD，须重新录制，不得伪造。旧三段视频保留为 historical evidence，只覆盖 earlier integrated `0001-0005` / stage7-stage8 workflow。所有视频文件保存在仓库外，不提交 Git。当前仓库只记录视频文件名、用途、大小、时长、SHA256、外部位置和边界说明：
-
-```text
-submissions/demo_record.md
-submissions/evidence_manifest.md
-```
-
-视频不得包含 token、密码、个人隐私、报名材料或未公开账号信息；最终上传前隐私复核状态仍按 `pending final manual review` 处理，除非人工确认。
-
-## 诚信与边界
-
-- 不提交 `external/xv6-riscv/`、`logs/*.log`、`logs/*.summary.txt`、`.claude/`、`.vscode/`、视频、大文件或隐私材料。
-- `patches/integrated-labs/0001-0009` 是当前综合序列；`0006` Lab3 `pgcount()`，`0007` Lab4 v0.2 `fdcount()`，`0008` 进阶 `memstat()`（`SYS 29`），`0009` 进阶 `fdinfo()`（`SYS 30`）；`0001-0007` 内容未改动。
-- Lab5 是 capstone 综合复现实验，不是新的内核机制。
-- timeout 自动捕获只证明脚本在真实 QEMU 输出中匹配到预期文本，不等同于长期稳定性测试。
-- `fcount()` / `fdcount()` 只是 file table / fd table 计数观察，不是完整文件系统实验。
-- `pcount(RUNNING)` 和 `fcount(...)` 的具体数字不固定；`pchildtest` 状态受调度时序影响。
-- historical stable checkpoint commit `e8e2fb9` 已收到队长本机、队友 root、队友 z2996 三份 `--full` verification PASS 摘要，但只覆盖 integrated `0001-0007`；原始 summary/log/screenshot 不入仓。
-- stage11b 把 integrated 扩展为 `0001-0009`（新增 memstat `0008` / fdinfo `0009`），队长本机 `local-verify --full` overall PASS；但覆盖 `0001-0009` 的 new final commit、rain/root/z2996 三方 full verify、新视频和新 SHA256 仍为 TBD，须重新复现后填写，不得伪造。
-- 旧 commit `1ba9db6` 的两份队友 PASS 与旧三段视频只作为 historical/superseded evidence，不覆盖 `e8e2fb9` 的 integrated `0001-0007`。
-- AI 可辅助规划、审查和文档/脚本落地；make/QEMU/PASS 结果必须来自真实命令。
-
-## 已知限制与后续计划
-
-- lab3 当前已进入 integrated `0006`，但仍只是页表映射数量观察，不是完整内存管理实验。
-- lab4 当前为 file table / fd table 观察 v0.2，后续可扩展 inode、open-file summary 等内容。
-- lab5 当前是 capstone 文档和综合复现闭环，不新增内核功能。
-- 技术报告 v1.0、PPT 源稿和 PPTX 成稿已基于 `docs/final/` 整理；最终答辩前仍需人工审阅和排练。
-- 队友真实姓名/系统版本、平台提交方式、视频/截图最终隐私复核、同类项目参考 URL 仍需最终补齐或人工确认。
+- current integrated suite = `0001-0009`（hello=22 … fdinfo=30，连续编号）；队长本机 `local-verify --full` overall PASS。
+- `0001-0009` 的队友三方复现、新演示视频、新 SHA256 = **TBD**，复现后才填，不伪造。
+- `e8e2fb9 / 0001-0007` 的 rain/root/z2996 三方 full PASS 和旧视频 = **historical stable checkpoint**，只覆盖 `0001-0007`，不覆盖当前 suite。
+- 一直成立的边界：`pgcount`/`memstat` 不是完整内存管理，`fcount`/`fdcount`/`fdinfo` 不是完整文件系统，Lab5 不新增内核机制，QEMU timeout 捕获不等于长期稳定性测试。
+- 不入 Git 的东西：`external/xv6-riscv/`、`logs/`、视频、截图、`.claude/`、`.vscode/`、隐私材料。提交前可跑 `bash scripts/check-final-hygiene.sh` 自查。
