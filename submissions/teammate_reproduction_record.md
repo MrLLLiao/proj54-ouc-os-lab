@@ -23,7 +23,7 @@ bash scripts/xv6/teammate-verify.sh --full
 | 队友 A | `root` | `db85947` | `0001-0009` | full PASS |
 | 队友 B | `z2996` | `db85947` | `0001-0009` | full PASS |
 
-外部证据文件（不入 Git，位于 `D:\Edge Download\CSCC\proj54_submission_assets\teammate_reproduction\db85947_final_0001_0009\`）：
+外部证据文件（不入 Git，位于 `D:\Edge Download\CSCC\proj54_submission_assets\teammate_reproduction\db85947_final_0001_0009\`；该资产目录已整体上传百度网盘，链接见 `submissions/evidence_manifest.md` 的 External Asset Package 小节）：
 
 | 角色 | 类型 | 文件 | SHA256 |
 | --- | --- | --- | --- |

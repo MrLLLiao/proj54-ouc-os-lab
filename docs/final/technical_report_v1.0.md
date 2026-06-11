@@ -294,7 +294,7 @@ current final 视频证据（覆盖 `db85947 / 0001-0009`，含 memstattest/fdin
 
 旧三段视频和旧 `1ba9db6` 队友证据保留为 historical/superseded evidence，只能说明 earlier integrated `0001-0005` / stage7-stage8 workflow，不覆盖 final `e8e2fb9`。
 
-视频、截图、raw logs 和 summary 原件均保存在仓库外，仓库只记录元数据和 SHA256（外部文件可用 `check-evidence-sha256.sh` 核验）。视频/截图最终隐私复核仍为 `pending final manual review`，平台提交方式也仍需最终确认。
+视频、截图、raw logs 和 summary 原件均保存在仓库外，仓库只记录元数据和 SHA256（外部文件可用 `check-evidence-sha256.sh` 核验）。外部资产目录 `proj54_submission_assets` 已整体上传百度网盘（链接 <https://pan.baidu.com/s/1Xt-G6VgP04eEAumqiMo7Uw?pwd=1234>，提取码 `1234`），内含 current final demo video、`db85947_final_0001_0009` 三方复现文件与 historical `e8e2fb9_final_0001_0007` 证据；网盘只是文件载体，证据索引与哈希以仓库内 manifest 和脚本为准。视频/截图最终隐私复核仍为 `pending final manual review`，平台提交方式也仍需最终确认。
 
 ## 14. 创新点与教学价值
 
@@ -307,6 +307,8 @@ current final 视频证据（覆盖 `db85947 / 0001-0009`，含 memstattest/fdin
 5. **诚实边界明确**：不把 timeout 写成长期稳定性，不把 fcount/fdcount 写成完整文件系统，不把 pgcount 写成完整内存管理。
 6. **可直接开课的教学材料**：每个 lab 有教程式 README + 学生任务书（必做/选做/评分 rubric/常见扣分点），配教师指南（2/3/5 次课三种排法）、评分标准和按"症状-原因-解决"组织的 troubleshooting，学生任务以预测-验证和破坏-修复为主，刻意不给现成答案。
 7. **OUC 本校适配**：面向低年级学生和助教维护，把竞赛项目转化为课程实验包。
+
+上面这些设计里有不少直接来自真实踩坑：`pchildtest` 这个名字是因为原名 `pstatechildtest` 触发 xv6 `DIRSIZ` 限制导致 `mkfs` 构建失败才改的；"independent patch 互斥、组合必须走 integrated"是把 lab2 patch 叠到 lab1 上 `git apply` 实测失败后定下的规则；boot 脚本的重试和硬超时是被 `/mnt` 路径下的 mtime 偏差逼出来的。过程记录都在 `docs/06_progress_log.md`，没有事后补写。
 
 与同类教学项目相比，本项目的差异化不是“更完整地重做一个 OS 课程生态”，而是聚焦 OUC 本校、xv6-riscv、clean-baseline patch 和提交友好复现：
 

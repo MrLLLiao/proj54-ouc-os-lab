@@ -7,7 +7,7 @@
 ## Slide 1. OUC xv6 Lab Kit
 
 **Key message**  
-面向中国海洋大学操作系统课程的 xv6-riscv 分阶段实验指导、参考实现与可复现验证体系。
+我们不只是给 xv6 加了九个系统调用，而是把它们整理成了一个可学习、可复现、可验收的 OS 入门实验包。
 
 **Bullet content**
 
@@ -21,7 +21,7 @@
 标题页 + 三个证据标签：`Lab0-Lab5`、`integrated 0001-0009`、`rain/root/z2996 三方 full PASS（db85947）`。
 
 **Speaker notes**  
-开场先明确本项目是教学型功能挑战项目，主线是课程实验体系和可复现验证，不是内核实现赛道的 LTP 覆盖项目。
+开场用一句话讲清定位：九个 syscall 只是素材，真正的工作是把它们组织成学生能学、老师能布置、助教能验收、评委能复现的课程实验包；本项目不是内核实现赛道的 LTP 覆盖项目。
 
 ## Slide 2. 赛题理解：教学型 OS 功能挑战
 
@@ -248,7 +248,8 @@ current final `db85947 / 0001-0009`（含 memstat/fdinfo）已完成 rain/root/z
 - `0001-0007` 视频（historical stable checkpoint）：`20260606_final_integrated_0001_0007_demo.mp4`。
 - 该视频 SHA256：`0FF2D3581552B3FD3A2630E827251CF46C36BC3BE8F8B9D9DDB691FC0668A93B`（只覆盖 `0001-0007`）。
 - current final 视频：`20260611_final_integrated_0001_0009_demo.mp4`（31,529,984 bytes），SHA256 `2A2C9863...C7BC0365` 已登记。
-- 中央索引：`submissions/evidence_manifest.md`。
+- 外部资产包已上传百度网盘（目录 `proj54_submission_assets`，链接+提取码见 evidence manifest）；大文件不入 Git。
+- 中央索引：`submissions/evidence_manifest.md`；哈希核验：`scripts/check-evidence-sha256.sh`（实测 14/14 matched）。
 - historical videos 只覆盖 earlier `0001-0005`，不覆盖 `e8e2fb9`。
 - 隐私复核状态：`pending final manual review`。
 

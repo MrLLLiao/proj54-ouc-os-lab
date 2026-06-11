@@ -80,6 +80,7 @@ bash scripts/labctl.sh verify        # 一键 full 验证（等价 teammate-veri
 - 技术报告：[docs/final/technical_report_v1.0.md](docs/final/technical_report_v1.0.md)
 - 答辩 PPT 源稿：[slides/final_ppt.md](slides/final_ppt.md)（成稿 `slides/final_defense_ppt.pptx`）
 - 正式文档目录：[docs/final/](docs/final/)，材料索引 [submissions/draft-report-index.md](submissions/draft-report-index.md)
+- 外部证据资产包（演示视频、三方复现 summary/截图等大文件，不入 Git）：百度网盘目录 `proj54_submission_assets`，链接 <https://pan.baidu.com/s/1Xt-G6VgP04eEAumqiMo7Uw?pwd=1234>（提取码 `1234`）。下载后可用 `XV6_EVIDENCE_BASE=<解压路径> bash scripts/check-evidence-sha256.sh` 逐文件核对哈希——以仓库内 manifest 和该脚本为准，网盘只是文件的存放处。
 
 比赛信息：2026 全国大学生计算机系统能力大赛 OS 设计赛（全国）OS 功能挑战赛道 proj54，中国海洋大学"蓝色系统队"。
 
@@ -89,3 +90,7 @@ bash scripts/labctl.sh verify        # 一键 full 验证（等价 teammate-veri
 - `e8e2fb9 / 0001-0007` 的三方 full PASS 和旧视频 = **historical stable checkpoint**，只覆盖 `0001-0007`，保留不删但不作为 current final。
 - 一直成立的边界：`pgcount`/`memstat` 不是完整内存管理，`fcount`/`fdcount`/`fdinfo` 不是完整文件系统，Lab5 不新增内核机制，QEMU timeout 捕获不等于长期稳定性测试。
 - 不入 Git 的东西：`external/xv6-riscv/`、`logs/`、视频、截图、`.claude/`、`.vscode/`、隐私材料。提交前三道自查：`bash scripts/check-final-hygiene.sh`（仓库卫生）、`bash scripts/check-docs-consistency.sh`（文档与脚本状态一致）、`bash scripts/check-evidence-sha256.sh`（外部证据哈希）。
+
+---
+
+最后说一句：这套实验包是我们一边踩坑一边整理出来的。给测试程序起名 `pstatechildtest` 结果 `mkfs` 直接构建失败（xv6 的 `DIRSIZ` 限制文件名长度，后来改成了 `pchildtest`）；把 lab2 的 patch 往 lab1 上叠，`git apply` 当场报错，才实测确认了 independent patch 之间 `SYS_*=22` 的编号冲突；`/mnt` 路径下第一次 boot 慢到以为卡死。这些坑的现象和解法都写进了 [docs/troubleshooting.md](docs/troubleshooting.md) 和各 lab 的"常见卡点"，希望你比我们少走点弯路。

@@ -12,6 +12,7 @@
 | 报名材料 | 禁止入库 | 姓名、学号、手机号、身份证等不进 Git |
 | 视频文件 | 禁止入库 | current final `0001-0009` 视频（`20260611_..._demo.mp4`，SHA256 已登记）与 historical `0001-0007` 视频、3 段更早历史视频的元数据均记录在 `submissions/demo_record.md`；视频本体在仓库外；平台提交方式和最终隐私复核待确认 |
 | 大文件/压缩包/截图 | 禁止入库 | `.mp4/.mov/.zip/.7z/.rar/.png/.jpg` 等均禁止提交 |
+| 外部证据资产包 | 已上传网盘 | 百度网盘目录 `proj54_submission_assets`（链接 <https://pan.baidu.com/s/1Xt-G6VgP04eEAumqiMo7Uw?pwd=1234>，提取码 `1234`）；内含 final `0001-0009` demo video、`db85947_final_0001_0009` 三方复现文件、historical `e8e2fb9_final_0001_0007` 证据等；哈希以 `submissions/evidence_manifest.md` + `scripts/check-evidence-sha256.sh` 为准 |
 
 ## 2. Git 仓库卫生
 
@@ -72,7 +73,7 @@
 | 视频文件不入库 | 必须保持 |
 | 视频文件名 | 已记录 |
 | 视频时长 | final 与 historical 视频均已记录 |
-| 外部存放位置 | 已记录 |
+| 外部存放位置 | 已记录；资产目录已整体上传百度网盘（链接见 `submissions/evidence_manifest.md`） |
 | 平台提交方式 | 待补充 |
 | 隐私/token/密码检查 | pending final manual review |
 

@@ -1,6 +1,7 @@
 # Troubleshooting：卡住了先看这里
 
 > 维护时间：2026-06-10（stage12）。覆盖 WSL、QEMU、make、PATH、timeout、`/mnt` 性能等高频问题。每条按"症状 → 可能原因 → 解决 → 报告时带什么信息"组织。
+> 这一页不是从手册抄的——下面每个条目我们在开发过程中至少真实遇到过一次，处理命令都验证过。
 
 通用第一步：`bash scripts/labctl.sh doctor`（等价 `scripts/xv6/doctor.sh`）。它只读不写，10 秒告诉你 git/bash/make/qemu/交叉编译器在不在、有没有 QEMU 残留进程、路径在不在 `/mnt` 下。
 

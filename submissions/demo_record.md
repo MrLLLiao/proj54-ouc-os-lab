@@ -63,7 +63,7 @@
 
 ## Submission Notes
 
-- 视频文件位于仓库外：`D:\Edge Download\CSCC\proj54_submission_assets\videos`。
+- 视频文件位于仓库外：`D:\Edge Download\CSCC\proj54_submission_assets\videos`；同一目录已整体上传百度网盘 `proj54_submission_assets`（链接 <https://pan.baidu.com/s/1Xt-G6VgP04eEAumqiMo7Uw?pwd=1234>，提取码 `1234`），哈希以 `submissions/evidence_manifest.md` 与 `scripts/check-evidence-sha256.sh` 为准。
 - 本仓库只记录视频文件名、用途、大小、时长、分辨率、帧率、外部位置和 SHA256，不提交 `.mp4` 本体。
 - `slides/final_defense_ppt.pptx` 不嵌入视频本体；答辩时如需播放视频，应从外部提交材料或平台附件中使用 current final 的 `20260611_final_integrated_0001_0009_demo.mp4`（旧 `20260606_final_integrated_0001_0007_demo.mp4` 仅作 historical 备份）。
 - 平台提交方式仍需按比赛官方要求确认。

@@ -5,7 +5,7 @@
 ## Slide 1. 标题页
 
 **Key message**  
-OUC xv6 Lab Kit：面向中国海洋大学 OS 课程的 xv6-riscv 分阶段实验与可复现验证体系。
+我们不只是给 xv6 加了九个系统调用，而是把它们整理成了一个可学习、可复现、可验收的 OS 入门实验包。
 
 **Bullet content**
 
@@ -242,6 +242,7 @@ current final `db85947 / 0001-0009`（含 memstat/fdinfo）已完成三方 full 
 - `0001-0007` 视频（historical stable checkpoint）：`20260606_final_integrated_0001_0007_demo.mp4`
 - 该视频 SHA256：`0FF2D358...668A93B`（只覆盖 `0001-0007`）
 - current final 视频：`20260611_final_integrated_0001_0009_demo.mp4`，SHA256 已登记
+- 外部资产包已上传百度网盘（`proj54_submission_assets`，链接见 evidence manifest）；大文件不入 Git
 - `submissions/evidence_manifest.md`
 - old videos are historical/superseded
 - privacy review pending final manual review

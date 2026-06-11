@@ -173,6 +173,8 @@ bash scripts/xv6/run-xv6-command.sh add2test "add2(20, 6) returned 26"
 
 ## 常见卡点（常见错误）
 
+下面这张表不是凭空列的：开发记录里真实出现过"在 Windows PowerShell 里跑 `make` 直接失败"和"手写 patch 格式损坏导致 apply 不上"这类事故（见 `docs/06_progress_log.md` 的 stage3a 条目），所以第一次卡住很正常，按表排查就行。
+
 | 问题 | 可能原因 | 处理方式 |
 | --- | --- | --- |
 | syscall number 冲突 | `SYS_add2` 使用了已有编号 | 检查 `kernel/syscall.h`，当前 `hello=22`，`add2=23`。 |

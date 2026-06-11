@@ -66,6 +66,10 @@ proj54 是教学型功能挑战，不是“内核实现赛道刷 LTP”项目。
 
 以上对比用于项目定位，不表示复制其代码或文档。正式引用见 `docs/final/10_reference_and_license_statement.md`。
 
+## 外部证据资产包
+
+演示视频、三方复现 summary/截图等大文件本体不进入 Git，统一存放在外部目录 `proj54_submission_assets`，并已整体上传百度网盘：链接 <https://pan.baidu.com/s/1Xt-G6VgP04eEAumqiMo7Uw?pwd=1234>（提取码 `1234`）。内含 current final `0001-0009` demo video、`db85947_final_0001_0009` 三方复现文件、historical `e8e2fb9_final_0001_0007` 证据及更早的 historical videos。文件清单和 SHA256 以 `submissions/evidence_manifest.md` 与 `scripts/check-evidence-sha256.sh` 为准——网盘只是文件载体，核验在仓库内完成。
+
 ## 关键边界
 
 - 不提交 `external/xv6-riscv/`。
