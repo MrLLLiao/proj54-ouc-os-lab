@@ -1,6 +1,6 @@
-# Teammate Reproduction Record
+# 队友复现记录
 
-> 维护时间：2026-06-11（stage14 record final db85947 evidence）。
+> 维护时间：2026-06-11（stage14 记录 final `db85947` 证据）。
 > 本文件只记录队友复现 summary 的文字摘要和外部证据元数据，不提交原始 `logs/` 文件、summary 文件、截图、终端历史或隐私材料。
 
 ## 记录目的
@@ -13,7 +13,7 @@
 bash scripts/xv6/teammate-verify.sh --full
 ```
 
-## Current Final Verification（stage14：`db85947` / integrated `0001-0009`）— 已完成
+## 当前最终验证（stage14：`db85947` / integrated `0001-0009`）— 已完成
 
 > current final commit：`db85947 feat(course): add lab runner and grading helpers`。三方 `teammate-verify.sh --full` 复现均为真实执行，覆盖 doctor/check-env/baseline/apply+make/boot/hello/add2test/pstatetest/pcounttest/pchildtest/fcounttest/pgcounttest/fdcounttest/memstattest/fdinfotest/overall，结果全 PASS。
 
@@ -23,7 +23,7 @@ bash scripts/xv6/teammate-verify.sh --full
 | 队友 A | `root` | `db85947` | `0001-0009` | full PASS |
 | 队友 B | `z2996` | `db85947` | `0001-0009` | full PASS |
 
-外部证据文件（不入 Git，位于 `D:\Edge Download\CSCC\proj54_submission_assets\teammate_reproduction\db85947_final_0001_0009\`；该资产目录已整体上传百度网盘，链接见 `submissions/evidence_manifest.md` 的 External Asset Package 小节）：
+外部证据文件（不入 Git，位于 `D:\Edge Download\CSCC\proj54_submission_assets\teammate_reproduction\db85947_final_0001_0009\`；该资产目录已整体上传百度网盘，链接见 `submissions/evidence_manifest.md` 的“外部证据资产包”小节）：
 
 | 角色 | 类型 | 文件 | SHA256 |
 | --- | --- | --- | --- |
@@ -35,7 +35,7 @@ bash scripts/xv6/teammate-verify.sh --full
 
 批量核对：三份 summary 经 `bash scripts/grade-summaries.sh --expect-commit db85947 logs/student-summaries` 解析，parsed 3 / clean PASS 3 / needs attention 0（`GRADE_SUMMARIES_RESULT: OK`）。外部文件哈希经 `bash scripts/check-evidence-sha256.sh` 实测匹配。队友真实姓名、系统版本如最终材料需要仍待人工补充，不编造。
 
-## Previous Stable Checkpoint — `e8e2fb9` / Integrated `0001-0007`（historical）
+## 历史稳定检查点 — `e8e2fb9` / integrated `0001-0007`（historical）
 
 > 以下三方 full PASS 是历史稳定检查点，只证明 `0001-0007`，**不覆盖** stage11b 的 `0001-0009`。
 
@@ -66,7 +66,7 @@ integrated suite：`0001-0007`
 | fdcounttest | PASS |
 | overall | PASS |
 
-### A. Team Lead Local Verification
+### A. 队长本机验证
 
 > 这是队长本机验证，不写成队友独立复现。
 
@@ -78,9 +78,9 @@ integrated suite：`0001-0007`
 | mode | `full` |
 | summary file | `logs/teammate-verify-20260606-232145.summary.txt` |
 | result | doctor/check-env/baseline/apply+make/boot/hello/add2test/pstatetest/pcounttest/pchildtest/fcounttest/pgcounttest/fdcounttest/overall 全 PASS |
-| Git policy | raw summary file is ignored and not committed |
+| Git policy | 原始 summary 文件被 ignore，不提交 |
 
-### B. Teammate A Final Verification
+### B. 队友 A 最终复现记录
 
 | 字段 | 内容 |
 | --- | --- |
@@ -101,7 +101,7 @@ integrated suite：`0001-0007`
 | summary text | `D:\Edge Download\CSCC\proj54_submission_assets\teammate_reproduction\e8e2fb9_final_0001_0007\teammateA_root_e8e2fb9_full_20260606-235139.summary.txt` | `36E7A57554B524B11E99DF523AF54BCCBC2AA3E1682172899F5DA4A5EDAF90BE` |
 | screenshot | `teammateA_root_e8e2fb9_full_20260606-235641.screenshot.png` | `4A3679274CA18B2E8BAEB9023C8D6DF7BE76738A5126C0F47ADAA3954ADC19D2` |
 
-### C. Teammate B Final Verification
+### C. 队友 B 最终复现记录
 
 | 字段 | 内容 |
 | --- | --- |
@@ -122,11 +122,11 @@ integrated suite：`0001-0007`
 
 说明：队友 B 记录按用户提供的截图/log 摘要整理。若最终材料需要真实姓名、系统版本或更详细机器信息，应由队友补充，不在仓库中编造。
 
-## Historical Evidence: `1ba9db6` / Earlier Integrated `0001-0005`
+## 历史证据：`1ba9db6` / earlier integrated `0001-0005`
 
 以下两份旧队友 full PASS summary 是 historical / superseded evidence，只能证明较早 commit `1ba9db6 tooling: speed up verification and clean repo hygiene` 上的 earlier integrated `0001-0005` / stage7-stage8 workflow，不覆盖最终 commit `e8e2fb9` 的 integrated `0001-0007`。
 
-### Historical Teammate A / root
+### historical 队友 A / root
 
 | 字段 | 内容 |
 | --- | --- |
@@ -139,7 +139,7 @@ integrated suite：`0001-0007`
 | summary file | `logs/teammate-verify-20260606-191352.summary.txt`（原始文件不入仓） |
 | result | doctor/check-env/baseline/apply+make/boot/hello/add2test/pstatetest/pcounttest/pchildtest/fcounttest/overall 全 PASS |
 
-### Historical Teammate B / z2996
+### historical 队友 B / z2996
 
 | 字段 | 内容 |
 | --- | --- |

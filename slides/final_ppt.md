@@ -1,8 +1,8 @@
-# Final Defense PPT Source
+# 最终答辩 PPT 源稿
 
-> stage16-redesign-with-ppt-skill source for `slides/final_defense_ppt.pptx`.
-> The visible deck is Chinese-first. Commit ids, SHA256, commands, file names, and syscall names keep their original form.
-> The PPTX must not embed videos, screenshots, raw summaries, raw logs, or netdisk assets.
+> stage16-redesign-with-ppt-skill 的 PPT 文案源，用于生成 `slides/final_defense_ppt.pptx`。
+> 可见页面以中文为主；commit id、SHA256、命令、文件名和 syscall 名保留原样。
+> PPTX 不嵌入视频、截图、raw summaries、raw logs 或网盘资产。
 
 ## Slide 1. 从能跑，到能教
 

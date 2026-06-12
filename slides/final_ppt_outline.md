@@ -1,17 +1,17 @@
-# Final Defense PPT Outline
+# 最终答辩 PPT 大纲
 
-> stage16-redesign-with-ppt-skill outline. This file matches `slides/final_ppt.md` and the regenerated `slides/final_defense_ppt.pptx`.
+> 本文件是 stage16-redesign-with-ppt-skill 的最终答辩结构说明，与 `slides/final_ppt.md` 和重新生成的 `slides/final_defense_ppt.pptx` 保持一致。
 
-## Design Principles Adopted From PPT Skills
+## 设计原则
 
-- Claim first: every slide has one short title and one main takeaway.
-- Proof object first: every content slide has a visual exhibit such as a pipeline, matrix, architecture map, evidence card, comparison table, or timeline.
-- Chinese-first display: visible labels are Chinese except commit ids, SHA256, commands, file names, syscall names, and PASS-style evidence terms.
-- Deep-sea visual system: deep navy, cyan highlight, white/light content slides, and high-contrast typography.
+- 先给结论：每页只有一个短标题和一个核心观点。
+- 先给证据图：内容页使用流水线、矩阵、架构图、证据卡、对比表或时间线，不堆长段文字。
+- 中文优先：可见标签以中文为主；commit id、SHA256、命令、文件名、syscall 名和 PASS 类证据词保留英文。
+- 深海视觉系统：深蓝、青色高亮、白色/浅色内容页和高对比字体形成统一风格。
 - 无可见制作痕迹：页面里不出现 `source:`、`self-drawn`、`generator`、占位符或工具水印。
-- Evidence discipline: do not embed videos/screenshots/raw summaries; cite metadata and SHA256 only.
+- 证据边界清晰：不嵌入视频、截图或 raw summaries，只引用元数据和 SHA256。
 
-## Slide Plan
+## 页序安排
 
 | # | 标题 | 核心观点 | 主要图示 |
 | ---: | --- | --- | --- |
@@ -32,21 +32,21 @@
 | 15 | 创新在组织方式 | 创新落在 patch workflow、课程材料、复现工具和证据边界。 | 五块创新拼图 |
 | 16 | 边界与总结 | 真实、可复现、可教学，同时把提交前最后确认项说清楚。 | 完成/验证/边界/提交前确认总结板 |
 
-## Fixed Evidence Facts
+## 固定证据事实
 
-- final engineering commit: `db85947`
-- evidence documentation commit: `caf8ced`
-- current suite: integrated `0001-0009`
-- historical checkpoint: `e8e2fb9 / 0001-0007`（历史检查点）
-- three-way full verify: `rain / root / z2996` all PASS（三方全量验证通过）
+- 最终工程 commit: `db85947`
+- 证据文档 commit: `caf8ced`
+- 当前 suite: integrated `0001-0009`
+- 历史检查点: `e8e2fb9 / 0001-0007`
+- 三方 full verify: `rain / root / z2996` 全部 PASS
 - grade-summaries: `3 clean PASS / 0 needs attention`
 - evidence hash check: `14/14 matched`
-- final video: `20260611_final_integrated_0001_0009_demo.mp4`
-- final video metadata: `00:03:12`, `2560×1440`, `60 fps`, `31,529,984 bytes`
-- final video SHA256: `2A2C9863C185846225A98AC874499867A71588CED2020A64249CBF99C7BC0365`
-- Baidu asset package: <https://pan.baidu.com/s/1Xt-G6VgP04eEAumqiMo7Uw?pwd=1234>, 提取码 `1234`, 目录 `proj54_submission_assets`
+- 最终视频: `20260611_final_integrated_0001_0009_demo.mp4`
+- 最终视频元数据: `00:03:12`, `2560×1440`, `60 fps`, `31,529,984 bytes`
+- 最终视频 SHA256: `2A2C9863C185846225A98AC874499867A71588CED2020A64249CBF99C7BC0365`
+- 百度网盘资产包: <https://pan.baidu.com/s/1Xt-G6VgP04eEAumqiMo7Uw?pwd=1234>, 提取码 `1234`, 目录 `proj54_submission_assets`
 
-## Timing Plan
+## 讲解时间建议
 
 | 段落 | 页码 | 建议时间 |
 | --- | --- | ---: |

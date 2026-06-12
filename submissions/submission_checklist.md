@@ -1,4 +1,4 @@
-# Submission Checklist
+# 提交检查清单
 
 > 维护时间：2026-06-11（stage16 final defense PPT redesign）。
 > 本 checklist 面向最终提交前自查，不包含报名信息、个人隐私、token、视频文件或大文件。

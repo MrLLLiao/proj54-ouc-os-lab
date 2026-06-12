@@ -1,60 +1,60 @@
-# Evidence Manifest
+# 证据清单（Evidence Manifest）
 
-> 维护时间：2026-06-11，stage16 final defense PPT rebuild。
+> 维护时间：2026-06-11，stage16 最终答辩 PPT 重做后同步。
 > 本文件是最终提交证据索引，不保存原始证据文件。视频、截图、console log、summary 原件均保存在仓库外，Git 仓库只保存文字摘要、外部位置、文件大小和 SHA256。
 
-## Manifest Purpose
+## 记录目的
 
-This manifest lets judges and teammates locate the final evidence set without committing raw evidence into Git. It records:
+本文件用于让评委、队友和队长快速定位最终证据集，同时避免把原始视频、截图、summary、console log 等大文件或隐私材料提交进 Git。这里记录：
 
-- current final engineering commit and integrated suite identity;
-- lead and teammate full verification summaries;
-- final video metadata and SHA256;
-- external asset package location;
-- historical evidence boundaries;
-- non-committed evidence policy.
+- 当前最终工程 commit 与 integrated suite 身份；
+- 队长和两位队友的 full verification 摘要；
+- 最终演示视频的元数据和 SHA256；
+- 外部证据资产包位置；
+- historical evidence 的边界；
+- 不提交原始证据的仓库卫生策略。
 
-## Current Final Evidence: `db85947 / 0001-0009`
+## 当前最终证据：`db85947 / 0001-0009`
 
 | 字段 | 内容 |
 | --- | --- |
-| final engineering commit | `db85947 feat(course): add lab runner and grading helpers` |
-| evidence documentation commit | `caf8ced docs: record final db85947 evidence` |
-| current integrated suite | `0001-0009` |
-| historical checkpoint | `e8e2fb9 / 0001-0007` only as historical evidence |
-| final verification | `rain / root / z2996` full verification all PASS |
+| 最终工程 commit | `db85947 feat(course): add lab runner and grading helpers` |
+| 证据文档 commit | `caf8ced docs: record final db85947 evidence` |
+| 当前 integrated suite | `0001-0009` |
+| historical checkpoint | `e8e2fb9 / 0001-0007`，只作为历史证据 |
+| final verification | `rain / root / z2996` full verification 全部 PASS |
 | grade-summaries | 3 clean PASS, 0 needs attention |
 | evidence SHA256 check | 14/14 matched |
 
-## Integrated Suite Map
+## integrated 补丁序列映射
 
-| Sequence | Content | Syscall numbers |
+| 序列 | 内容 | syscall 编号 |
 | --- | --- | --- |
 | `0001-0007` | hello/add2/pstate/pcount/fcount/pgcount/fdcount | 22-28 |
-| `0008` | Lab3 advanced `memstat()` address-space observation through `argaddr + copyout + struct ABI` | `SYS_memstat = 29` |
-| `0009` | Lab4 advanced `fdinfo()` fd metadata observation through `argint + argaddr + copyout + struct ABI` | `SYS_fdinfo = 30` |
+| `0008` | Lab3 进阶 `memstat()`：通过 `argaddr + copyout + struct ABI` 观察地址空间统计 | `SYS_memstat = 29` |
+| `0009` | Lab4 进阶 `fdinfo()`：通过 `argint + argaddr + copyout + struct ABI` 观察单个 fd 元数据 | `SYS_fdinfo = 30` |
 
-Boundary: `memstat` is not a complete memory-management implementation; `fdinfo` is not a complete file-system implementation; timeout capture is not long-term stability testing.
+边界：`memstat` 不是完整内存管理实现；`fdinfo` 不是完整文件系统实现；timeout 捕获只能说明复现脚本能匹配预期输出，不能写成长期稳定性测试。
 
-## Current Final Verification Summary
+## 当前最终验证摘要
 
-| Role | User | Mode | Result | External evidence |
+| 角色 | user | mode | result | 外部证据 |
 | --- | --- | --- | --- | --- |
-| team lead local verification | `rain` | full | PASS | `teammate_reproduction/db85947_final_0001_0009/teamlead_rain_db85947_full_20260610-221236.summary.txt` |
-| teammate A | `root` | full | PASS | `teammate_reproduction/db85947_final_0001_0009/teammateA_root_db85947_full_20260611-080653.summary.txt` |
-| teammate B | `z2996` | full | PASS | `teammate_reproduction/db85947_final_0001_0009/teammateB_z2996_db85947_full_20260610-221859.summary.txt` |
+| 队长本机验证 | `rain` | full | PASS | `teammate_reproduction/db85947_final_0001_0009/teamlead_rain_db85947_full_20260610-221236.summary.txt` |
+| 队友 A | `root` | full | PASS | `teammate_reproduction/db85947_final_0001_0009/teammateA_root_db85947_full_20260611-080653.summary.txt` |
+| 队友 B | `z2996` | full | PASS | `teammate_reproduction/db85947_final_0001_0009/teammateB_z2996_db85947_full_20260610-221859.summary.txt` |
 
-Current final verification covers:
+current final full verification 覆盖以下检查项：
 
 ```text
 doctor/check-env/baseline/apply+make/boot/hello/add2test/pstatetest/pcounttest/pchildtest/fcounttest/pgcounttest/fdcounttest/memstattest/fdinfotest/overall
 ```
 
-All listed items are recorded as PASS in the final external summaries. Raw summary files are ignored and not committed.
+以上检查项均在外部 summary 中记录为 PASS。原始 summary 文件被 ignore，不提交到 Git。
 
-## Current Final Evidence Hashes
+## 当前最终证据哈希
 
-| Evidence file | SHA256 |
+| 证据文件 | SHA256 |
 | --- | --- |
 | `videos/20260611_final_integrated_0001_0009_demo.mp4` | `2A2C9863C185846225A98AC874499867A71588CED2020A64249CBF99C7BC0365` |
 | `teammate_reproduction/db85947_final_0001_0009/teamlead_rain_db85947_full_20260610-221236.summary.txt` | `C0CBC292DD7C49E7016F4117871CC5F256D3554611E13DB5E8590020BB1DFD50` |
@@ -63,7 +63,7 @@ All listed items are recorded as PASS in the final external summaries. Raw summa
 | `teammate_reproduction/db85947_final_0001_0009/teammateB_z2996_db85947_full_20260610-221859.summary.txt` | `5F0973FB54B012C259F6A2E08F6C322F224E356EAFC4BB8A8F684474F941255E` |
 | `teammate_reproduction/db85947_final_0001_0009/teammateB_z2996_db85947_full_20260610-222133.screenshot.png` | `E9AEF330994C496C2FD4A257596594732CBA3C0FCE2449C200187A9856FE6150` |
 
-## Current Final Video Evidence
+## 当前最终视频证据
 
 | 字段 | 内容 |
 | --- | --- |
@@ -79,7 +79,7 @@ All listed items are recorded as PASS in the final external summaries. Raw summa
 | SHA256 | `2A2C9863C185846225A98AC874499867A71588CED2020A64249CBF99C7BC0365` |
 | scope | current final integrated `0001-0009` verification demo for commit `db85947` |
 
-## Final Presentation Deliverable
+## 最终答辩 PPT 产物
 
 | 字段 | 内容 |
 | --- | --- |
@@ -90,63 +90,63 @@ All listed items are recorded as PASS in the final external summaries. Raw summa
 | PPTX size | `114,409 bytes` |
 | slide count | 16 |
 | speaker notes count | 16 |
-| media embedding | none detected in `ppt/media/` after generation |
-| review status | requires final human review and rehearsal before defense |
+| media embedding | 生成后 `ppt/media/` 未检测到嵌入媒体 |
+| review status | 答辩前仍需人工最终审阅和排练 |
 
-The PPTX is a presentation artifact, not raw verification evidence. It cites the final video metadata and SHA256 but does not embed the video, screenshots, summaries, console logs, or private materials.
+PPTX 是答辩展示材料，不是原始验证证据。它只引用最终视频元数据和 SHA256，不嵌入视频、截图、summary、console log 或隐私材料。
 
-## External Asset Package
+## 外部证据资产包
 
 | 字段 | 内容 |
 | --- | --- |
 | package directory | `proj54_submission_assets` |
 | Baidu link | <https://pan.baidu.com/s/1Xt-G6VgP04eEAumqiMo7Uw?pwd=1234> |
 | extraction code | `1234` |
-| verification command after download | `XV6_EVIDENCE_BASE=<local path>/proj54_submission_assets bash scripts/check-evidence-sha256.sh` |
+| 下载后核验命令 | `XV6_EVIDENCE_BASE=<local path>/proj54_submission_assets bash scripts/check-evidence-sha256.sh` |
 
-Expected external directories:
+预期外部目录：
 
 - `D:\Edge Download\CSCC\proj54_submission_assets\videos`
 - `D:\Edge Download\CSCC\proj54_submission_assets\teammate_reproduction\db85947_final_0001_0009`
 - `D:\Edge Download\CSCC\proj54_submission_assets\teammate_reproduction\e8e2fb9_final_0001_0007`
 - `D:\Edge Download\CSCC\proj54_submission_assets\teammate_reproduction\historical_1ba9db6_0001_0005`
 
-## Historical Evidence
+## 历史证据
 
 ### `e8e2fb9 / 0001-0007`
 
-This is a historical stable checkpoint, superseded by current final `db85947 / 0001-0009`.
+这是历史稳定检查点，已被 current final `db85947 / 0001-0009` 取代。
 
-| Evidence | Status |
+| 证据 | 状态 |
 | --- | --- |
-| lead `rain` full verify | PASS for `e8e2fb9 / 0001-0007` only |
-| teammate `root` full verify | PASS for `e8e2fb9 / 0001-0007` only |
-| teammate `z2996` full verify | PASS for `e8e2fb9 / 0001-0007` only |
-| `20260606_final_integrated_0001_0007_demo.mp4` | historical video only |
+| 队长 `rain` full verify | 只覆盖 `e8e2fb9 / 0001-0007` |
+| 队友 `root` full verify | 只覆盖 `e8e2fb9 / 0001-0007` |
+| 队友 `z2996` full verify | 只覆盖 `e8e2fb9 / 0001-0007` |
+| `20260606_final_integrated_0001_0007_demo.mp4` | 仅作为 historical video |
 
-Historical `0001-0007` video SHA256:
+historical `0001-0007` 视频 SHA256：
 
 ```text
 0FF2D3581552B3FD3A2630E827251CF46C36BC3BE8F8B9D9DDB691FC0668A93B
 ```
 
-### Earlier `1ba9db6 / 0001-0005` Evidence
+### 更早的 `1ba9db6 / 0001-0005` 证据
 
-Older teammate records and the three `20260606_*` videos are retained only as historical evidence for earlier workflows. They do not cover current final `db85947 / 0001-0009`.
+更早的队友记录和三段 `20260606_*` 视频只作为 earlier workflow 的历史证据保留，不覆盖 current final `db85947 / 0001-0009`。
 
-## Non-Committed Evidence Policy
+## 不提交原始证据的边界
 
-- Videos are not committed.
-- Screenshots are not committed.
-- Raw logs are not committed.
-- Raw summary files are not committed.
-- External xv6 source is not committed.
-- `.claude/`, `.vscode/`, archives, private screenshots, passwords, tokens, and platform-private materials are not committed.
-- Git stores metadata, summaries, source Markdown, generator code, and the final PPTX only.
+- 不提交视频本体。
+- 不提交截图本体。
+- 不提交 raw logs。
+- 不提交 raw summary 文件。
+- 不提交外部 xv6 源码。
+- 不提交 `.claude/`、`.vscode/`、压缩包、私人截图、密码、token 或平台隐私材料。
+- Git 仓库只保存元数据、摘要、Markdown 源稿、生成器代码和最终 PPTX。
 
-## Remaining Manual Items
+## 剩余人工确认项
 
-- Platform upload method: 待按官方要求确认。
-- Video and screenshot privacy review: confirmed OK by user manual review.
-- Teammate real names and OS versions: not fabricated; add only if required and confirmed.
-- Final PPT rehearsal: still required before live defense.
+- 平台提交方式：待按官方要求确认。
+- 视频和截图隐私复核：用户已人工确认 OK。
+- 队友真实姓名和系统版本：不编造，如官方要求再补充。
+- 最终 PPT 排练：答辩前仍需人工排练。

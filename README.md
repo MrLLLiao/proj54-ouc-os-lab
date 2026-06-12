@@ -40,14 +40,14 @@
 
 > 所有 make/QEMU 命令都要在 WSL2 Ubuntu 或等价 Linux 里跑，Windows Git Bash 只能看文档。环境装好前别急着跳关。
 
-- **Step 0：准备环境。** 看 [docs/final/01_environment_setup.md](docs/final/01_environment_setup.md)，装好 `qemu-system-riscv64` 和 RISC-V gcc，然后跑 `bash scripts/xv6/doctor.sh` 体检。
-- **Step 1：Lab0，把 xv6 跑起来。** [labs/lab0-env-setup/README.md](labs/lab0-env-setup/README.md)。看到 `init: starting sh` 这关就过了。
-- **Step 2：Lab1，第一个系统调用。** [labs/lab1-system-call/README.md](labs/lab1-system-call/README.md)。从 `hello()` 到带参数的 `add2(int, int)`。
-- **Step 3：Lab2，观察进程。** [labs/lab2-process-and-scheduling/README.md](labs/lab2-process-and-scheduling/README.md)。`pstate`/`pcount`/`pchildtest`。
-- **Step 4：Lab3，观察页表。** [labs/lab3-memory-and-pagetable/README.md](labs/lab3-memory-and-pagetable/README.md)。`pgcount` 数页，进阶 `memstat` 用 copyout 拷结构体。
-- **Step 5：Lab4，观察文件表。** [labs/lab4-file-system/README.md](labs/lab4-file-system/README.md)。`fcount`/`fdcount` 数数，进阶 `fdinfo` 看单个 fd 的元数据。
-- **Step 6：Lab5，综合复现。** [labs/lab5-final-integration/README.md](labs/lab5-final-integration/README.md)。把全部实验串成一次验收。
-- **Step 7：integrated `0001-0009`。** 一个内核同时装下全部 9 个实验 syscall（编号 22-30），入口见 [patches/integrated-labs/README.md](patches/integrated-labs/README.md)。
+- **第 0 步：准备环境。** 看 [docs/final/01_environment_setup.md](docs/final/01_environment_setup.md)，装好 `qemu-system-riscv64` 和 RISC-V gcc，然后跑 `bash scripts/xv6/doctor.sh` 体检。
+- **第 1 步：Lab0，把 xv6 跑起来。** [labs/lab0-env-setup/README.md](labs/lab0-env-setup/README.md)。看到 `init: starting sh` 这关就过了。
+- **第 2 步：Lab1，第一个系统调用。** [labs/lab1-system-call/README.md](labs/lab1-system-call/README.md)。从 `hello()` 到带参数的 `add2(int, int)`。
+- **第 3 步：Lab2，观察进程。** [labs/lab2-process-and-scheduling/README.md](labs/lab2-process-and-scheduling/README.md)。`pstate`/`pcount`/`pchildtest`。
+- **第 4 步：Lab3，观察页表。** [labs/lab3-memory-and-pagetable/README.md](labs/lab3-memory-and-pagetable/README.md)。`pgcount` 数页，进阶 `memstat` 用 copyout 拷结构体。
+- **第 5 步：Lab4，观察文件表。** [labs/lab4-file-system/README.md](labs/lab4-file-system/README.md)。`fcount`/`fdcount` 数数，进阶 `fdinfo` 看单个 fd 的元数据。
+- **第 6 步：Lab5，综合复现。** [labs/lab5-final-integration/README.md](labs/lab5-final-integration/README.md)。把全部实验串成一次验收。
+- **第 7 步：integrated `0001-0009`。** 一个内核同时装下全部 9 个实验 syscall（编号 22-30），入口见 [patches/integrated-labs/README.md](patches/integrated-labs/README.md)。
 
 每个 lab 目录里有两个文件：`README.md` 是教程，`student_tasks.md` 是练习和验收标准。建议先读教程、跑通验证命令，再做任务。做完一关可以只测这一关：`bash scripts/labctl.sh test lab3`。
 
@@ -86,7 +86,7 @@ bash scripts/labctl.sh verify        # 一键 full 验证（等价 teammate-veri
 
 ## 当前证据状态（诚实边界）
 
-- current final = `db85947 / 0001-0009`（hello=22 … fdinfo=30，连续编号）：rain/root/z2996 三方 `teammate-verify.sh --full` 全 PASS，新演示视频与 SHA256 已登记（详见 [submissions/evidence_manifest.md](submissions/evidence_manifest.md)）。
+- 当前最终工程状态 = `db85947 / 0001-0009`（hello=22 … fdinfo=30，连续编号）：rain/root/z2996 三方 `teammate-verify.sh --full` 全 PASS，新演示视频与 SHA256 已登记（详见 [submissions/evidence_manifest.md](submissions/evidence_manifest.md)）。
 - `caf8ced` 只是证据文档登记提交，用于记录 final demo、三方复现、SHA256 和外部资产索引；工程复现仍以 `db85947 / 0001-0009` 为准。
 - `e8e2fb9 / 0001-0007` 的三方 full PASS 和旧视频 = **historical stable checkpoint**，只覆盖 `0001-0007`，保留不删但不作为 current final。
 - 一直成立的边界：`pgcount`/`memstat` 不是完整内存管理，`fcount`/`fdcount`/`fdinfo` 不是完整文件系统，Lab5 不新增内核机制，QEMU timeout 捕获不等于长期稳定性测试。
