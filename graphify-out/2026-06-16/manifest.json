@@ -1,0 +1,97 @@
+{
+  "scripts/check-docs-consistency.sh": {
+    "mtime": 1781405232.3696342,
+    "ast_hash": "262ea80b368c3c78df5a285ea1681eef",
+    "semantic_hash": "262ea80b368c3c78df5a285ea1681eef"
+  },
+  "scripts/check-env.sh": {
+    "mtime": 1781405232.3696342,
+    "ast_hash": "554041eeb1b7570e19cae17cd31fab99",
+    "semantic_hash": "554041eeb1b7570e19cae17cd31fab99"
+  },
+  "scripts/check-evidence-sha256.sh": {
+    "mtime": 1781405232.3706338,
+    "ast_hash": "73432eb0608f811ca71752806af89983",
+    "semantic_hash": "73432eb0608f811ca71752806af89983"
+  },
+  "scripts/check-final-hygiene.sh": {
+    "mtime": 1781405232.3706338,
+    "ast_hash": "66c91ac070a39c8c9fedfc62fa7706df",
+    "semantic_hash": "66c91ac070a39c8c9fedfc62fa7706df"
+  },
+  "scripts/collect-report.sh": {
+    "mtime": 1781405232.3706338,
+    "ast_hash": "83ee191a22e0f8c896c1feb94a607b5a",
+    "semantic_hash": "83ee191a22e0f8c896c1feb94a607b5a"
+  },
+  "scripts/grade-summaries.sh": {
+    "mtime": 1781405232.3706338,
+    "ast_hash": "9825550e8d9dd5c00b27339dcbc08cd7",
+    "semantic_hash": "9825550e8d9dd5c00b27339dcbc08cd7"
+  },
+  "scripts/labctl.sh": {
+    "mtime": 1781405232.3706338,
+    "ast_hash": "6362631a21260d2f22ac44d8d1e913fb",
+    "semantic_hash": "6362631a21260d2f22ac44d8d1e913fb"
+  },
+  "scripts/run-lab.sh": {
+    "mtime": 1781405232.3716342,
+    "ast_hash": "ac3ba33f2552bd81b4f0f254c78bfda0",
+    "semantic_hash": "ac3ba33f2552bd81b4f0f254c78bfda0"
+  },
+  "scripts/xv6/apply-integrated-labs.sh": {
+    "mtime": 1781405232.3716342,
+    "ast_hash": "89ad6adad14c10e17a4b69332a17590d",
+    "semantic_hash": "89ad6adad14c10e17a4b69332a17590d"
+  },
+  "scripts/xv6/apply-lab1-patch.sh": {
+    "mtime": 1781405232.3716342,
+    "ast_hash": "d42573de188c9deeef16a50b1690c2b9",
+    "semantic_hash": "d42573de188c9deeef16a50b1690c2b9"
+  },
+  "scripts/xv6/boot-xv6.sh": {
+    "mtime": 1781405232.3716342,
+    "ast_hash": "69f14accda4ffa9407097d5eea8bd8b6",
+    "semantic_hash": "69f14accda4ffa9407097d5eea8bd8b6"
+  },
+  "scripts/xv6/check-xv6-baseline.sh": {
+    "mtime": 1781405232.3716342,
+    "ast_hash": "373f955cc105a184e3f12737602d94b8",
+    "semantic_hash": "373f955cc105a184e3f12737602d94b8"
+  },
+  "scripts/xv6/cleanup-qemu.sh": {
+    "mtime": 1781405232.3726342,
+    "ast_hash": "decc95456363c5ffa2cff7993608fe09",
+    "semantic_hash": "decc95456363c5ffa2cff7993608fe09"
+  },
+  "scripts/xv6/doctor.sh": {
+    "mtime": 1781405232.3726342,
+    "ast_hash": "2c630a7cfff265099c1da4fb5bb8fdfd",
+    "semantic_hash": "2c630a7cfff265099c1da4fb5bb8fdfd"
+  },
+  "scripts/xv6/fetch-xv6.sh": {
+    "mtime": 1781405232.3726342,
+    "ast_hash": "bb28d2bcde3bb163fc0b902315682c0f",
+    "semantic_hash": "bb28d2bcde3bb163fc0b902315682c0f"
+  },
+  "scripts/xv6/local-verify.sh": {
+    "mtime": 1781405232.3726342,
+    "ast_hash": "e96ff58117f097da4f00e0a20a5436d8",
+    "semantic_hash": "e96ff58117f097da4f00e0a20a5436d8"
+  },
+  "scripts/xv6/run-xv6-command.sh": {
+    "mtime": 1781405232.3736348,
+    "ast_hash": "e25097bc2519daa1cbf8271877df1950",
+    "semantic_hash": "e25097bc2519daa1cbf8271877df1950"
+  },
+  "scripts/xv6/teammate-verify.sh": {
+    "mtime": 1781405232.3736348,
+    "ast_hash": "c28ca6a2ca6ae88bea1e68e898a93b3a",
+    "semantic_hash": "c28ca6a2ca6ae88bea1e68e898a93b3a"
+  },
+  "slides/generate_final_ppt.ps1": {
+    "mtime": 1781405232.3746338,
+    "ast_hash": "7333d67dd057563f957a67955e69d84e",
+    "semantic_hash": "7333d67dd057563f957a67955e69d84e"
+  }
+}
